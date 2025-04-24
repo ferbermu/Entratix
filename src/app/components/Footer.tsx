@@ -6,19 +6,20 @@ import { FooterOptionProps, FooterOption } from './FooterOptions';
 
 const SocialLinkData: SocialLinkProps[] = [
   {
-    url: 'https://www.facebook.com/entratix/',
-    icon: '/assets/icons/social-media/facebook.svg',
-    alt: 'facebook',
-    width: 24,
-    height: 24,
-  },
-  {
     url: 'https://twitter.com/entratix',
     icon: '/assets/icons/social-media/twitter.svg',
     alt: 'Twitter',
     width: 24,
     height: 24,
   },
+  {
+    url: 'https://www.facebook.com/entratix/',
+    icon: '/assets/icons/social-media/facebook.svg',
+    alt: 'facebook',
+    width: 24,
+    height: 24,
+  },
+
   {
     url: 'https://www.instagram.com/entratix',
     icon: '/assets/icons/social-media/instagram.svg',
@@ -61,14 +62,14 @@ export const Footer = () => {
   return (
     <>
       <footer className="w-full mt-auto bg-[#1C1C1C] text-white py-12 relative overflow-hidden ">
-        <div className="flex max-[1280px]:flex-col max-[1280px]:items-center border ">
-          <div className="border flex max-[1280px]:flex-col max-[1280px]:gap-4 max-[1280px]:w-full ">
+        <div className="flex max-[1280px]:flex-col max-[1280px]:items-center">
+          <div className=" flex max-[1280px]:flex-col max-[1280px]:gap-4 max-[1280px]:w-full ">
             {' '}
             {/* Cambiado items-center a items-start */}
-            <div className="flex flex-col max-[1280px]:items-center border border-amber-100 ml-25 max-[1280px]:ml-0">
+            <div className="flex flex-col max-[1280px]:items-center   ml-25 max-[1280px]:ml-0">
               <Image
                 width={200}
-                height={20}
+                height={50}
                 src={'/assets/EntratixFullLogo.png'}
                 alt={''}
               ></Image>
@@ -78,7 +79,7 @@ export const Footer = () => {
                 Entratix - Your Platform for Musical Diversity.
               </p>
 
-              <div className="flex space-x-4 pt-8 gap-4">
+              <div className="flex space-x-4 pt-8 gap-4  ">
                 {SocialLinkData.map(item => (
                   <SocialLink
                     key={item.alt}
@@ -91,7 +92,7 @@ export const Footer = () => {
                 ))}
               </div>
             </div>
-            <div className="flex max-[1280px]:flex-col gap-34 max-[1280px]:gap-10 border  ml-37 max-[1280px]:ml-4">
+            <div className="flex max-[1280px]:flex-col gap-34 max-[1280px]:gap-10   ml-37 max-[1280px]:ml-4">
               {' '}
               {/* Añadido ml-4 para móvil */}
               {FooterOptionsData.map((item, key) => (
@@ -104,7 +105,7 @@ export const Footer = () => {
             </div>
           </div>
 
-          <div className=" absolute -right-10 top-1/2 transform -translate-y-1/2 z-0 border">
+          <div className=" absolute -right-10 top-1/2 transform -translate-y-1/2 z-0 ">
             <Image
               src="/assets/Entratix-Logo.png"
               alt="{'Entratix Logo'}"
