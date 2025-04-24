@@ -61,9 +61,11 @@ export const Footer = () => {
   return (
     <>
       <footer className="w-full mt-auto bg-[#1C1C1C] text-white py-12 relative overflow-hidden ">
-        <div className="flex max-[1280px]:flex-col max-[1280px]:items-center border border-amber-600">
-          <div className="border border-red-500 flex max-[1280px]:flex-col max-[1280px]:gap-4 items-center max-[1280px]:items-start">
-            <div className="flex flex-col max-[1280px]:items-center border border-amber-100 ml-25 max-[1280px]:ml-0 ">
+        <div className="flex max-[1280px]:flex-col max-[1280px]:items-center border ">
+          <div className="border flex max-[1280px]:flex-col max-[1280px]:gap-4 max-[1280px]:w-full ">
+            {' '}
+            {/* Cambiado items-center a items-start */}
+            <div className="flex flex-col max-[1280px]:items-center border border-amber-100 ml-25 max-[1280px]:ml-0">
               <Image
                 width={200}
                 height={20}
@@ -77,7 +79,7 @@ export const Footer = () => {
               </p>
 
               <div className="flex space-x-4 pt-8 gap-4">
-                {SocialLinkData.map((item) => (
+                {SocialLinkData.map(item => (
                   <SocialLink
                     key={item.alt}
                     url={item.url}
@@ -89,8 +91,9 @@ export const Footer = () => {
                 ))}
               </div>
             </div>
-
-            <div className="flex max-[1280px]:flex-col  gap-34 max-[1280px]:gap-10 border border-amber-400 ml-37 max-[1280px]:ml-0 ">
+            <div className="flex max-[1280px]:flex-col gap-34 max-[1280px]:gap-10 border  ml-37 max-[1280px]:ml-4">
+              {' '}
+              {/* Añadido ml-4 para móvil */}
               {FooterOptionsData.map((item, key) => (
                 <FooterOption
                   key={key}
@@ -104,11 +107,11 @@ export const Footer = () => {
           <div className=" absolute -right-10 top-1/2 transform -translate-y-1/2 z-0 border">
             <Image
               src="/assets/Entratix-Logo.png"
-              alt=""
+              alt="{'Entratix Logo'}"
               width={200}
-              height={200}
+              height={50}
               className=" transform rotate-180 scale-150 opacity-10 max-[1280px]:hidden"
-              priority
+              priority={true}
             />
           </div>
         </div>
