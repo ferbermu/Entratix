@@ -92,7 +92,7 @@ export const Footer = () => {
                 ))}
               </div>
             </div>
-            <div className="flex max-[1280px]:flex-col gap-34 max-[1280px]:gap-10   ml-37 max-[1280px]:ml-4">
+            <div className="flex max-[1280px]:flex-col gap-34 max-[1280px]:gap-10  ml-37 max-[1280px]:ml-4">
               {' '}
               {/* Añadido ml-4 para móvil */}
               {FooterOptionsData.map((item, key) => (

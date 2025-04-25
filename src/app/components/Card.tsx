@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export interface CardProps {
   title: string;
@@ -19,7 +20,10 @@ export const Card = ({
   dateIcon,
 }: CardProps) => {
   return (
-    <div className=" group relative w-[340px] h-[543px] rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#3BAFBB] bg-[#1C1A1A] cursor-pointer transition-colors duration-300">
+    <Link
+      href="/events"
+      className=" group relative w-[340px] h-[543px] rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#3BAFBB] bg-[#1C1A1A] cursor-pointer transition-colors duration-300"
+    >
       <div className="relative h-[249px] w-full">
         <Image
           src={imageUrl}
@@ -60,6 +64,6 @@ export const Card = ({
           Buy Tickets
         </button>
       </div>
-    </div>
+    </Link>
   );
 };

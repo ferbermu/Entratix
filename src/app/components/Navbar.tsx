@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { Navbutton } from './Navbutton';
 import { MobileNavButton } from './MobileNavButton';
+import Link from 'next/link';
 
 export const Navbar = () => {
   const handleMyTickets = () => {
@@ -12,13 +13,16 @@ export const Navbar = () => {
     <>
       <nav className="border h-22 flex justify-between px-12  max-[870px]:px-5 bg-[#3BAFBB0D] border-[#3BAFBB33] bg-opacity-50 ">
         <div className=" gap-4 flex  items-center">
-          <Image
-            className=""
-            width={200}
-            height={28}
-            src={'/assets/EntratixFullLogo.png'}
-            alt={''}
-          ></Image>
+          <Link href="/">
+            <Image
+              className=""
+              width={200}
+              height={28}
+              src={'/assets/EntratixFullLogo.png'}
+              alt={''}
+            ></Image>
+          </Link>
+
           <div className=" pl-8 flex gap-6 max-[870px]:hidden">
             <Navbutton text="Inicio" onClick={() => {}} />
             <Navbutton text="Eventos" onClick={handleMyTickets} />
