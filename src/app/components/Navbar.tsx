@@ -11,7 +11,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="border h-22 flex justify-between px-12  max-[870px]:px-5 bg-[#3BAFBB0D] border-[#3BAFBB33] bg-opacity-50 ">
+      <nav className="fixed w-full top-0 z-50 bg-white/10 border-b h-22 flex justify-between px-12 max-[870px]:px-5 border-[#3BAFBB33]">
         <div className=" gap-4 flex  items-center">
           <Link href="/">
             <Image

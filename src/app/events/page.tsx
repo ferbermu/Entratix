@@ -1,5 +1,4 @@
 'use client';
-
 import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 
