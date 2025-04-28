@@ -22,7 +22,7 @@ export const Card = ({
   return (
     <Link
       href="/events"
-      className=" group relative w-[340px] h-[543px] rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#3BAFBB] bg-[#1C1A1A] cursor-pointer transition-colors duration-300"
+      className=" group relative w-[340px] h-[543px] rounded-2xl overflow-hidden border-2 border-[#4E4B4B] hover:border-[#3BAFBB] bg-[#1C1A1A] cursor-pointer transition-colors duration-300"
     >
       <div className="relative h-[249px] w-full">
         <Image

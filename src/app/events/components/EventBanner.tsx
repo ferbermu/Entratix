@@ -16,7 +16,7 @@ const imageURLsFromDataBase: string[] = [
  */
 export const EventBanner: React.FC = () => {
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-full max-[1280px]:h-[400px]">
       <Carousel className="h-full" interval={5000}>
         {imageURLsFromDataBase.map((url, idx) => (
           <div key={idx} className="relative w-full h-full">

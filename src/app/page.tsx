@@ -88,7 +88,7 @@ const CardData: CardProps[] = [
 
 export const HomePage = () => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-[#1C1A1A]">
       <div className="w-full">
         <CarrouselImage imageURLs={imageURLsFromDataBase} />
       </div>

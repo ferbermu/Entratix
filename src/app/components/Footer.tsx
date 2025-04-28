@@ -61,7 +61,7 @@ const FooterOptionsData: FooterOptionProps[] = [
 export const Footer = () => {
   return (
     <>
-      <footer className="w-full mt-auto bg-[#1C1C1C] text-white py-12 relative overflow-hidden ">
+      <footer className="w-full mt-auto bg-[#121010] text-white py-12 relative overflow-hidden ">
         <div className="flex max-[1280px]:flex-col max-[1280px]:items-center">
           <div className=" flex max-[1280px]:flex-col max-[1280px]:gap-4 max-[1280px]:w-full ">
             {' '}
