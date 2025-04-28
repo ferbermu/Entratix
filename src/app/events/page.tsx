@@ -4,23 +4,31 @@ import { EventData } from './components/EventData';
 
 export default function Page() {
   return (
-    <div className="grid grid-cols-3 gap-6 px-24 pt-8 ">
-      <div className="col-span-2 ">
+    <div className="grid grid-cols-3 max-[1280px]:grid-cols-1 gap-6 px-24 max-[1280px]:px-0 pt-8 my-20">
+      <div className="col-span-2 max-[1280px]:col-span-1">
         <EventBanner />
       </div>
       <div className=" bg-blue-200">
         <EventData />
       </div>
 
-      <div className="bg-red-400 col-span-3 text-center">
+      <div className="bg-red-400 col-span-3 max-[1280px]:col-span-1 text-center">
         aca va a ir la descripcion
       </div>
-      <div className="bg-blue-400 col-span-3 text-center">artistas</div>
+      <div className="bg-blue-400 col-span-3 max-[1280px]:col-span-1 text-center">
+        artistas
+      </div>
 
-      <div className="col-span-2 bg-amber-700">Aca va a ir el checkout</div>
+      <div className="col-span-2 max-[1280px]:col-span-1 bg-amber-700">
+        Aca va a ir el checkout
+      </div>
       <div className=" bg-blue-700">Aca va a ir la ubicacion</div>
-      <div className="col-start-3 bg-green-400">Tags</div>
-      <div className="col-start-3 bg-purple-500">Organizer</div>
+      <div className="col-start-3 max-[1280px]:col-span-1 bg-green-400">
+        Tags
+      </div>
+      <div className="col-start-3 max-[1280px]:col-span-1 bg-purple-500">
+        Organizer
+      </div>
     </div>
   );
 }
