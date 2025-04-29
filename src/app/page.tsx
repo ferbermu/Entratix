@@ -4,6 +4,7 @@ import {
   CarrouselImage,
   CarrouselImageProps,
 } from './components/CarrouselImage';
+import { JoinNow } from './components/JoinNow';
 
 const imageURLsFromDataBase: string[] = [
   '/assets/show1.jpg',
@@ -111,6 +112,7 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
+      <JoinNow />
     </div>
   );
 };
