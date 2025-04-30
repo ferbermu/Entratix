@@ -96,8 +96,10 @@ export const HomePage = () => {
 
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10">
         <div className="w-full max-w-[1400px]">
-          <h1 className="text-3xl font-semibold mb-10">All Events</h1>
-          <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 gap-[36px] justify-items-center">
+          <h1 className="text-3xl font-semibold mb-10 text-white">
+            All Events
+          </h1>
+          <div className="grid grid-cols-4  max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 gap-[36px] justify-items-center">
             {CardData.map((item, key) => (
               <Card
                 key={key}

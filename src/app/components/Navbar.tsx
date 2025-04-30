@@ -23,13 +23,17 @@ export const Navbar = () => {
             ></Image>
           </Link>
 
-          <div className=" pl-8 flex gap-6 max-[870px]:hidden">
+          <div className=" text-white pl-8 flex gap-6 max-[870px]:hidden ">
             <Navbutton text="Inicio" onClick={() => {}} />
             <Navbutton text="Eventos" onClick={handleMyTickets} />
           </div>
         </div>
         <div className=" flex items-center  gap-6 max-[870px]:hidden ">
-          <Navbutton text="Registrarse" onClick={handleMyTickets} />
+          <Navbutton
+            className="text-white "
+            text="Registrarse"
+            onClick={handleMyTickets}
+          />
           <Navbutton
             className="bg-[#3baebb32] rounded-md border border-[#3BAFBB] text-[#3BAFBB] text-md "
             text="Login"
