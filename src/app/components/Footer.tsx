@@ -77,9 +77,9 @@ export const Footer = () => {
               </p>
 
               <div className="flex space-x-4 pt-8 gap-4  ">
-                {SocialLinkData.map(item => (
+                {SocialLinkData.map((item, key) => (
                   <SocialLink
-                    key={item.alt}
+                    key={key}
                     url={item.url}
                     icon={item.icon}
                     alt={item.alt}

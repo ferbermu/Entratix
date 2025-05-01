@@ -1,7 +1,26 @@
 'use client';
+import {
+  EventArtist,
+  EventArtistProps,
+  ArtistSocialLinks,
+} from './components/EventArtist';
 import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 import { EventDescription } from './components/EventDescription';
+
+const EventArtistData: EventArtistProps[] = [
+  {
+    photo: '/assets/show3.jpg',
+    name: 'YsY A',
+    description: 'Artista de Trap',
+    artistSocialLinks: [
+      {
+        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
+        icon: '/assets/social-media/twitter.svg',
+      },
+    ],
+  },
+];
 
 export default function Page() {
   return (
@@ -28,8 +47,16 @@ export default function Page() {
       </div>
 
       {/* 4. Artistas: comes after */}
-      <div className="bg-blue-400 col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4">
-        artistas
+      <div className=" col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4">
+        {EventArtistData.map((item, key) => (
+          <EventArtist
+            key={key}
+            photo={item.photo}
+            name={item.name}
+            description={item.description}
+            artistSocialLinks={item.artistSocialLinks}
+          />
+        ))}
       </div>
 
       {/* 5. Checkout */}
