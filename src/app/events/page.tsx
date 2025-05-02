@@ -1,4 +1,6 @@
 'use client';
+
+import { TwitterLogo, YoutubeLogo } from '@phosphor-icons/react';
 import {
   EventArtist,
   EventArtistProps,
@@ -16,7 +18,15 @@ const EventArtistData: EventArtistProps[] = [
     artistSocialLinks: [
       {
         url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/social-media/twitter.svg',
+        icon: '/assets/icons/social-media/twitter.svg',
+      },
+      {
+        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
+        icon: '/assets/icons/social-media/twitter.svg',
+      },
+      {
+        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
+        icon: '/assets/icons/social-media/twitter.svg',
       },
     ],
   },
