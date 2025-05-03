@@ -5,6 +5,7 @@ import {
   CarrouselImageProps,
 } from './components/CarrouselImage';
 import { JoinNow } from './components/JoinNow';
+import { SearchBar } from './components/SearchBar';
 
 const imageURLsFromDataBase: string[] = [
   '/assets/show1.jpg',
@@ -92,6 +93,9 @@ export const HomePage = () => {
     <div className="flex flex-col w-full bg-[#1C1A1A]">
       <div className="w-full">
         <CarrouselImage imageURLs={imageURLsFromDataBase} />
+      </div>
+      <div className="mt-4">
+        <SearchBar />
       </div>
 
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10">
