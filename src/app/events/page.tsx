@@ -17,16 +17,16 @@ const EventArtistData: EventArtistProps[] = [
     description: 'Artista de Trap',
     artistSocialLinks: [
       {
-        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/icons/social-media/twitter.svg',
+        url: 'https://soundcloud.com/ysyashakur',
+        icon: '/assets/icons/social-media/SoundcloudIcon.svg',
+      },
+      {
+        url: 'https://open.spotify.com/intl-es/artist/2qWK8K2Jfh67UqtwY8tCW6',
+        icon: '/assets/icons/social-media/SpotifyIcon.svg',
       },
       {
         url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/icons/social-media/twitter.svg',
-      },
-      {
-        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/icons/social-media/twitter.svg',
+        icon: '/assets/icons/social-media/YoutubeIcon.svg',
       },
     ],
   },

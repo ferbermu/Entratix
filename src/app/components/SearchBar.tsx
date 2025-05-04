@@ -3,19 +3,18 @@ import Image from 'next/image';
 
 export const SearchBar = () => {
   return (
-    <div className="flex  items-center justify-between bg-[#3BAFBB1A] gap-4 rounded-lg p-4  mx-25 border border-[#3BAFBB33] max-[870px]:hidden">
+    <div className="flex  items-center justify-between bg-[#3BAFBB1A] gap-4 rounded-lg p-4  border border-[#3BAFBB] max-[870px]:hidden">
       <div className="flex items-center gap-3 ">
         <Image
           src="/assets/icons/search_bar/search.svg"
           alt="search"
           width={16}
           height={16}
-          className="opacity-60"
         />
         <input
           type="text"
           placeholder="Search Event"
-          className=" text-[#3BAFBB] w-full outline-none"
+          className=" placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none"
         />
       </div>
 
@@ -29,7 +28,7 @@ export const SearchBar = () => {
         <input
           type="text"
           placeholder="Date"
-          className=" text-[#3BAFBB] w-full outline-none"
+          className=" placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none"
         />
       </div>
 
@@ -43,11 +42,11 @@ export const SearchBar = () => {
         <input
           type="text"
           placeholder="Location"
-          className=" text-[#3BAFBB] w-full outline-none"
+          className=" placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none"
         />
       </div>
 
-      <button className="border border-[#2d8a93] px-6 py-2 rounded-lg flex hover:bg-[#2d8a93]/30 transition-colors ">
+      <button className="border border-[#2d8a93] px-6 py-2 rounded-lg flex hover:bg-[#2d8a93]/30 transition-colors cursor-pointer">
         <Image
           src="/assets/icons/nav_bar/search.svg"
           alt="search icon"

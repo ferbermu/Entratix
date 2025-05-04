@@ -94,16 +94,16 @@ export const HomePage = () => {
       <div className="w-full">
         <CarrouselImage imageURLs={imageURLsFromDataBase} />
       </div>
-      <div className="mt-4">
-        <SearchBar />
-      </div>
 
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10">
-        <div className="w-full max-w-[1400px]">
-          <h1 className="text-3xl font-semibold mb-10 text-white">
-            All Events
-          </h1>
+        <div className="flex  flex-col w-full max-w-[1400px] gap-12">
+          <SearchBar />
+
           <div className="grid grid-cols-4  max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 gap-[36px] justify-items-center">
+            <h1 className="w-full col-span-4 text-3xl font-semibold  text-white text-start">
+              All Events
+            </h1>
+
             {CardData.map((item, key) => (
               <Card
                 key={key}

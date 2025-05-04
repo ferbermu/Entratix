@@ -47,8 +47,8 @@ export const EventArtist = ({
               <Image
                 src={socialLink.icon}
                 alt="Social Media Icon"
-                width={24}
-                height={24}
+                width={42}
+                height={42}
               />
             </Link>
           ))}
