@@ -19,8 +19,7 @@ export const SearchBar = () => {
         />
       </div>
 
-      <div className="flex items-center gap-3  justify-center">
-        <div className="h-8 w-[1px] bg-[#3BAFBB33]" />
+      <div className="border-l-[#3BAFBB33] border-l-2  flex items-center gap-3  justify-center pl-2">
         <Image
           src="/assets/icons/search_bar/calendar_month.svg"
           alt="calendar"
@@ -34,8 +33,7 @@ export const SearchBar = () => {
         />
       </div>
 
-      <div className="flex items-center gap-3 justify-center">
-        <div className="h-8 w-[1px] bg-[#3BAFBB33]" />
+      <div className="border-l-[#3BAFBB33] border-l-2  flex items-center gap-3 justify-center pl-2">
         <Image
           src="/assets/icons/search_bar/location.svg"
           alt="location"
@@ -49,7 +47,7 @@ export const SearchBar = () => {
         />
       </div>
 
-      <button className="bg-[#3BAFBB] px-6 py-2 rounded-lg flex hover:bg-[#2d8a93] transition-colors">
+      <button className="border border-[#2d8a93] px-6 py-2 rounded-lg flex hover:bg-[#2d8a93]/30 transition-colors ">
         <Image
           src="/assets/icons/nav_bar/search.svg"
           alt="search icon"
