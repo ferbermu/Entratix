@@ -20,8 +20,8 @@ export const EventArtist = ({
   artistSocialLinks,
 }: EventArtistProps) => {
   return (
-    <div className="bg-[#4E4B4B]/20 w-full flex flex-col border border-[#4E4B4B] rounded-lg">
-      <div className="flex justify-between items-center p-6">
+    <div className=" w-full flex flex-col py-6">
+      <div className="flex justify-between items-center">
         <div className="flex gap-4 items-center">
           <Image
             className="w-12 h-12 rounded-full object-cover"
