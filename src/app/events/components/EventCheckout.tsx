@@ -42,6 +42,13 @@ export const EventTicketOptions = ({
   price,
   quantity = 0,
 }: IEventTicketOptions) => {
+  const [count, setCount] = useState(0);
+
+  const handleDecrement = () => {
+    if (count > 0) {
+      setCount(count - 1);
+    }
+  };
   return (
     <tr className=" rounded-lg text-2xl ">
       <td className="p-4 text-start  ">{ticketType}</td>
@@ -49,12 +56,18 @@ export const EventTicketOptions = ({
 
       <td className="p-4  flex justify-end items-center  ">
         <div className="flex gap-6 w-fit  items-center ">
-          <button className="bg-[#3BAFBB1A]/90 h-10 w-10 rounded-lg text-2xl cursor-pointer hover:bg-[#3BAFBB1A] ">
+          <button
+            onClick={handleDecrement}
+            className="bg-[#3BAFBB1A]/90 h-10 w-10 rounded-lg text-2xl cursor-pointer hover:bg-[#3BAFBB1A] "
+          >
             -
           </button>
-          <span>{quantity}</span>
+          <span>{count}</span>
 
-          <button className="bg-[#3BAFBB] h-10 w-10 rounded-lg text-2xl  cursor-pointer hover:bg-[#3BAFBB]/80">
+          <button
+            onClick={() => setCount(count + 1)}
+            className="bg-[#3BAFBB] h-10 w-10 rounded-lg text-2xl  cursor-pointer hover:bg-[#3BAFBB]/80"
+          >
             +
           </button>
         </div>
