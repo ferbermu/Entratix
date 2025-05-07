@@ -99,22 +99,24 @@ export const HomePage = () => {
         <div className="flex  flex-col w-full max-w-[1400px] gap-12">
           <SearchBar />
 
-          <div className="grid grid-cols-4  max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 gap-[36px] justify-items-center">
-            <h1 className="w-full col-span-4 text-3xl font-semibold  text-white text-start">
+          <div className="w-full">
+            <h1 className="text-3xl font-semibold text-white mb-8">
               All Events
             </h1>
 
-            {CardData.map((item, key) => (
-              <Card
-                key={key}
-                title={item.title}
-                addressIcon={item.addressIcon}
-                dateIcon={item.dateIcon}
-                address={item.address}
-                date={item.date}
-                imageUrl={item.imageUrl}
-              />
-            ))}
+            <div className="grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 gap-8">
+              {CardData.map((item, key) => (
+                <Card
+                  key={key}
+                  title={item.title}
+                  addressIcon={item.addressIcon}
+                  dateIcon={item.dateIcon}
+                  address={item.address}
+                  date={item.date}
+                  imageUrl={item.imageUrl}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -9,6 +9,12 @@ import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 import { EventDescription } from './components/EventDescription';
 import { EventCheckout, IEventTicketOptions } from './components/EventCheckout';
+import { EventLocation } from './components/EventLocation';
+import { Tags } from './components/Tags';
+import {
+  EventOrganizer,
+  EventOrganizerProps,
+} from './components/EventOrganizer';
 
 const EventArtistData: EventArtistProps[] = [
   {
@@ -80,6 +86,23 @@ const EventCheckoutData: IEventTicketOptions[] = [
   },
 ];
 
+const tagList = [
+  'MUSIC PARTY',
+  'PARTY NIGHT',
+  'FUN NIGHT',
+  'FUN MUSIC',
+  'BUY TICKETS',
+  'URUGUAY PARTY',
+  'ELECTRONIC MUSIC',
+  'ARTIST NAME XYZ',
+];
+
+const EventOrganizerData: EventOrganizerProps = {
+  name: 'Name',
+  description:
+    'Lorem ipsum dolor sit amet consectetur. Convallis ullamcorper tortor nulla amet purus. Mi viverra viverra sed nisl sodales suscipit. Elit mauris malesuada tempor in at non laoreet interdum. Egestas semper aliquam facilisi.',
+  avatarUrl: '/assets/show5.jpg',
+};
 export default function Page() {
   return (
     <div className="grid grid-cols-3 max-[1280px]:grid-cols-1 gap-6 px-24 max-[1280px]:px-4 pt-8 my-20 bg-[#1C1A1A] ">
@@ -116,16 +139,20 @@ export default function Page() {
         <EventCheckout ticketOptions={EventCheckoutData} />
       </div>
 
-      <div className="bg-blue-700 max-[1280px]:order-6">
-        acá va a ir la ubicación
+      <div className=" max-[1280px]:order-6">
+        <EventLocation />
       </div>
 
-      <div className="col-start-3 max-[1280px]:col-span-1 bg-green-400 max-[1280px]:order-7">
-        Tags
+      <div className="col-start-3 max-[1280px]:col-span-1 max-[1280px]:order-7">
+        <Tags tags={tagList} />
       </div>
 
-      <div className="col-start-3 max-[1280px]:col-span-1 bg-purple-500 max-[1280px]:order-8">
-        Organizer
+      <div className="col-start-3 max-[1280px]:col-span-1 max-[1280px]:order-8">
+        <EventOrganizer
+          name={EventOrganizerData.name}
+          description={EventOrganizerData.description}
+          avatarUrl={EventOrganizerData.avatarUrl}
+        />
       </div>
     </div>
   );
