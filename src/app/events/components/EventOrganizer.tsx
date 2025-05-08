@@ -15,7 +15,7 @@ export const EventOrganizer = ({
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="flex flex-col bg-[#4E4B4B]/20 border border-[#4E4B4B]/80 rounded-lg p-6 gap-4">
-      <h3 className="text-xl  font-semibold">Organizer</h3>
+      <h3 className="text-xl  font-semibold text-white">Organizer</h3>
 
       <div className="flex items-center gap-4">
         <div className="relative w-12 h-12 rounded-full overflow-hidden">
@@ -31,7 +31,7 @@ export const EventOrganizer = ({
 
       <p
         className={`
-          text-start text-md
+          text-start text-md text-white
           transition-all duration-200 opacity-75 
           ${!expanded ? 'line-clamp-3' : ''}
         `}

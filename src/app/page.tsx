@@ -99,12 +99,12 @@ export const HomePage = () => {
         <div className="flex  flex-col w-full max-w-[1400px] gap-12">
           <SearchBar />
 
-          <div className="w-full">
-            <h1 className="text-3xl font-semibold text-white mb-8">
+          <div className="w-full items-center justify-center flex flex-col">
+            <h1 className=" w-full text-3xl font-semibold text-white mb-8">
               All Events
             </h1>
 
-            <div className="grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 gap-8">
+            <div className="grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1  w-fit items-center justify-center gap-8">
               {CardData.map((item, key) => (
                 <Card
                   key={key}

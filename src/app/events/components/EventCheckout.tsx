@@ -51,22 +51,22 @@ export const EventTicketOptions = ({
   };
   return (
     <tr className=" rounded-lg text-2xl ">
-      <td className="p-4 text-start  ">{ticketType}</td>
-      <td className="p-4 text-center ">${price}</td>
+      <td className="p-4 text-start  text-white">{ticketType}</td>
+      <td className="p-4 text-center text-white">${price}</td>
 
       <td className="p-4  flex justify-end items-center  ">
         <div className="flex gap-6 w-fit  items-center ">
           <button
             onClick={handleDecrement}
-            className="bg-[#3BAFBB1A]/90 h-10 w-10 rounded-lg text-2xl cursor-pointer hover:bg-[#3BAFBB1A] "
+            className="bg-[#3BAFBB1A]/90 h-10 w-10 rounded-lg text-2xl cursor-pointer hover:bg-[#3BAFBB1A] text-white "
           >
             -
           </button>
-          <span>{count}</span>
+          <span className="text-white">{count}</span>
 
           <button
             onClick={() => setCount(count + 1)}
-            className="bg-[#3BAFBB] h-10 w-10 rounded-lg text-2xl  cursor-pointer hover:bg-[#3BAFBB]/80"
+            className="bg-[#3BAFBB] h-10 w-10 rounded-lg text-2xl  cursor-pointer hover:bg-[#3BAFBB]/80 text-white"
           >
             +
           </button>
