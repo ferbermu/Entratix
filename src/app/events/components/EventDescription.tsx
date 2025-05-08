@@ -12,7 +12,7 @@ export const EventDescription = ({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 text-white">
       <h1 className="text-start text-3xl font-medium">{title}</h1>
 
       {/* El párrafo: tiene line-clamp-3 si NO está expandido */}
