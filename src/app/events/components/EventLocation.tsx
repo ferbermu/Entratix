@@ -16,17 +16,11 @@ const MapComponent = dynamic(() => import('./MapComponent'), {
 
 export const EventLocation = () => {
   return (
-    <div className="flex flex-col rounded-lg p-6 gap-4">
+    <div className="flex flex-col rounded-lg w-full h-full gap-4  ">
       <MapComponent center={center} />
 
-      <div className="flex flex-col gap-2">
-        <p className="text-gray-300">
-          Rambla República de Chile 4321,
-          <br />
-          Ciudad de la Costa, Canelones,
-          <br />
-          Uruguay
-        </p>
+      <div className="flex flex-col  h-fit text-gray-300 text-2xl">
+        Rambla República de Chile 4321, Ciudad de la Costa, Canelones, Uruguay
       </div>
     </div>
   );

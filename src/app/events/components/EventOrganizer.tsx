@@ -14,7 +14,7 @@ export const EventOrganizer = ({
 }: EventOrganizerProps) => {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className="flex flex-col bg-[#4E4B4B]/20 border border-[#4E4B4B]/80 rounded-lg p-6 gap-4">
+    <div className="flex flex-col bg-[#4E4B4B]/20 border border-[#4E4B4B]/80 rounded-lg p-6 gap-4 w-full">
       <h3 className="text-xl  font-semibold text-white">Organizer</h3>
 
       <div className="flex items-center gap-4">

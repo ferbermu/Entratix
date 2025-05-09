@@ -8,7 +8,11 @@ import {
 import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 import { EventDescription } from './components/EventDescription';
-import { EventCheckout, IEventTicketOptions } from './components/EventCheckout';
+import {
+  EventCheckout,
+  EventCheckoutDetails,
+  IEventTicketOptions,
+} from './components/EventCheckout';
 import { EventLocation } from './components/EventLocation';
 import { Tags } from './components/Tags';
 import {
@@ -135,19 +139,21 @@ export default function Page() {
         ))}
       </div>
 
-      <div className="col-span-2 max-[1280px]:col-span-1  max-[1280px]:order-5 ">
+      <div className="col-span-2 max-[1280px]:col-span-1  max-[1280px]:order-5 gap-10 flex flex-col">
         <EventCheckout ticketOptions={EventCheckoutData} />
       </div>
 
-      <div className=" max-[1280px]:order-6">
+      <div className="flex flex-col max-[1280px]:order-7">
         <EventLocation />
       </div>
 
-      <div className="col-start-3 max-[1280px]:col-span-1 max-[1280px]:order-7">
-        <Tags tags={tagList} />
+      <div className=" col-span-2 max-[1280px]:col-span-1  max-[1280px]:order-6 gap-10 flex flex-col ">
+        <EventCheckoutDetails ticketOptions={EventCheckoutData} />
       </div>
 
-      <div className="col-start-3 max-[1280px]:col-span-1 max-[1280px]:order-8">
+      <div className="max-[1280px]:col-span-1 max-[1280px]:order-7 gap-8 flex flex-col">
+        <Tags tags={tagList} />
+
         <EventOrganizer
           name={EventOrganizerData.name}
           description={EventOrganizerData.description}

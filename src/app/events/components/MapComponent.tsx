@@ -23,7 +23,11 @@ const MapComponent = ({ center }: MapComponentProps) => (
   <MapContainer
     center={[center.lat, center.lng]}
     zoom={15}
-    style={{ height: '300px', borderRadius: '8px' }}
+    style={{
+      padding: '0px',
+      height: '350px',
+      borderRadius: '8px',
+    }}
   >
     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
     <Marker position={[center.lat, center.lng]}>
