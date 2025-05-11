@@ -95,9 +95,15 @@ export const HomePage = () => {
         <CarrouselImage imageURLs={imageURLsFromDataBase} />
       </div>
 
-      <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10">
-        <div className="flex  flex-col w-full max-w-[1400px] gap-12">
-          <SearchBar />
+      <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
+        {' '}
+        {/* Añadido relative */}
+        <div className="flex flex-col w-full max-w-[1400px] gap-12">
+          <div className="h-[72px]">
+            {' '}
+            {/* Añadido contenedor con altura fija */}
+            <SearchBar />
+          </div>
 
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className=" w-full text-3xl font-semibold text-white mb-8">
