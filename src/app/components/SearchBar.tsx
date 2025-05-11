@@ -8,7 +8,7 @@ export const SearchBar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const shouldBeSticky = window.scrollY > 700; // Ajusta este valor según necesites
+      const shouldBeSticky = window.scrollY > 700;
       setIsSticky(shouldBeSticky);
     };
 
@@ -20,18 +20,22 @@ export const SearchBar = () => {
     <div
       className={`
         w-full transition-all duration-500 ease-in-out
-        ${isSticky ? 'fixed top-[88px] left-0 right-0 z-40 px-4' : ''}
+        ${
+          isSticky
+            ? 'fixed top-[88px] left-0 right-0 z-40 px-0 w-full bg-[#1C1A1A]'
+            : ''
+        }
       `}
     >
       <div
         className={`
           flex items-center justify-between gap-4 rounded-lg p-4 
-          max-w-[1400px] mx-auto max-[870px]:hidden
           transition-all duration-500 ease-in-out
+          mx-auto max-[870px]:hidden
           ${
             isSticky
-              ? 'bg-black/95 border border-[#3BAFBB]'
-              : 'bg-[#3BAFBB1A] border border-[#3BAFBB]'
+              ? 'bg-black/95 border-x-0 border-t-0 border-b border-[#3BAFBB] rounded-none w-full max-w-none px-12'
+              : 'bg-[#3BAFBB1A] border border-[#3BAFBB] max-w-[1400px]'
           }
         `}
       >
