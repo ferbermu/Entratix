@@ -27,6 +27,7 @@ const MapComponent = ({ center }: MapComponentProps) => (
       padding: '0px',
       height: '350px',
       borderRadius: '8px',
+      zIndex: 10,
     }}
   >
     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
