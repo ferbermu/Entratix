@@ -3,8 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  onSearch: (searchTerm: string) => void;
+}
+
+export const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [isSticky, setIsSticky] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +20,12 @@ export const SearchBar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    onSearch(value);
+  };
 
   return (
     <div
@@ -48,6 +59,8 @@ export const SearchBar = () => {
           />
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearch}
             placeholder="Search Event"
             className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent"
           />

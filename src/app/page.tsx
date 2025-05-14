@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Card, CardProps } from './components/Card';
 import {
   CarrouselImage,
@@ -89,6 +91,17 @@ const CardData: CardProps[] = [
 ];
 
 export const HomePage = () => {
+  const [filteredCards, setFilteredCards] = useState(CardData);
+
+  const handleSearch = (searchTerm: string) => {
+    const filtered = CardData.filter(
+      card =>
+        card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        card.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        card.date.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredCards(filtered);
+  };
   return (
     <div className="flex flex-col w-full bg-[#1C1A1A]">
       <div className="w-full">
@@ -101,17 +114,17 @@ export const HomePage = () => {
         <div className="flex flex-col w-full max-w-[1400px] gap-12">
           <div className="h-[72px]">
             {' '}
-            {/* Añadido contenedor con altura fija */}
-            <SearchBar />
+            <SearchBar onSearch={handleSearch} />
           </div>
 
           <div className="w-full items-center justify-center flex flex-col">
-            <h1 className=" w-full text-3xl font-semibold text-white mb-8">
-              All Events
+            <h1 className="w-full text-3xl font-semibold text-white mb-8">
+              All Events{' '}
+              {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
             </h1>
 
-            <div className="grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1  w-fit items-center justify-center gap-8">
-              {CardData.map((item, key) => (
+            <div className="grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-center justify-center gap-8">
+              {filteredCards.map((item, key) => (
                 <Card
                   key={key}
                   title={item.title}
@@ -123,6 +136,11 @@ export const HomePage = () => {
                 />
               ))}
             </div>
+            {filteredCards.length === 0 && (
+              <div className="text-gray-400 text-center mt-8">
+                No se encontraron eventos que coincidan con tu búsqueda
+              </div>
+            )}
           </div>
         </div>
       </div>
