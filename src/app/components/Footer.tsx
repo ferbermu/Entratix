@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { SocialLink, SocialLinkProps } from './SocialLink';
 import { FooterOptionProps, FooterOption } from './FooterOptions';
@@ -64,9 +63,7 @@ export const Footer = () => {
       <footer className="w-full mt-auto bg-[#121010] text-white py-12 relative overflow-hidden ">
         <div className="flex max-[1280px]:flex-col max-[1280px]:items-center">
           <div className=" flex max-[1280px]:flex-col max-[1280px]:gap-4 max-[1280px]:w-full ">
-            {' '}
-            {/* Cambiado items-center a items-start */}
-            <div className="flex flex-col max-[1280px]:items-center   ml-25 max-[1280px]:ml-0">
+            <div className="flex flex-col max-[1280px]:items-center   ml-25 max-[1280px]:ml-0 ">
               <Image
                 width={200}
                 height={50}
@@ -80,9 +77,9 @@ export const Footer = () => {
               </p>
 
               <div className="flex space-x-4 pt-8 gap-4  ">
-                {SocialLinkData.map(item => (
+                {SocialLinkData.map((item, key) => (
                   <SocialLink
-                    key={item.alt}
+                    key={key}
                     url={item.url}
                     icon={item.icon}
                     alt={item.alt}
@@ -93,8 +90,6 @@ export const Footer = () => {
               </div>
             </div>
             <div className="flex max-[1280px]:flex-col gap-34 max-[1280px]:gap-10  ml-37 max-[1280px]:ml-4">
-              {' '}
-              {/* Añadido ml-4 para móvil */}
               {FooterOptionsData.map((item, key) => (
                 <FooterOption
                   key={key}

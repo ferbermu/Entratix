@@ -35,16 +35,16 @@ export const Carousel: React.FC<CarouselProps> = ({
 
       <button
         onClick={prev}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-opacity-40 p-2 rounded-full shadow hover:bg-opacity-60 cursor-pointer"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-opacity-40 p-2 rounded-full  hover:bg-opacity-60 cursor-pointer"
       >
-        <CaretLeft size={32} weight="bold" />
+        <CaretLeft size={32} weight="bold" color="white" />
       </button>
 
       <button
         onClick={next}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2  bg-opacity-40 p-2 rounded-full shadow hover:bg-opacity-60 cursor-pointer"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2  bg-opacity-40 p-2 rounded-full  hover:bg-opacity-60 cursor-pointer"
       >
-        <CaretRight size={32} weight="bold" />
+        <CaretRight size={32} weight="bold" color="white" />
       </button>
     </div>
   );

@@ -19,12 +19,12 @@ export const EventBanner: React.FC = () => {
     <div className="w-full h-full max-[1280px]:h-[400px]">
       <Carousel className="h-full" interval={5000}>
         {imageURLsFromDataBase.map((url, idx) => (
-          <div key={idx} className="relative w-full h-full">
+          <div key={idx} className="relative w-full h-full ">
             <Image
               src={url}
               alt={`Event banner image ${idx + 1}`}
               fill
-              className="object-cover"
+              className="object-cover rounded-lg"
               priority
               sizes="100vw"
             />
