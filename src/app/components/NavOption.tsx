@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 
 interface MobileNavProps {
@@ -16,12 +16,25 @@ export const MobileNav = ({
   onLogin,
   onSignup,
 }: MobileNavProps) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
     <>
       <div
         className={`
-          fixed inset-0 bg-black/60 backdrop-blur-sm
+          fixed inset-0 bg-[black/60] backdrop-blur-sm
           transition-opacity duration-300 z-40
+          min-[870px]:hidden
           ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
         `}
         onClick={onClose}
@@ -30,17 +43,18 @@ export const MobileNav = ({
       <div
         className={`
           fixed top-[88px] left-0 right-0
-          w-full bg-black
+          w-full bg-[#1E2122]
           border-b border-[#3BAFBB]
           transform transition-all duration-300 ease-in-out z-50
+          min-[870px]:hidden
           ${
             isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }
         `}
       >
-        <div className="max-w-[1400px] mx-auto px-12 py-6">
-          <div className="flex flex-col gap-8  divide-y divide-[#FFFFFF]/40">
-            <nav className="flex flex-col divide-y divide-[#FFFFFF]/40 [&>*]:py-4 text-center">
+        <div className="max-w-[1400px]  mx-auto  py-6">
+          <div className="flex flex-col gap-8 divide-y divide-[#FFFFFF]/40">
+            <nav className="flex flex-col w-full divide-y divide-[#FFFFFF]/40 [&>*]:py-4 text-center">
               <Link
                 href="/"
                 className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
@@ -85,7 +99,7 @@ export const MobileNav = ({
               </Link>
             </nav>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 w-full pt-8 px-12">
               <button
                 onClick={() => {
                   onLogin();
@@ -100,7 +114,7 @@ export const MobileNav = ({
                   onSignup();
                   onClose();
                 }}
-                className="w-full px-6 py-3 text-center text-[#3BAFBB]  border  border-[#3BAFBB]  rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
+                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
               >
                 Sign Up
               </button>

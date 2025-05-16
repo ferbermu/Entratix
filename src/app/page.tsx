@@ -109,21 +109,18 @@ export const HomePage = () => {
       </div>
 
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
-        {' '}
-        {/* Añadido relative */}
         <div className="flex flex-col w-full max-w-[1400px] gap-12">
           <div className="h-[72px]">
-            {' '}
             <SearchBar onSearch={handleSearch} />
           </div>
 
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className="w-full text-3xl font-semibold text-white mb-8">
-              All Events{' '}
+              All Events
               {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
             </h1>
 
-            <div className="grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-center justify-center gap-8">
+            <div className=" min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-center justify-center gap-8">
               {filteredCards.map((item, key) => (
                 <Card
                   key={key}
@@ -137,7 +134,7 @@ export const HomePage = () => {
               ))}
             </div>
             {filteredCards.length === 0 && (
-              <div className="text-gray-400 text-center mt-8">
+              <div className="text-gray-400 absolute inset-0 flex items-center justify-center ">
                 No se encontraron eventos que coincidan con tu búsqueda
               </div>
             )}

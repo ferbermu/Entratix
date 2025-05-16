@@ -6,9 +6,10 @@ import { MobileNavButton } from './MobileNavButton';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { MobileNav } from './NavOption';
+import { useScroll } from '../hooks/useScroll';
 
 export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const isScrolled = useScroll({ threshold: 700 });
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleLogin = () => {
@@ -27,15 +28,6 @@ export const Navbar = () => {
     setIsMobileNavOpen(prev => !prev);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <>
       <nav
@@ -45,8 +37,8 @@ export const Navbar = () => {
           transition-all duration-500 ease-in-out
           ${
             isScrolled
-              ? 'bg-black border-[#3BAFBB]'
-              : 'bg-transparent border-transparent'
+              ? 'bg-[#1E2122] border-[#3BAFBB]'
+              : 'bg-[#3BAFBB0D] border-[#3BAFBB33]'
           }
         `}
       >
@@ -94,8 +86,7 @@ export const Navbar = () => {
           />
         </div>
       </nav>
-
-      {isMobileNavOpen && (
+      {isMobileNavOpen && window.innerWidth < 870 && (
         <MobileNav
           isOpen={isMobileNavOpen}
           onClose={() => setIsMobileNavOpen(false)}
