@@ -5,7 +5,7 @@ import { Navbutton } from './Navbutton';
 import { MobileNavButton } from './MobileNavButton';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { MobileNav } from './NavOption';
+import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
 
 export const Navbar = () => {
@@ -28,6 +28,12 @@ export const Navbar = () => {
     setIsMobileNavOpen(prev => !prev);
   };
 
+  const iconChange = (icon: string) => {
+    if (isMobileNavOpen) {
+      return '/assets/icons/search_bar/close.svg';
+    }
+    return icon;
+  };
   return (
     <>
       <nav
@@ -35,6 +41,7 @@ export const Navbar = () => {
           fixed w-full top-0 z-50 
           border-b h-22 flex justify-between px-12 max-[870px]:px-5 
           transition-all duration-500 ease-in-out
+          max-[870px]:bg-[#1E2122]
           ${
             isScrolled
               ? 'bg-[#1E2122] border-[#3BAFBB]'
@@ -74,14 +81,13 @@ export const Navbar = () => {
           />
         </div>
 
-        {/* Botones móviles */}
-        <div className="flex gap-2 items-center min-[870px]:hidden">
+        <div className="flex gap-2 items-center min-[870px]:hidden ">
           <MobileNavButton
             icon="/assets/icons/nav_bar/search.svg"
             onClick={() => console.log('Search clicked')}
           />
           <MobileNavButton
-            icon="/assets/icons/nav_bar/vector.svg"
+            icon={iconChange('/assets/icons/nav_bar/vector.svg')}
             onClick={toggleMobileNav}
           />
         </div>

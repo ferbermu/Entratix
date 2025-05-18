@@ -45,7 +45,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
           mx-auto max-[870px]:hidden
           ${
             isSticky
-              ? 'bg-black/95 border-x-0 border-t-0 border-b border-[#3BAFBB] rounded-none w-full max-w-none px-12'
+              ? ' bg-[#3BAFBB1A] border-x-0 border-t-0 border-b border-[#3BAFBB] rounded-none w-full max-w-none px-12'
               : 'bg-[#3BAFBB1A] border border-[#3BAFBB] max-w-[1400px]'
           }
         `}

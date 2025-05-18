@@ -52,7 +52,7 @@ export const MobileNav = ({
           }
         `}
       >
-        <div className="max-w-[1400px]  mx-auto  py-6">
+        <div className="max-w-[1400px]  mx-auto  pb-6 ">
           <div className="flex flex-col gap-8 divide-y divide-[#FFFFFF]/40">
             <nav className="flex flex-col w-full divide-y divide-[#FFFFFF]/40 [&>*]:py-4 text-center">
               <Link
@@ -99,13 +99,13 @@ export const MobileNav = ({
               </Link>
             </nav>
 
-            <div className="flex flex-col gap-4 w-full pt-8 px-12">
+            <div className="flex flex-col gap-4 w-full  px-12">
               <button
                 onClick={() => {
                   onLogin();
                   onClose();
                 }}
-                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
+                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors "
               >
                 Login
               </button>
