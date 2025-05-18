@@ -60,7 +60,7 @@ export const Card = ({
           <span className="text-xs">{date}</span>
         </div>
 
-        <button className="mt-2 w-full px-3 py-3 bg-[#4E4B4B] text-white rounded-lg transition-colors duration-300 group-hover:bg-[#3BAFBB]">
+        <button className="mt-2 w-full px-3 py-3 bg-[#4E4B4B] text-white rounded-lg transition-colors duration-300 group-hover:bg-[#3BAFBB] cursor-pointer">
           Buy Tickets
         </button>
       </div>

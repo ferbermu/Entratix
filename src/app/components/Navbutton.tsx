@@ -8,7 +8,10 @@ export const Navbutton = ({
   onClick: () => void;
 }) => {
   return (
-    <button className={`px-6 py-2  ${className}`} onClick={onClick}>
+    <button
+      className={`px-6 py-2 cursor-pointer  ${className}`}
+      onClick={onClick}
+    >
       {text}
     </button>
   );
