@@ -7,10 +7,12 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
+import { MobileSearch } from './MobileSearch';
 
 export const Navbar = () => {
   const isScrolled = useScroll({ threshold: 700 });
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   const handleLogin = () => {
     console.log('Login clicked');
@@ -67,7 +69,6 @@ export const Navbar = () => {
           </div>
         </div>
 
-        {/* Botones de escritorio */}
         <div className="flex items-center gap-6 max-[870px]:hidden">
           <Navbutton
             className="text-white"
@@ -81,10 +82,10 @@ export const Navbar = () => {
           />
         </div>
 
-        <div className="flex gap-2 items-center min-[870px]:hidden ">
+        <div className="flex gap-2 items-center min-[870px]:hidden  ">
           <MobileNavButton
             icon="/assets/icons/nav_bar/search.svg"
-            onClick={() => console.log('Search clicked')}
+            onClick={() => setIsMobileSearchOpen(true)}
           />
           <MobileNavButton
             icon={iconChange('/assets/icons/nav_bar/vector.svg')}
@@ -100,6 +101,14 @@ export const Navbar = () => {
           onSignup={handleSignup}
         />
       )}
+
+      <MobileSearch
+        isOpen={isMobileSearchOpen}
+        onClose={() => setIsMobileSearchOpen(false)}
+        onSearch={term => {
+          window.dispatchEvent(new CustomEvent('search', { detail: term }));
+        }}
+      />
     </>
   );
 };
