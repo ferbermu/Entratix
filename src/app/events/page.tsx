@@ -8,11 +8,7 @@ import {
 import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 import { EventDescription } from './components/EventDescription';
-import {
-  EventCheckout,
-  EventCheckoutDetails,
-  IEventTicketOptions,
-} from './components/EventCheckout';
+import { EventCheckout, IEventTicketOptions } from './components/EventCheckout';
 import { EventLocation } from './components/EventLocation';
 import { Tags } from './components/Tags';
 import {
@@ -109,16 +105,16 @@ const EventOrganizerData: EventOrganizerProps = {
 };
 export default function Page() {
   return (
-    <div className="grid grid-cols-3 max-[1280px]:grid-cols-1 gap-6 px-24 max-[1280px]:px-4 pt-8 my-20 bg-[#1C1A1A] ">
+    <div className="grid grid-cols-3 max-[1280px]:grid-cols-1 gap-6 px-24 max-[1280px]:px-4 pt-8 my-20 bg-[#1C1A1A]">
       <div className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-1">
         <EventBanner />
       </div>
 
-      <div className=" max-[1280px]:order-3">
+      <div className="max-[1280px]:order-3">
         <EventData />
       </div>
 
-      <div className=" col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-2">
+      <div className="col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-2">
         <EventDescription
           title={'Phonothèque presenta apertura 2024'}
           description={
@@ -127,7 +123,7 @@ export default function Page() {
         />
       </div>
 
-      <div className="flex flex-col bg-[#4E4B4B]/20 border border-[#4E4B4B]/80 rounded-lg col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4 divide-y divide-[#4E4B4B]  px-6 ">
+      <div className="flex flex-col bg-[#4E4B4B]/20 border border-[#4E4B4B]/80 rounded-lg col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4 divide-y divide-[#4E4B4B] px-6">
         {EventArtistData.map((item, key) => (
           <EventArtist
             key={key}
@@ -139,21 +135,13 @@ export default function Page() {
         ))}
       </div>
 
-      <div className="col-span-2 max-[1280px]:col-span-1  max-[1280px]:order-5 gap-10 flex flex-col">
+      <div className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-5">
         <EventCheckout ticketOptions={EventCheckoutData} />
       </div>
 
-      <div className="flex flex-col max-[1280px]:order-7">
+      <div className="flex flex-col col-span-1 max-[1280px]:order-6 gap-6">
         <EventLocation />
-      </div>
-
-      <div className=" col-span-2 max-[1280px]:col-span-1  max-[1280px]:order-6 gap-10 flex flex-col ">
-        <EventCheckoutDetails ticketOptions={EventCheckoutData} />
-      </div>
-
-      <div className="max-[1280px]:col-span-1 max-[1280px]:order-7 gap-8 flex flex-col">
         <Tags tags={tagList} />
-
         <EventOrganizer
           name={EventOrganizerData.name}
           description={EventOrganizerData.description}

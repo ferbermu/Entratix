@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardProps } from './components/Card';
 import {
   CarrouselImage,
@@ -92,6 +92,17 @@ const CardData: CardProps[] = [
 
 export const HomePage = () => {
   const [filteredCards, setFilteredCards] = useState(CardData);
+
+  useEffect(() => {
+    const handleMobileSearch = (event: CustomEvent<string>) => {
+      handleSearch(event.detail);
+    };
+
+    window.addEventListener('search', handleMobileSearch as EventListener);
+    return () => {
+      window.removeEventListener('search', handleMobileSearch as EventListener);
+    };
+  }, []);
 
   const handleSearch = (searchTerm: string) => {
     const filtered = CardData.filter(
