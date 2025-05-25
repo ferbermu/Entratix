@@ -81,7 +81,7 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
               <div className="pl-4 p-4 text-start">{ticket.ticketType}</div>
               <div className="p-4 text-center">{ticket.price}</div>
               <div className="p-4 text-center">{ticket.quantity}</div>
-              <div className="p-4 text-end">${ticket.subtotal}</div>
+              <div className="p-4 text-end">${ticket.subtotal}</div>u
             </div>
           ))}
 
