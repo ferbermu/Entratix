@@ -2,41 +2,31 @@ import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
 import { CardProps } from '../../components/Card';
 
+
 export async function GET(request: Request) { 
   try {
-    console.log('Iniciando operación GET...');
-    
-    await prisma.todo.deleteMany();
-    console.log('Registros eliminados correctamente');
+    const todos = await prisma.todo.findMany();
 
-    const eventData: CardProps[] = [
-      {
-        title: 'ArtLab presents Eddy M & more',
-        address: 'ADDRESS GOES HERE',
-        date: 'DATE HERE',
-        imageUrl: '/assets/show1.jpg',
-        dateIcon: '/assets/icons/cards/calendar_month.svg',
-        addressIcon: '/assets/icons/cards/location.svg',
-      },
-    ];
+    if (!todos.length) {
+      return NextResponse.json({ 
+        message: 'No hay todos disponibles' 
+      }, { status: 404 });
+    }
 
-    console.log('Intentando crear eventos:', eventData);
-
-    await prisma.todo.createMany({
-      data: eventData
+    return NextResponse.json({ 
+      todos,
+      count: todos.length 
     });
 
-    console.log('Eventos creados exitosamente');
-    return NextResponse.json({ message: 'Eventos creados exitosamente' });
-    
   } catch (error) {
-    console.error('Error detallado:', error);
+    console.error('Error al obtener todos:', error);
     return NextResponse.json({ 
-      error: 'Error interno del servidor',
-      details: error instanceof Error ? error.message : 'Error desconocido'
+      error: 'Error interno del servidor' 
     }, { status: 500 });
   }
 }
+
+
 export async function POST(request: Request) {
   try {
     console.log('Iniciando operación POST...');
@@ -69,3 +59,4 @@ export async function POST(request: Request) {
     }, { status: 500 });
   }
 }
+
