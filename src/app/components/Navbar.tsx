@@ -28,10 +28,18 @@ export const Navbar = () => {
 
   const toggleMobileNav = () => {
     setIsMobileNavOpen(prev => !prev);
+    // Cerrar búsqueda si está abierta
+    if (isMobileSearchOpen) setIsMobileSearchOpen(false);
   };
 
-  const iconChange = (icon: string) => {
-    if (isMobileNavOpen) {
+  const toggleMobileSearch = () => {
+    setIsMobileSearchOpen(prev => !prev);
+    // Cerrar nav si está abierto
+    if (isMobileNavOpen) setIsMobileNavOpen(false);
+  };
+
+  const iconChange = (icon: string, isSearch?: boolean) => {
+    if ((isMobileNavOpen && !isSearch) || (isMobileSearchOpen && isSearch)) {
       return '/assets/icons/search_bar/close.svg';
     }
     return icon;
@@ -45,7 +53,7 @@ export const Navbar = () => {
           transition-all duration-500 ease-in-out
           max-[870px]:bg-[#1E2122]
           ${
-            isScrolled
+            isScrolled || isMobileNavOpen || isMobileSearchOpen
               ? 'bg-[#1E2122] border-[#3BAFBB]'
               : 'bg-[#3BAFBB0D] border-[#3BAFBB33]'
           }
@@ -81,11 +89,10 @@ export const Navbar = () => {
             onClick={handleLogin}
           />
         </div>
-
-        <div className="flex gap-2 items-center min-[870px]:hidden  ">
+        <div className="flex gap-2 items-center min-[870px]:hidden">
           <MobileNavButton
-            icon="/assets/icons/nav_bar/search.svg"
-            onClick={() => setIsMobileSearchOpen(true)}
+            icon={iconChange('/assets/icons/nav_bar/search.svg', true)}
+            onClick={toggleMobileSearch}
           />
           <MobileNavButton
             icon={iconChange('/assets/icons/nav_bar/vector.svg')}

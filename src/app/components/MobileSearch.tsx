@@ -40,20 +40,11 @@ export const MobileSearch = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#1C1A1A] z-50">
+    <div className="fixed inset-0 top-22 bg-[#1C1A1A] z-40">
+      {' '}
+      {/* Cambiado z-50 a z-40 y añadido top-22 */}
       <div className="max-w-[870px] mx-auto h-full flex flex-col">
-        <div className="flex items-center p-4 border-b border-[#3BAFBB33] h-19 bg-[#3BAFBB0D]">
-          <button onClick={onClose} className="mr-4 cursor-pointer ">
-            <Image
-              src="/assets/icons/featured_events/arrow_back.svg"
-              alt="close"
-              width={24}
-              height={24}
-            />
-          </button>
-          <h2 className="text-white text-xl">Search</h2>
-        </div>
-
+        {/* Eliminamos el header con el botón de cerrar y el texto "Search" */}
         <div className="p-4 flex flex-col gap-4">
           <div className="flex items-center gap-3 p-4 rounded-lg border border-[#3BAFBB]">
             <Image
