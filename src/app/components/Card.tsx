@@ -9,6 +9,7 @@ export interface CardProps {
   imageUrl: string;
   addressIcon: string;
   dateIcon: string;
+  isCarousel?: boolean;
 }
 
 export const Card = ({
@@ -18,11 +19,15 @@ export const Card = ({
   imageUrl,
   addressIcon,
   dateIcon,
+  isCarousel = false,
 }: CardProps) => {
   return (
     <Link
       href="/events"
-      className=" group relative w-[340px] h-[543px] rounded-2xl overflow-hidden border-2 border-[#4E4B4B] hover:border-[#3BAFBB] bg-[#1C1A1A] cursor-pointer transition-colors duration-300"
+      className={`
+        group relative w-[340px] h-[543px] rounded-2xl overflow-hidden bg-[#1C1A1A] cursor-pointer transition-colors duration-300
+        ${!isCarousel ? 'border-2 border-[#4E4B4B] hover:border-[#3BAFBB]' : ''}
+      `}
     >
       <div className="relative h-[249px] w-full">
         <Image

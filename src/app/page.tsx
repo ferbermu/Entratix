@@ -8,6 +8,7 @@ import {
 } from './components/CarrouselImage';
 import { JoinNow } from './components/JoinNow';
 import { SearchBar } from './components/SearchBar';
+import { CardCarousel } from './components/CardCarousel';
 
 const imageURLsFromDataBase: string[] = [
   '/assets/show1.jpg',
@@ -125,6 +126,15 @@ export const HomePage = () => {
             <SearchBar onSearch={handleSearch} />
           </div>
 
+          <div className="w-full ">
+            <div className="">
+              <CardCarousel
+                cards={CardData}
+                autoPlayInterval={5000}
+                cardsToShow={4}
+              />
+            </div>
+          </div>
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className="w-full text-3xl font-semibold text-white mb-8">
               All Events
