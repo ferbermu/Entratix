@@ -39,13 +39,13 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
   }, [cards.length, autoPlayInterval, cardsToShow]);
 
   return (
-    <div className="relative w-full">
-      <div className="flex justify-between items-center mb-6">
+    <div className="relative w-full ">
+      <div className="flex justify-between items-center mb-6 ">
         <h2 className="text-2xl font-semibold text-white">Featured Events</h2>
         <div className="flex gap-2">
           <button
             onClick={prevSlide}
-            className="p-2 rounded-full border-2 border-[#3BAFBB] bg-[#1C1A1A] hover:bg-[#3BAFBB] transition-colors"
+            className="cursor-pointer p-2 rounded-lg border-2 border-[#4F4F4F] bg-[#1C1A1A] hover:bg-[#3BAFBB] transition-colors"
             aria-label="Previous slide"
           >
             <Image
@@ -57,7 +57,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
           </button>
           <button
             onClick={nextSlide}
-            className="p-2 rounded-full border-2 border-[#3BAFBB] bg-[#1C1A1A] hover:bg-[#3BAFBB] transition-colors"
+            className="cursor-pointer p-2 rounded-lg border-2 border-[#4F4F4F] bg-[#1C1A1A] hover:bg-[#3BAFBB] transition-colors"
             aria-label="Next slide"
           >
             <Image
@@ -70,7 +70,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
         </div>
       </div>
 
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden ">
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{
@@ -80,7 +80,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
           {cards.map((item, key) => (
             <div
               key={key}
-              className="flex-shrink-0 rounded-2xl border-2 border-[#4E4B4B] hover:border-[#3BAFBB] transition-colors overflow-hidden"
+              className="flex-shrink-0 rounded-2xl border-2 border-[#4E4B4B] hover:border-[#3BAFBB] transition-colors overflow-hidden "
               style={{
                 width: '340px',
                 marginRight: '16px',
