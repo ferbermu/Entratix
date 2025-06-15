@@ -185,21 +185,6 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
             placeholder="Location"
           />
         </div>
-
-        {/* <button
-          className={`
-            border border-[#2d8a93] px-6 py-2 rounded-lg flex 
-            hover:bg-[#2d8a93]/30 transition-colors cursor-pointer
-            ${isSticky ? 'hover:bg-[#3BAFBB]/20' : ''}
-          `}
-        >
-          <Image
-            src="/assets/icons/nav_bar/search.svg"
-            alt="search icon"
-            width={16}
-            height={16}
-          />
-        </button> */}
       </div>
     </div>
   );
