@@ -141,24 +141,25 @@ export const HomePage = () => {
               {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
             </h1>
 
-            <div className=" min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-center justify-center gap-8">
-              {filteredCards.map((item, key) => (
-                <Card
-                  key={key}
-                  title={item.title}
-                  addressIcon={item.addressIcon}
-                  dateIcon={item.dateIcon}
-                  address={item.address}
-                  date={item.date}
-                  imageUrl={item.imageUrl}
-                />
-              ))}
+            <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8">
+              {filteredCards.length > 0 ? (
+                filteredCards.map((item, key) => (
+                  <Card
+                    key={key}
+                    title={item.title}
+                    addressIcon={item.addressIcon}
+                    dateIcon={item.dateIcon}
+                    address={item.address}
+                    date={item.date}
+                    imageUrl={item.imageUrl}
+                  />
+                ))
+              ) : (
+                <div className="text-gray-400 col-span-4 flex items-center justify-center h-full">
+                  No se encontraron eventos que coincidan con tu búsqueda
+                </div>
+              )}
             </div>
-            {filteredCards.length === 0 && (
-              <div className="text-gray-400 absolute inset-0 flex items-center justify-center ">
-                No se encontraron eventos que coincidan con tu búsqueda
-              </div>
-            )}
           </div>
         </div>
       </div>
