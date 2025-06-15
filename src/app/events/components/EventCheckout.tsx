@@ -112,7 +112,6 @@ interface EventTicketOptionsProps extends IEventTicketOptions {
 }
 
 export const EventTicketOptions = ({
-  id,
   ticketType,
   price,
   onQuantityChange,

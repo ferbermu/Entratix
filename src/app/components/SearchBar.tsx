@@ -3,10 +3,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { CaretDown } from '@phosphor-icons/react';
-import { Calendar } from '@/components/ui/calendar';
+import { Calendar } from './Calendar';
 import { es } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { type DateRange } from 'react-day-picker';
+import { Dropdown } from './Dropdown';
 
 const departments = [
   'Artigas',
@@ -45,8 +46,6 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState('');
-  const [isLocationOpen, setIsLocationOpen] = useState(false);
-  const locationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -55,12 +54,6 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
         !calendarRef.current.contains(event.target as Node)
       ) {
         setIsCalendarOpen(false);
-      }
-      if (
-        locationRef.current &&
-        !locationRef.current.contains(event.target as Node)
-      ) {
-        setIsLocationOpen(false);
       }
     }
 
@@ -178,66 +171,20 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
           )}
         </div>
 
-        <div
-          ref={locationRef}
-          className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full"
-        >
+        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full">
           <Image
             src="/assets/icons/search_bar/location.svg"
             alt="location"
             width={16}
             height={16}
           />
-          <div
-            className="w-full relative"
-            onClick={() => setIsLocationOpen(!isLocationOpen)}
-          >
-            <input
-              type="text"
-              placeholder="Location"
-              value={location}
-              readOnly
-              className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer"
-            />
-            <CaretDown
-              className="text-[#3BAFBB] absolute right-0 top-1/2 -translate-y-1/2"
-              size={32}
-            />
-          </div>
-          {isLocationOpen && (
-            <div className="absolute w-full top-full left-0 mt-5 z-50 bg-[#1C1A1A] border border-[#3BAFBB] rounded-lg shadow-lg">
-              <ul className="max-h-60 overflow-y-auto">
-                {departments.map(dep => (
-                  <li
-                    key={dep}
-                    className="p-2 text-[#3BAFBB] hover:bg-[#3BAFBB33] cursor-pointer"
-                    onClick={() => {
-                      setLocation(dep);
-                      setIsLocationOpen(false);
-                    }}
-                  >
-                    {dep}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        {/* <button
-          className={`
-            border border-[#2d8a93] px-6 py-2 rounded-lg flex 
-            hover:bg-[#2d8a93]/30 transition-colors cursor-pointer
-            ${isSticky ? 'hover:bg-[#3BAFBB]/20' : ''}
-          `}
-        >
-          <Image
-            src="/assets/icons/nav_bar/search.svg"
-            alt="search icon"
-            width={16}
-            height={16}
+          <Dropdown
+            options={departments}
+            selectedValue={location}
+            onValueChange={setLocation}
+            placeholder="Location"
           />
-        </button> */}
+        </div>
       </div>
     </div>
   );
