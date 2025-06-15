@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardProps } from './components/Card';
 import {
   CarrouselImage,
@@ -9,6 +9,7 @@ import {
 import { JoinNow } from './components/JoinNow';
 import { SearchBar } from './components/SearchBar';
 import { CardCarousel } from './components/CardCarousel';
+import { type DateRange } from 'react-day-picker';
 
 const imageURLsFromDataBase: string[] = [
   '/assets/show1.jpg',
@@ -93,10 +94,15 @@ const CardData: CardProps[] = [
 
 export const HomePage = () => {
   const [filteredCards, setFilteredCards] = useState(CardData);
+  const [filters, setFilters] = useState({
+    searchTerm: '',
+    dateRange: undefined as DateRange | undefined,
+    location: '',
+  });
 
   useEffect(() => {
     const handleMobileSearch = (event: CustomEvent<string>) => {
-      handleSearch(event.detail);
+      setFilters(prevFilters => ({ ...prevFilters, searchTerm: event.detail }));
     };
 
     window.addEventListener('search', handleMobileSearch as EventListener);
@@ -105,15 +111,62 @@ export const HomePage = () => {
     };
   }, []);
 
-  const handleSearch = (searchTerm: string) => {
-    const filtered = CardData.filter(
-      card =>
-        card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        card.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        card.date.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const handleFilterChange = useCallback(
+    (newFilters: {
+      searchTerm: string;
+      dateRange?: DateRange;
+      location: string;
+    }) => {
+      setFilters({ ...newFilters, dateRange: newFilters.dateRange });
+    },
+    []
+  );
+
+  useEffect(() => {
+    const { searchTerm, dateRange, location } = filters;
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+
+    const filtered = CardData.filter(card => {
+      const searchTermMatch =
+        lowercasedSearchTerm === ''
+          ? true
+          : card.title.toLowerCase().includes(lowercasedSearchTerm) ||
+            card.address.toLowerCase().includes(lowercasedSearchTerm) ||
+            card.date.toLowerCase().includes(lowercasedSearchTerm);
+
+      const locationMatch = location === '' ? true : card.address === location;
+
+      let dateMatch = true;
+      if (dateRange?.from) {
+        const dateParts = card.date.trim().split('/');
+        const cardDate = new Date(
+          parseInt(dateParts[2]),
+          parseInt(dateParts[1]) - 1,
+          parseInt(dateParts[0])
+        );
+
+        if (isNaN(cardDate.getTime())) {
+          dateMatch = false;
+        } else {
+          const fromDate = new Date(dateRange.from);
+          fromDate.setHours(0, 0, 0, 0);
+
+          if (dateRange.to) {
+            const toDate = new Date(dateRange.to);
+            toDate.setHours(23, 59, 59, 999);
+            dateMatch = cardDate >= fromDate && cardDate <= toDate;
+          } else {
+            dateMatch = cardDate.getTime() === fromDate.getTime();
+          }
+        }
+      }
+
+      return searchTermMatch && locationMatch && dateMatch;
+    });
+
     setFilteredCards(filtered);
-  };
+  }, [filters]);
+
   return (
     <div className="flex flex-col w-full bg-[#1C1A1A]">
       <div className="w-full">
@@ -123,7 +176,7 @@ export const HomePage = () => {
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
         <div className="flex flex-col w-full max-w-[1400px] gap-12">
           <div className="h-[72px]">
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onFilterChange={handleFilterChange} />
           </div>
 
           <div className="w-full ">

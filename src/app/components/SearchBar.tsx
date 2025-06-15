@@ -31,10 +31,14 @@ const departments = [
 ];
 
 interface SearchBarProps {
-  onSearch: (searchTerm: string) => void;
+  onFilterChange: (filters: {
+    searchTerm: string;
+    dateRange?: DateRange;
+    location: string;
+  }) => void;
 }
 
-export const SearchBar = ({ onSearch }: SearchBarProps) => {
+export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
   const [isSticky, setIsSticky] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [date, setDate] = useState<DateRange | undefined>();
@@ -76,10 +80,13 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    onFilterChange({ searchTerm, dateRange: date, location });
+  }, [searchTerm, date, location, onFilterChange]);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    onSearch(value);
   };
   const handleDateSelect = (selectedDate: DateRange | undefined) => {
     setDate(selectedDate);
