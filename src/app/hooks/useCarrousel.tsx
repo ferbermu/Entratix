@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 
 /**
  * Hook that provides carousel state and controls.

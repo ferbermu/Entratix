@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  EventArtist,
-  EventArtistProps,
-  ArtistSocialLinks,
-} from './components/EventArtist';
+import { EventArtist, EventArtistProps } from './components/EventArtist';
 import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 import { EventDescription } from './components/EventDescription';

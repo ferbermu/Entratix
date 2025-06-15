@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Navbutton } from './Navbutton';
 import { MobileNavButton } from './MobileNavButton';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
 import { MobileSearch } from './MobileSearch';

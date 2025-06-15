@@ -89,7 +89,7 @@ const CardData: CardProps[] = [
   },
 ];
 
-export const HomePage = () => {
+const HomePage = () => {
   const [filteredCards, setFilteredCards] = useState(CardData);
   const [filters, setFilters] = useState({
     searchTerm: '',
@@ -215,4 +215,5 @@ export const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;
