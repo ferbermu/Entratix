@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardProps } from './components/Card';
-import {
-  CarrouselImage,
-  CarrouselImageProps,
-} from './components/CarrouselImage';
+import { CarrouselImage } from './components/CarrouselImage';
 import { JoinNow } from './components/JoinNow';
 import { SearchBar } from './components/SearchBar';
 import { CardCarousel } from './components/CardCarousel';
@@ -180,13 +177,11 @@ export const HomePage = () => {
           </div>
 
           <div className="w-full ">
-            <div className="">
-              <CardCarousel
-                cards={CardData}
-                autoPlayInterval={5000}
-                cardsToShow={4}
-              />
-            </div>
+            <CardCarousel
+              cards={CardData}
+              autoPlayInterval={5000}
+              cardsToShow={4}
+            />
           </div>
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className="w-full text-3xl font-semibold text-white mb-8">
