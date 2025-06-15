@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardProps } from './components/Card';
-import {
-  CarrouselImage,
-  CarrouselImageProps,
-} from './components/CarrouselImage';
+import { CarrouselImage } from './components/CarrouselImage';
 import { JoinNow } from './components/JoinNow';
 import { SearchBar } from './components/SearchBar';
+import { CardCarousel } from './components/CardCarousel';
 
 const imageURLsFromDataBase: string[] = [
   '/assets/show1.jpg',
@@ -93,6 +91,17 @@ const CardData: CardProps[] = [
 export const HomePage = () => {
   const [filteredCards, setFilteredCards] = useState(CardData);
 
+  useEffect(() => {
+    const handleMobileSearch = (event: CustomEvent<string>) => {
+      handleSearch(event.detail);
+    };
+
+    window.addEventListener('search', handleMobileSearch as EventListener);
+    return () => {
+      window.removeEventListener('search', handleMobileSearch as EventListener);
+    };
+  }, []);
+
   const handleSearch = (searchTerm: string) => {
     const filtered = CardData.filter(
       card =>
@@ -114,6 +123,13 @@ export const HomePage = () => {
             <SearchBar onSearch={handleSearch} />
           </div>
 
+          <div className="w-full ">
+            <CardCarousel
+              cards={CardData}
+              autoPlayInterval={5000}
+              cardsToShow={4}
+            />
+          </div>
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className="w-full text-3xl font-semibold text-white mb-8">
               All Events
