@@ -19,19 +19,9 @@ model Events {
   updatedAt   DateTime          @updatedAt
   ticketTypes TicketType[]
   artists     ArtistsOnEvents[]
-}
-
-model TicketType {
-  id        Int      @id @default(autoincrement())
-  name      String
-  price     Int
-  quantity  Int
-  event     Events   @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  eventId   Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([eventId, name])
+  producer    Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade)
+  producerId  Int
+  tags        TagsOnEvents[]
 }
 
 model Artist {
@@ -52,4 +42,89 @@ model ArtistsOnEvents {
   assignedAt DateTime @default(now())
 
   @@id([eventId, artistId])
+}
+
+enum TicketStatus {
+  Pending
+  Purchased
+  Cancelled
+  Failed
+}
+
+model TicketType {
+  id              Int               @id @default(autoincrement())
+  name            String
+  price           Int
+  quantity        Int
+  event           Events            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId         Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  TicketPurchased TicketPurchased[]
+
+  @@unique([eventId, name])
+}
+
+model TicketPurchased {
+  id           Int          @id @default(autoincrement())
+  ticket       TicketType   @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
+  ticketTypeId Int
+  code         String
+  userID       Int
+  status       TicketStatus
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  user         User         @relation(fields: [userID], references: [id])
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  email           String            @unique
+  password        String
+  role            UserRole          @default(Client)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  ticketPurchased TicketPurchased[]
+  producer        Producer?
+  rrpp            RRPP?
+}
+
+enum UserRole {
+  Client
+  RRPP
+  Producer
+}
+
+model Producer {
+  id          Int      @id @default(autoincrement())
+  description String
+  image       String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int      @unique
+  events      Events[]
+}
+
+model RRPP {
+  id           Int    @id @default(autoincrement())
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int    @unique
+  parentRrpp   RRPP?  @relation("RrppHierarchy", fields: [parentRrppId], references: [id], onDelete: SetNull)
+  parentRrppId Int?
+  subRRPPs     RRPP[] @relation("RrppHierarchy")
+}
+
+model TagsOnEvents {
+  event      Events   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId    Int
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId      Int
+  assignedAt DateTime @default(now())
+
+  @@id([eventId, tagId])
+}
+
+model Tag {
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  events TagsOnEvents[]
 }
