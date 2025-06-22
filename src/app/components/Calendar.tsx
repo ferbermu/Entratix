@@ -9,8 +9,8 @@ import {
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 import { es } from 'date-fns/locale';
 
-import { cn } from '@/lib/utils';
-import { Button, buttonVariants } from '@/components/CalendarButton';
+import { cn } from '../../lib/cn';
+import { Button, buttonVariants } from './CalendarButton';
 
 function Calendar({
   className,

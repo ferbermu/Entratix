@@ -171,18 +171,20 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
           )}
         </div>
 
-        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full">
-          <Image
-            src="/assets/icons/search_bar/location.svg"
-            alt="location"
-            width={16}
-            height={16}
-          />
+        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center pl-2 w-full">
           <Dropdown
             options={departments}
             selectedValue={location}
             onValueChange={setLocation}
             placeholder="Location"
+            icon={
+              <Image
+                src="/assets/icons/search_bar/location.svg"
+                alt="location"
+                width={16}
+                height={16}
+              />
+            }
           />
         </div>
       </div>
