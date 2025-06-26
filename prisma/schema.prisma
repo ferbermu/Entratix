@@ -8,20 +8,21 @@ datasource db {
 }
 
 model Events {
-  id          Int               @id @default(autoincrement())
-  imageUrl    String[]
-  date        DateTime
-  title       String
-  description String
-  location    String
-  address     String
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  ticketTypes TicketType[]
-  artists     ArtistsOnEvents[]
-  producer    Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade)
-  producerId  Int
-  tags        TagsOnEvents[]
+  id           Int               @id @default(autoincrement())
+  imageUrl     String[]
+  date         DateTime
+  title        String
+  description  String
+  location     String
+  address      String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  ticketTypes  TicketType[]
+  artists      ArtistsOnEvents[]
+  producer     Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade)
+  producerId   Int
+  tags         TagsOnEvents[]
+  rrppOnEvents RRPPOnEvents[]
 }
 
 model Artist {
@@ -105,12 +106,23 @@ model Producer {
 }
 
 model RRPP {
-  id           Int    @id @default(autoincrement())
-  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       Int    @unique
-  parentRrpp   RRPP?  @relation("RrppHierarchy", fields: [parentRrppId], references: [id], onDelete: SetNull)
+  id           Int            @id @default(autoincrement())
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int            @unique
+  parentRrpp   RRPP?          @relation("RrppHierarchy", fields: [parentRrppId], references: [id], onDelete: SetNull)
   parentRrppId Int?
-  subRRPPs     RRPP[] @relation("RrppHierarchy")
+  subRRPPs     RRPP[]         @relation("RrppHierarchy")
+  events       RRPPOnEvents[]
+}
+
+model RRPPOnEvents {
+  event      Events   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId    Int
+  RRPP       RRPP     @relation(fields: [rrppId], references: [id], onDelete: Cascade)
+  rrppId     Int
+  assignedAt DateTime @default(now())
+
+  @@id([eventId, rrppId])
 }
 
 model TagsOnEvents {
