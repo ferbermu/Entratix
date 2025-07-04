@@ -1,0 +1,14 @@
+-- CreateTable
+CREATE TABLE "RRPPOnEvents" (
+    "eventId" INTEGER NOT NULL,
+    "rrppId" INTEGER NOT NULL,
+    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "RRPPOnEvents_pkey" PRIMARY KEY ("eventId","rrppId")
+);
+
+-- AddForeignKey
+ALTER TABLE "RRPPOnEvents" ADD CONSTRAINT "RRPPOnEvents_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Events"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RRPPOnEvents" ADD CONSTRAINT "RRPPOnEvents_rrppId_fkey" FOREIGN KEY ("rrppId") REFERENCES "RRPP"("id") ON DELETE CASCADE ON UPDATE CASCADE;
