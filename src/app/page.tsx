@@ -125,6 +125,7 @@ const HomePage = () => {
   }, [filters, allEvents]);
 
   const cardCarouselProps = allEvents.map(event => ({
+    id: event.id,
     title: event.title,
     address: event.address,
     date: formatDate(event.date),
@@ -163,6 +164,7 @@ const HomePage = () => {
                 filteredEvents.map(item => (
                   <Card
                     key={item.id}
+                    id={item.id}
                     title={item.title}
                     addressIcon={'/assets/icons/cards/location.svg'}
                     dateIcon={'/assets/icons/cards/calendar_month.svg'}
