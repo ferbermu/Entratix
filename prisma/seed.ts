@@ -109,70 +109,100 @@ async function main() {
       data: {
         name: 'DJ Tiesto',
         description: 'DJ y productor holandés, pionero del trance y house',
-        socialLinks: ['https://instagram.com/tiesto', 'https://twitter.com/tiesto'],
+        socialLinks: [
+          'https://youtube.com/tiesto',
+          'https://spotify.com/tiesto',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'The Weeknd',
         description: 'Cantante y compositor canadiense de R&B y pop',
-        socialLinks: ['https://instagram.com/theweeknd', 'https://twitter.com/theweeknd'],
+        socialLinks: [
+          'https://youtube.com/theweeknd',
+          'https://spotify.com/theweeknd',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Bad Bunny',
         description: 'Artista puertorriqueño de reggaeton y trap latino',
-        socialLinks: ['https://instagram.com/badbunnypr', 'https://twitter.com/sanbenito'],
+        socialLinks: [
+          'https://youtube.com/badbunny',
+          'https://spotify.com/badbunny',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Arctic Monkeys',
         description: 'Banda británica de rock alternativo',
-        socialLinks: ['https://instagram.com/arcticmonkeys', 'https://twitter.com/arcticmonkeys'],
+        socialLinks: [
+          'https://youtube.com/arcticmonkeys',
+          'https://spotify.com/arcticmonkeys',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Jazz Trio Buenos Aires',
         description: 'Trío de jazz local con más de 15 años de trayectoria',
-        socialLinks: ['https://instagram.com/jazztrioba', 'https://facebook.com/jazztrioba'],
+        socialLinks: [
+          'https://youtube.com/jazztrioba',
+          'https://spotify.com/jazztrioba',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'MC Flow',
         description: 'Rapero argentino, campeón nacional de freestyle',
-        socialLinks: ['https://instagram.com/mcflow', 'https://youtube.com/mcflow'],
+        socialLinks: [
+          'https://youtube.com/mcflow',
+          'https://soundcloud.com/mcflow',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Pop Divas',
         description: 'Grupo pop femenino con las voces más potentes del momento',
-        socialLinks: ['https://instagram.com/popdivas', 'https://tiktok.com/popdivas'],
+        socialLinks: [
+          'https://youtube.com/popdivas',
+          'https://spotify.com/popdivas',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Orquesta Filarmónica BA',
         description: 'Orquesta sinfónica de Buenos Aires con más de 50 músicos',
-        socialLinks: ['https://instagram.com/filarmonicaba', 'https://facebook.com/filarmonicaba'],
+        socialLinks: [
+          'https://youtube.com/filarmonicaba',
+          'https://spotify.com/filarmonicaba',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Indie Collective',
         description: 'Colectivo de bandas independientes emergentes',
-        socialLinks: ['https://instagram.com/indiecollective', 'https://spotify.com/indiecollective'],
+        socialLinks: [
+          'https://youtube.com/indiecollective',
+          'https://spotify.com/indiecollective',
+        ],
       },
     }),
     prisma.artist.create({
       data: {
         name: 'Salsa Masters',
         description: 'Banda de salsa y ritmos latinos con más de 20 años de experiencia',
-        socialLinks: ['https://instagram.com/salsamasters', 'https://facebook.com/salsamasters'],
+        socialLinks: [
+          'https://youtube.com/salsamasters',
+          'https://spotify.com/salsamasters',
+        ],
       },
     }),
   ])

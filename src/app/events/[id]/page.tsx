@@ -15,53 +15,11 @@ import {
   EventOrganizer,
   EventOrganizerProps,
 } from '../components/EventOrganizer';
-
-interface Event {
-  id: number;
-  imageUrl: string[];
-  date: string;
-  title: string;
-  description: string;
-  location: string;
-  address: string;
-  producer: {
-    id: number;
-    description: string;
-    image: string;
-    userId: number;
-  };
-  artists: Array<{
-    eventId: number;
-    artistId: number;
-    assignedAt: string;
-    artist: {
-      id: number;
-      name: string;
-      description: string;
-      socialLinks: string[];
-      createdAt: string;
-      updatedAt: string;
-    };
-  }>;
-  tags: Array<{
-    eventId: number;
-    tagId: number;
-    assignedAt: string;
-    tag: {
-      id: number;
-      name: string;
-    };
-  }>;
-  ticketTypes: Array<{
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    eventId: number;
-    createdAt: string;
-    updatedAt: string;
-  }>;
-}
+import {
+  EventWithRelations,
+  SocialLink,
+  convertUrlsToSocialLinks,
+} from '@/types/prisma';
 
 export default function EventPage({
   params,
@@ -69,7 +27,7 @@ export default function EventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const [event, setEvent] = useState<Event | null>(null);
+  const [event, setEvent] = useState<EventWithRelations | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,7 +39,7 @@ export default function EventPage({
         if (!response.ok) {
           throw new Error('Evento no encontrado');
         }
-        const eventData: Event = await response.json();
+        const eventData: EventWithRelations = await response.json();
         setEvent(eventData);
       } catch (err) {
         setError(
@@ -117,22 +75,24 @@ export default function EventPage({
 
   // Transformar datos de artistas para el componente EventArtist
   const eventArtistData: EventArtistProps[] = event.artists.map(
-    artistOnEvent => ({
-      photo: '/assets/show3.jpg', // Imagen por defecto, podrías agregar campo photo al modelo Artist
-      name: artistOnEvent.artist.name,
-      description: artistOnEvent.artist.description,
-      artistSocialLinks: artistOnEvent.artist.socialLinks.map(
-        (link, index) => ({
-          url: link,
-          icon: getSocialIcon(link),
-        })
-      ),
-    })
+    (artistOnEvent: EventWithRelations['artists'][0]) => {
+      // Convertir array de URLs a SocialLink[]
+      const socialLinks = convertUrlsToSocialLinks(
+        artistOnEvent.artist.socialLinks
+      );
+
+      return {
+        photo: artistOnEvent.artist.photo || '/assets/show3.jpg', // Usar photo del artista o imagen por defecto
+        name: artistOnEvent.artist.name,
+        description: artistOnEvent.artist.description,
+        artistSocialLinks: socialLinks,
+      };
+    }
   );
 
   // Transformar datos de tickets para el componente EventCheckout
   const eventCheckoutData: IEventTicketOptions[] = event.ticketTypes.map(
-    ticket => ({
+    (ticket: EventWithRelations['ticketTypes'][0]) => ({
       id: ticket.id,
       ticketType: ticket.name,
       price: ticket.price,
@@ -140,7 +100,9 @@ export default function EventPage({
   );
 
   // Extraer nombres de tags
-  const tagList = event.tags.map(tagOnEvent => tagOnEvent.tag.name);
+  const tagList = event.tags.map(
+    (tagOnEvent: EventWithRelations['tags'][0]) => tagOnEvent.tag.name
+  );
 
   // Datos del organizador (productor)
   const eventOrganizerData: EventOrganizerProps = {
@@ -199,19 +161,4 @@ export default function EventPage({
       </div>
     </div>
   );
-}
-
-function getSocialIcon(url: string): string {
-  if (url.includes('soundcloud'))
-    return '/assets/icons/social-media/SoundcloudIcon.svg';
-  if (url.includes('spotify'))
-    return '/assets/icons/social-media/SpotifyIcon.svg';
-  if (url.includes('youtube'))
-    return '/assets/icons/social-media/YoutubeIcon.svg';
-  if (url.includes('instagram'))
-    return '/assets/icons/social-media/instagram.svg';
-  if (url.includes('facebook'))
-    return '/assets/icons/social-media/facebook.svg';
-  if (url.includes('twitter')) return '/assets/icons/social-media/twitter.svg';
-  return '/assets/icons/social-media/instagram.svg'; // Icono por defecto
 }

@@ -11,13 +11,14 @@ import {
   EventOrganizer,
   EventOrganizerProps,
 } from './components/EventOrganizer';
+import { Artist } from '@prisma/client';
 
-const EventArtistData: EventArtistProps[] = [
+const EventArtistData: Artist[] = [
   {
     photo: '/assets/show3.jpg',
     name: 'YsY A',
     description: 'Artista de Trap',
-    artistSocialLinks: [
+    socialLinks: [
       {
         url: 'https://soundcloud.com/ysyashakur',
         icon: '/assets/icons/social-media/SoundcloudIcon.svg',
@@ -28,26 +29,6 @@ const EventArtistData: EventArtistProps[] = [
       },
       {
         url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/icons/social-media/YoutubeIcon.svg',
-      },
-    ],
-  },
-
-  {
-    photo: '/assets/show5.jpg',
-    name: 'TussiWarriors',
-    description: 'Artistas de Trap',
-    artistSocialLinks: [
-      {
-        url: 'https://soundcloud.com/tussiwarriors-music',
-        icon: '/assets/icons/social-media/SoundcloudIcon.svg',
-      },
-      {
-        url: 'https://open.spotify.com/intl-es/artist/4iVXdkoTNazv6MQh1wojj0',
-        icon: '/assets/icons/social-media/SpotifyIcon.svg',
-      },
-      {
-        url: 'https://www.youtube.com/@tussiwarriors',
         icon: '/assets/icons/social-media/YoutubeIcon.svg',
       },
     ],

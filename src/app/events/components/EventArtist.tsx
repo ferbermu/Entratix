@@ -13,12 +13,16 @@ export interface ArtistSocialLinks {
   url: string;
   icon: string;
 }
+
 export const EventArtist = ({
   photo,
   name,
   description,
   artistSocialLinks,
 }: EventArtistProps) => {
+  // Filtrar solo los enlaces que tienen iconos válidos
+  const validSocialLinks = artistSocialLinks.filter(link => link.icon !== '');
+
   return (
     <div className=" w-full flex flex-col py-6">
       <div className="flex justify-between items-center">
@@ -38,7 +42,7 @@ export const EventArtist = ({
           </div>
         </div>
         <div className="flex gap-4">
-          {artistSocialLinks.map((socialLink, key) => (
+          {validSocialLinks.map((socialLink, key) => (
             <Link
               key={key}
               href={socialLink.url}
