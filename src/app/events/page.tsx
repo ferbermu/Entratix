@@ -1,6 +1,10 @@
 'use client';
 
-import { EventArtist, EventArtistProps } from './components/EventArtist';
+import {
+  EventArtist,
+  EventArtistProps,
+  ArtistSocialLinks,
+} from './components/EventArtist';
 import { EventBanner } from './components/EventBanner';
 import { EventData } from './components/EventData';
 import { EventDescription } from './components/EventDescription';
@@ -11,48 +15,9 @@ import {
   EventOrganizer,
   EventOrganizerProps,
 } from './components/EventOrganizer';
+import { Artist } from '@prisma/client';
 
-const EventArtistData: EventArtistProps[] = [
-  {
-    photo: '/assets/show3.jpg',
-    name: 'YsY A',
-    description: 'Artista de Trap',
-    artistSocialLinks: [
-      {
-        url: 'https://soundcloud.com/ysyashakur',
-        icon: '/assets/icons/social-media/SoundcloudIcon.svg',
-      },
-      {
-        url: 'https://open.spotify.com/intl-es/artist/2qWK8K2Jfh67UqtwY8tCW6',
-        icon: '/assets/icons/social-media/SpotifyIcon.svg',
-      },
-      {
-        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/icons/social-media/YoutubeIcon.svg',
-      },
-    ],
-  },
-
-  {
-    photo: '/assets/show5.jpg',
-    name: 'TussiWarriors',
-    description: 'Artistas de Trap',
-    artistSocialLinks: [
-      {
-        url: 'https://soundcloud.com/tussiwarriors-music',
-        icon: '/assets/icons/social-media/SoundcloudIcon.svg',
-      },
-      {
-        url: 'https://open.spotify.com/intl-es/artist/4iVXdkoTNazv6MQh1wojj0',
-        icon: '/assets/icons/social-media/SpotifyIcon.svg',
-      },
-      {
-        url: 'https://www.youtube.com/@tussiwarriors',
-        icon: '/assets/icons/social-media/YoutubeIcon.svg',
-      },
-    ],
-  },
-];
+const EventArtistData: Artist[] = [];
 
 const EventCheckoutData: IEventTicketOptions[] = [
   {
@@ -126,7 +91,10 @@ export default function Page() {
             photo={item.photo}
             name={item.name}
             description={item.description}
-            artistSocialLinks={item.artistSocialLinks}
+            artistSocialLinks={(item.socialLinks || []).map(url => ({
+              url,
+              icon: '/assets/icons/social-media/instagram.svg', // Cambia esto por la lógica que necesites
+            }))}
           />
         ))}
       </div>
