@@ -2,10 +2,11 @@
 
 import React, { useState, useCallback } from 'react';
 import { Header } from './Header';
-import { SearchBar } from '@/app/components/SearchBar';
 import { type DateRange } from 'react-day-picker';
 import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
+import { TotalTickets } from './TotalTickets';
+import { SearchBar } from '@/components/SearchBar';
 
 const tickets: CardTicketProps[] = [
   {
@@ -35,7 +36,7 @@ const tickets: CardTicketProps[] = [
 ];
 
 export default function MyTicketsPage() {
-  const [filters, setFilters] = useState({
+  const [, setFilters] = useState({
     searchTerm: '',
     dateRange: undefined as DateRange | undefined,
     location: '',
@@ -70,5 +71,3 @@ export default function MyTicketsPage() {
     </div>
   );
 }
-import Image from 'next/image';
-import { TotalTickets } from './TotalTickets';
