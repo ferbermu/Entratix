@@ -2,7 +2,7 @@ import React from 'react';
 
 export const TicketAdquired = () => {
   return (
-    <div className="flex items-center w-full h-full justify-between bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-lg">
+    <div className="flex items-center w-full h-full justify-between bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-lg text-lg max-[1075px]:text-md max-[700px]:text-xs  ">
       <button className="w-full h-full py-4 hover:bg-[#3BAFBB1A]/60  cursor-pointer  text-[#3BAFBB]">
         Active
       </button>

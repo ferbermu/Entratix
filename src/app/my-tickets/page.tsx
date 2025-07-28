@@ -54,13 +54,13 @@ export default function MyTicketsPage() {
   );
 
   return (
-    <div className="w-full h-full min-h-screen px-60 text-white">
+    <div className="w-full h-full min-h-screen px-60 max-[1400px]:px-4  text-white">
       <Header />
       <SearchBar onFilterChange={handleFilterChange} />
       <div className="py-8">
         <TicketAdquired />
       </div>
-      <div className="flex justify-center gap-8">
+      <div className="grid grid-cols-2 max-[1200px]:grid-cols-1 justify-center gap-8">
         {tickets.map((ticket, idx) => (
           <CardTicket key={idx} {...ticket} />
         ))}
