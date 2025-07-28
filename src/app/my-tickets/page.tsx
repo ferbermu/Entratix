@@ -2,10 +2,11 @@
 
 import React, { useState, useCallback } from 'react';
 import { Header } from './Header';
-import { SearchBar } from '@/app/components/SearchBar';
 import { type DateRange } from 'react-day-picker';
 import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
+import { TotalTickets } from './TotalTickets';
+import { SearchBar } from '@/components/SearchBar';
 
 const tickets: CardTicketProps[] = [
   {
@@ -35,7 +36,7 @@ const tickets: CardTicketProps[] = [
 ];
 
 export default function MyTicketsPage() {
-  const [filters, setFilters] = useState({
+  const [, setFilters] = useState({
     searchTerm: '',
     dateRange: undefined as DateRange | undefined,
     location: '',
@@ -53,13 +54,13 @@ export default function MyTicketsPage() {
   );
 
   return (
-    <div className="w-full h-full min-h-screen px-60 text-white">
+    <div className="w-full h-full min-h-screen px-60 max-[1400px]:px-4  text-white">
       <Header />
       <SearchBar onFilterChange={handleFilterChange} />
       <div className="py-8">
         <TicketAdquired />
       </div>
-      <div className="flex justify-center gap-8">
+      <div className="grid grid-cols-2 max-[1200px]:grid-cols-1 justify-center gap-8">
         {tickets.map((ticket, idx) => (
           <CardTicket key={idx} {...ticket} />
         ))}
@@ -70,5 +71,3 @@ export default function MyTicketsPage() {
     </div>
   );
 }
-import Image from 'next/image';
-import { TotalTickets } from './TotalTickets';

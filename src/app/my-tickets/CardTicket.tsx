@@ -28,13 +28,12 @@ export const CardTicket: React.FC<CardTicketProps> = ({
   totalPaid,
 }) => {
   return (
-    <div className="flex flex-col bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-xl w-full max-w-xl p-4 text-white relative">
-      {' '}
-      <span className="absolute top-4 right-4 bg-[#19c37d] text-white text-xs px-4 py-1 rounded-full font-semibold">
+    <div className="flex flex-col bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-xl w-full p-4 text-white relative ">
+      <span className="absolute top-4 right-4 border border-[#19c37d] bg-[#19c37d]/10 text-[#19c37d] text-xs px-4 font-semibold rounded-full z-1 max-[700px]:rounded-none max-[700px]:rounded-tr-lg">
         {status}
       </span>
-      <div className="flex gap-6">
-        <div className="rounded-lg overflow-hidden min-w-[120px] h-[120px] relative">
+      <div className="flex max-[700px]:flex-col gap-6">
+        <div className="rounded-lg overflow-hidden min-w-[120px]  h-[120px] relative">
           <Image
             src={imageUrl}
             alt="Ticket Image"
@@ -78,15 +77,15 @@ export const CardTicket: React.FC<CardTicketProps> = ({
         </div>
       </div>
       <div className="flex gap-3 mt-6">
-        <button className="flex items-center gap-2 bg-[#a259ff] text-white px-4 py-2 rounded-lg text-sm font-semibold">
+        <button className="cursor-pointer flex items-center gap-2 bg-[#3BAFBB] text-white px-4 py-2 rounded-lg text-sm max-[700px]:text-xs font-semibold">
           <QrCode size={16} />
           View QR
         </button>
-        <button className="flex items-center gap-2 border border-[#3BAFBB] text-white px-4 py-2 rounded-lg text-sm font-semibold">
+        <button className="cursor-pointer flex items-center gap-2 border border-[#3BAFBB] text-white px-4 py-2 rounded-lg text-sm max-[700px]:text-xs font-semibold">
           <Download size={16} />
           Download
         </button>
-        <button className="flex items-center justify-center px-3 py-2 rounded-lg border border-transparent hover:bg-[#3BAFBB22]">
+        <button className="cursor-pointer flex items-center justify-center px-3 py-2 rounded-lg border border-transparent hover:bg-[#3BAFBB22]">
           <ShareNetwork size={16} />
         </button>
       </div>
