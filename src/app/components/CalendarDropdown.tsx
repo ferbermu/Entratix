@@ -48,7 +48,7 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
       <button
         type="button"
         onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-        className="cursor-pointer border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 pl-2 w-full justify-between"
+        className="cursor-pointer border-l-[#3BAFBB33] flex items-center gap-3 pl-2 w-full justify-between"
       >
         <Image
           src="/assets/icons/search_bar/calendar_month.svg"

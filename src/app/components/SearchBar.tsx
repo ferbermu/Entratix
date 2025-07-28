@@ -119,13 +119,13 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
             className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent"
           />
         </div>
-
-        <CalendarDropdown
-          width="w-full"
-          date={date}
-          onDateChange={handleDateSelect}
-        />
-
+        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full">
+          <CalendarDropdown
+            width="w-full"
+            date={date}
+            onDateChange={handleDateSelect}
+          />
+        </div>
         <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full">
           <Image
             src="/assets/icons/search_bar/location.svg"

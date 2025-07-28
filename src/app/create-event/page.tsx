@@ -54,18 +54,20 @@ export default function CreateEventPage() {
           <div className="mt-8 w-full flex gap-8">
             <div className="flex flex-col w-full">
               <label className="text-gray-300 text-md  mb-2">Date *</label>
-              <CalendarDropdown
-                width="w-1/2"
-                location="right"
-                date={date}
-                onDateChange={setDate}
-              />
+              <div className="border border-[#3BAFBB] py-2 px-4 rounded-lg">
+                <CalendarDropdown
+                  width="w-1/2"
+                  location="right"
+                  date={date}
+                  onDateChange={setDate}
+                />
+              </div>
             </div>
             <div className="flex flex-col w-full">
               <label className="text-gray-300 text-md  mb-2">Time *</label>
               <input
                 type="text"
-                className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
+                className="border border-[#3BAFBB] rounded-lg w-full py-3 px-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
                 placeholder="Enter event category"
               />
             </div>
