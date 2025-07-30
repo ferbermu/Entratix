@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { EventDetails } from './EventDetails';
 import { CreateTicket } from './CreateTicket';
+import { CreateArtist } from './CreateArtist';
+import { EventTags } from './EventTags';
+import { FloppyDisk } from '@phosphor-icons/react';
 
 export default function CreateEventPage() {
   const [date, setDate] = useState<DateRange | undefined>();
@@ -35,7 +38,20 @@ export default function CreateEventPage() {
         getAmPm={getAmPm}
       />
       <div>
+        <CreateArtist />
+      </div>
+      <div>
         <CreateTicket />
+      </div>
+      <div>
+        <EventTags />
+      </div>
+
+      <div className="flex items-center justify-center w-full py-10 ">
+        <button className="cursor-pointer flex gap-2 items-center text-xl bg-[#3BAFBB] hover:bg-[#2A8C99] text-white font-semibold px-16 py-5 rounded-2xl transition-all">
+          <FloppyDisk size={32} />
+          Create Event
+        </button>
       </div>
     </div>
   );

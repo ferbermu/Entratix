@@ -71,7 +71,7 @@ export const Navbar = () => {
           </Link>
 
           <div className="text-white pl-8 flex gap-6 max-[870px]:hidden">
-            <Navbutton text="Eventos" onClick={handleMyTickets} />
+            <Navbutton text="Events" onClick={handleMyTickets} />
             <Link href="/my-tickets">
               <Navbutton text="My Tickets" onClick={() => {}} />
             </Link>
@@ -84,7 +84,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-6 max-[870px]:hidden">
           <Navbutton
             className="text-white"
-            text="Registrarse"
+            text="Sign up"
             onClick={handleSignup}
           />
           <Navbutton
