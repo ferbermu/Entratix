@@ -65,7 +65,7 @@ export const CreateTicket = () => {
                 <label className="text-gray-300 text-sm mb-2">Type</label>
                 <input
                   type="text"
-                  className="bg-[#3BAFBB1A]  text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
+                  className="  text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                   placeholder="Enter ticket type"
                 />
               </div>
@@ -75,7 +75,7 @@ export const CreateTicket = () => {
                   type="number"
                   min="1"
                   onKeyDown={preventNegativeAndE}
-                  className="bg-[#3BAFBB1A] text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
+                  className=" text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                   placeholder="0"
                 />
               </div>
@@ -85,14 +85,14 @@ export const CreateTicket = () => {
                   type="number"
                   min="1"
                   onKeyDown={preventNegativeAndE}
-                  className="bg-[#3BAFBB1A]  text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
+                  className="  text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                   placeholder="0"
                 />
               </div>
             </div>
             <label className="text-gray-300 text-sm">Description</label>
             <textarea
-              className="bg-[#3BAFBB1A] text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] resize-none"
+              className=" text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] resize-none"
               placeholder="Enter ticket description (optional)"
             />
           </div>
