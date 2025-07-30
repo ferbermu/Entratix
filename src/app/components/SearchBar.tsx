@@ -3,29 +3,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { type DateRange } from 'react-day-picker';
-import { Dropdown } from './Dropdown';
+import { LocationDropdown } from './LocationDropdown';
 import { CalendarDropdown } from './CalendarDropdown';
-const departments = [
-  'Artigas',
-  'Canelones',
-  'Cerro Largo',
-  'Colonia',
-  'Durazno',
-  'Flores',
-  'Florida',
-  'Lavalleja',
-  'Maldonado',
-  'Montevideo',
-  'Paysandú',
-  'Río Negro',
-  'Rivera',
-  'Rocha',
-  'Salto',
-  'San José',
-  'Soriano',
-  'Tacuarembó',
-  'Treinta y Tres',
-];
 
 interface SearchBarProps {
   onFilterChange: (filters: {
@@ -126,20 +105,10 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
             onDateChange={handleDateSelect}
           />
         </div>
-        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full">
-          <Image
-            src="/assets/icons/search_bar/location.svg"
-            alt="location"
-            width={16}
-            height={16}
-          />
-          <Dropdown
-            options={departments}
-            selectedValue={location}
-            onValueChange={setLocation}
-            placeholder="Location"
-          />
-        </div>
+        <LocationDropdown
+          selectedValue={location}
+          onValueChange={setLocation}
+        />
       </div>
     </div>
   );
