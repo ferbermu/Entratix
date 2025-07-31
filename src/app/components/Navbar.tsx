@@ -82,11 +82,14 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-6 max-[870px]:hidden">
-          <Navbutton
-            className="text-white"
-            text="Sign up"
-            onClick={handleSignup}
-          />
+          <Link href="/register">
+            <Navbutton
+              className="text-white"
+              text="Sign up"
+              onClick={handleSignup}
+            />
+          </Link>
+
           <Navbutton
             className="bg-[#3baebb32] rounded-md border border-[#3BAFBB] text-[#3BAFBB] text-md"
             text="Login"
