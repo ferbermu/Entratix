@@ -148,3 +148,62 @@
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+/* Add this to your global CSS file (e.g., globals.css) */
+
+/* Existing autofill fix for inputs */
+.autofill-fix:-webkit-autofill,
+.autofill-fix:-webkit-autofill:hover,
+.autofill-fix:-webkit-autofill:focus,
+.autofill-fix:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(59, 175, 187, 0.1) inset !important; /* Corresponds to #3BAFBB1A */
+  -webkit-text-fill-color: white !important; /* Keep text color white */
+  transition: background-color 5000s ease-in-out 0s !important; /* Long transition to hide background change */
+}
+
+/* NEW: Custom styling for checkboxes to ensure consistent appearance */
+.custom-checkbox {
+  /* Reset default browser appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Apply custom background and border based on your palette */
+  background-color: transparent; /* Ensure it's transparent by default */
+  border: 1px solid #3bafbb; /* Apply the teal border */
+  border-radius: 0.25rem; /* Match the 'rounded' class you used */
+  cursor: pointer;
+  display: inline-block; /* Essential for sizing and positioning */
+  position: relative; /* For custom checkmark */
+  flex-shrink: 0; /* Prevent shrinking in flex containers */
+  /* Set explicit size to match h-5 w-5 (20px) */
+  width: 1.25rem; /* 20px */
+  height: 1.25rem; /* 20px */
+  vertical-align: middle; /* Align with text */
+}
+
+/* Style for the checkmark when checked */
+.custom-checkbox:checked {
+  background-color: #3bafbb; /* Fill with teal when checked */
+  border-color: #3bafbb; /* Ensure border also matches when checked */
+}
+
+/* Create a custom checkmark using a pseudo-element */
+.custom-checkbox:checked::before {
+  content: '';
+  display: block;
+  width: 0.35em; /* Adjust size of the checkmark */
+  height: 0.7em; /* Adjust size of the checkmark */
+  border: solid white;
+  border-width: 0 0.15em 0.15em 0; /* Thickness of the checkmark lines */
+  transform: rotate(45deg);
+  position: absolute;
+  top: 0.1em; /* Adjust vertical position */
+  left: 0.4em; /* Adjust horizontal position */
+}
+
+/* Focus state for accessibility */
+.custom-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 175, 187, 0.5); /* Teal focus ring */
+}
