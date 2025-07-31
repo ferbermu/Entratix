@@ -89,12 +89,13 @@ export const Navbar = () => {
               onClick={handleSignup}
             />
           </Link>
-
-          <Navbutton
-            className="bg-[#3baebb32] rounded-md border border-[#3BAFBB] text-[#3BAFBB] text-md"
-            text="Login"
-            onClick={handleLogin}
-          />
+          <Link href="/login">
+            <Navbutton
+              className="bg-[#3baebb32] rounded-md border border-[#3BAFBB] text-[#3BAFBB] text-md"
+              text="Login"
+              onClick={handleLogin}
+            />
+          </Link>
         </div>
         <div className="flex gap-2 items-center min-[870px]:hidden">
           <MobileNavButton

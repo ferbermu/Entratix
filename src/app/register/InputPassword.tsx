@@ -52,7 +52,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className={`absolute right-3 top-1/2 -translate-y-1/2 ${iconColor} hover:opacity-80`}
+            className={`absolute right-3 top-1/2 -translate-y-1/2 ${iconColor} hover:opacity-80 cursor-pointer`}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <EyeSlash size={20} /> : <Eye size={20} />}

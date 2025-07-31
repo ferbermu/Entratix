@@ -4,7 +4,6 @@ import {
   User,
   EnvelopeSimple,
   Phone,
-  CalendarBlank,
   GoogleLogo,
 } from '@phosphor-icons/react';
 import { InputPassword } from './InputPassword';
