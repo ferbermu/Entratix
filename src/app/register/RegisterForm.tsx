@@ -7,17 +7,16 @@ import {
   GoogleLogo,
 } from '@phosphor-icons/react';
 import { InputPassword } from './InputPassword';
-import { CalendarDropdown } from '@/components/CalendarDropdown';
-import { DateRange } from 'react-day-picker';
+import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
 
 interface RegisterFormProps {
-  date: DateRange | undefined;
-  setDate: (date: DateRange | undefined) => void;
+  birthDate: Date | undefined;
+  setBirthDate: (date: Date | undefined) => void;
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({
-  date,
-  setDate,
+  birthDate,
+  setBirthDate,
 }) => {
   return (
     <div className="flex items-center justify-center min-h-screen p-4 my-30">
@@ -126,10 +125,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 Date of Birth *
               </label>
               <div className="border border-[#3BAFBB] rounded-lg pr-2 pl-1 py-2">
-                <CalendarDropdown
-                  width="w-full"
-                  date={date}
-                  onDateChange={setDate}
+                <CalendarDropdownSimple
+                  date={birthDate}
+                  onDateChange={setBirthDate}
                 />
               </div>
             </div>

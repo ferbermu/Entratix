@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Header } from './Header';
 import { type DateRange } from 'react-day-picker';
 import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
 import { TotalTickets } from './TotalTickets';
-import { SearchBar } from '@/components/SearchBar';
 
 const tickets: CardTicketProps[] = [
   {
@@ -36,27 +35,15 @@ const tickets: CardTicketProps[] = [
 ];
 
 export default function MyTicketsPage() {
-  const [, setFilters] = useState({
+  const [,] = useState({
     searchTerm: '',
     dateRange: undefined as DateRange | undefined,
     location: '',
   });
 
-  const handleFilterChange = useCallback(
-    (newFilters: {
-      searchTerm: string;
-      dateRange?: DateRange;
-      location: string;
-    }) => {
-      setFilters({ ...newFilters, dateRange: newFilters.dateRange });
-    },
-    []
-  );
-
   return (
     <div className="w-full h-full min-h-screen px-60 max-[1400px]:px-4  text-white">
       <Header />
-      <SearchBar onFilterChange={handleFilterChange} />
       <div className="py-8">
         <TicketAdquired />
       </div>

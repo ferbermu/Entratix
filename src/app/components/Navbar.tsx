@@ -78,6 +78,9 @@ export const Navbar = () => {
             <Link href="/create-event">
               <Navbutton text="Create Event" onClick={() => {}} />
             </Link>
+            <Link href="/rrpp-dashbord">
+              <Navbutton text="RRPP Dashbord" onClick={() => {}} />
+            </Link>
           </div>
         </div>
 

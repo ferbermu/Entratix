@@ -1,22 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import { DateRange } from 'react-day-picker';
 import { EventDetails } from './EventDetails';
 import { CreateTicket } from './CreateTicket';
 import { CreateArtist } from './CreateArtist';
 import { EventTags } from './EventTags';
 import { FloppyDisk } from '@phosphor-icons/react';
+import { AddRrpp } from './AddRrpp';
 
 export default function CreateEventPage() {
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [eventDate, setEventDate] = useState<Date | undefined>(); // Cambiado a Date simple
   const [location, setLocation] = useState('');
-  const [hour, setHour] = useState<number | ''>('');
-  const [minute, setMinute] = useState<number | ''>('');
-
-  const getAmPm = (h: number | '') => {
-    if (h === '') return '';
-    return h >= 12 ? 'PM' : 'AM';
-  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -27,15 +20,10 @@ export default function CreateEventPage() {
         </p>
       </div>
       <EventDetails
-        date={date}
-        setDate={setDate}
+        eventDate={eventDate}
+        setEventDate={setEventDate}
         location={location}
         setLocation={setLocation}
-        hour={hour}
-        setHour={setHour}
-        minute={minute}
-        setMinute={setMinute}
-        getAmPm={getAmPm}
       />
       <div>
         <CreateArtist />
@@ -45,6 +33,9 @@ export default function CreateEventPage() {
       </div>
       <div>
         <EventTags />
+      </div>
+      <div>
+        <AddRrpp />
       </div>
 
       <div className="flex items-center justify-center w-full py-10 ">
