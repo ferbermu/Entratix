@@ -27,7 +27,7 @@ const events = [
 
 export const ActiveLinks = () => {
   return (
-    <div className="flex flex-col  w-full px-100 gap-6">
+    <div className="flex flex-col  w-full px-20  max-[700px]:px-0 max-[1200px]:px-10 gap-6  ">
       {events.map((event, i) => (
         <div
           key={i}
@@ -42,13 +42,13 @@ export const ActiveLinks = () => {
                 <span>{event.time}</span>
               </div>
             </div>
-            <span className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-bold px-3 py-1 rounded-full border border-[#3BAFBB40]">
+            <p className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-bold px-3 py-1 rounded-full border border-[#3BAFBB40]">
               Active
-            </span>
+            </p>
           </div>
 
           {/* Metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+          <div className="grid grid-cols-4 max-[1200px]:grid-cols-1  gap-4 mb-5">
             <MetricCard
               label="Courtesy Available"
               value={event.courtesyAvailable}
@@ -77,11 +77,11 @@ export const ActiveLinks = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-2 mt-4">
-            <button className="flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md">
+          <div className="flex gap-2 mt-4 max-[1200px]:justify-between max-[340px]:flex-col  ">
+            <button className="max-[340px]:w-full max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md">
               <Eye size={16} /> View Details
             </button>
-            <button className="flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]">
+            <button className="max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center  flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]">
               <DownloadSimple size={16} /> Download Report
             </button>
           </div>

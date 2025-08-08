@@ -38,14 +38,14 @@ export default function RrppDashboardPage() {
   };
 
   return (
-    <div className="flex flex-col items-center py-10 px-4 gap-6 h-screen mt-30  mb-30">
+    <div className="flex flex-col items-center py-10 px-4 gap-6 h-full mt-30 ">
       <h1 className="text-4xl font-bold text-[#3BAFBB]">RRPP Dashboard</h1>
       <p className="text-sm text-gray-300 mb-4 text-center">
         Manage your events, sales, and team from one place
       </p>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className=" gap-2 mb-6 grid grid-cols-6 max-[1200px]:grid-cols-3 max-[700px]:grid-cols-2">
         <button
           onClick={() => setActiveTab('links')}
           className={`px-4 py-2 rounded-full text-sm ${
