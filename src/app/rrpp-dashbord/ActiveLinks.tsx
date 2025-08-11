@@ -12,6 +12,7 @@ const events = [
     ticketsSold: 45,
     cashRemaining: 32,
     link: 'https://entratix.com/event/underground-techno-night?rrpp=john123',
+    status: 'active',
   },
   {
     name: 'Latin Beats Festival',
@@ -22,13 +23,57 @@ const events = [
     ticketsSold: 28,
     cashRemaining: 0,
     link: 'https://entratix.com/event/latin-beats-festival?rrpp=john123',
+    status: 'active',
   },
 ];
 
+type FilterKey = 'all' | 'active' | 'finished' | 'suspended';
+
 export const ActiveLinks = () => {
+  const [filter, setFilter] = React.useState<FilterKey>('all');
+
+  const filteredEvents = events.filter(e =>
+    filter === 'all' ? true : e.status === filter
+  );
+
+  const getStatusClasses = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'bg-[#3BAFBB1A] text-[#3BAFBB] border-[#3BAFBB40]';
+      case 'finished':
+        return 'bg-white/10 text-white border-white/20';
+      case 'suspended':
+        return 'bg-red-500/10 text-red-400 border-red-500/30';
+      default:
+        return 'bg-white/10 text-white border-white/20';
+    }
+  };
   return (
-    <div className="flex flex-col  w-full px-20  max-[700px]:px-0 max-[1200px]:px-10 gap-6  ">
-      {events.map((event, i) => (
+    <div className="flex flex-col  w-full px-20  max-[700px]:px-0 max-[1200px]:px-10 gap-6   ">
+      <div className="flex gap-3 mb-1 p-1 bg-[#3BAFBB]/10 rounded-lg max-[700px]:grid max-[700px]:grid-cols-2 max-[700px]:gap-2">
+        {(
+          [
+            { key: 'all', label: 'All Events' },
+            { key: 'active', label: 'Active' },
+            { key: 'finished', label: 'Finished' },
+            { key: 'suspended', label: 'Suspended' },
+          ] as Array<{ key: FilterKey; label: string }>
+        ).map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => setFilter(tab.key)}
+            className={`px-4 py-1.5 text-md rounded-lg cursor-pointer transition-colors duration-150 max-[700px]:w-full max-[700px]:py-2 ${
+              filter === tab.key
+                ? 'bg-[#3BAFBB] text-white border-[#3BAFBB]'
+                : ' text-[#A3A3A3]  hover:bg-[#3BAFBB33]'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {filteredEvents.map((event, i) => (
         <div
           key={i}
           className="bg-[#3BAFBB]/10 border border-[#3BAFBB40] rounded-xl p-6 shadow-md relative"
@@ -42,8 +87,12 @@ export const ActiveLinks = () => {
                 <span>{event.time}</span>
               </div>
             </div>
-            <p className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-bold px-3 py-1 rounded-full border border-[#3BAFBB40]">
-              Active
+            <p
+              className={`text-xs font-bold px-3 py-1 rounded-full border ${getStatusClasses(
+                event.status
+              )}`}
+            >
+              {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
             </p>
           </div>
 

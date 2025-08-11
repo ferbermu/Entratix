@@ -25,7 +25,7 @@ export const SalesReports = () => {
           label="Total Revenue"
           value="$100"
           icon={<CurrencyDollarSimple size={24} />}
-          color="text-green-400"
+          color="text-white"
         />
         <MetricCard
           label="Tickets Sold"
@@ -62,9 +62,9 @@ export const SalesReports = () => {
                   <td className="px-4 py-3">{sale.event}</td>
                   <td className="px-4 py-3">{sale.buyer}</td>
                   <td className="px-4 py-3">{sale.tickets}</td>
-                  <td className="px-4 py-3 text-green-400">${sale.amount}</td>
+                  <td className="px-4 py-3 text-[#3BAFBB]">${sale.amount}</td>
                   <td className="px-4 py-3">
-                    <span className="bg-yellow-600/20 text-yellow-400 text-xs font-medium px-2 py-1 rounded-full border border-yellow-400/20">
+                    <span className="bg-[#3BAFBB1A] text-[#3BAFBB]  text-xs font-medium px-2 py-1 rounded-full border border-[#3BAFBB40]">
                       {sale.type}
                     </span>
                   </td>

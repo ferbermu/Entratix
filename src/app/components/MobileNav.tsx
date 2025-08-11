@@ -32,7 +32,7 @@ export const MobileNav = ({
     <>
       <div
         className={`
-          fixed inset-0 bg-[black/60] backdrop-blur-sm
+          fixed inset-0 bg-black/60 backdrop-blur-sm
           transition-opacity duration-300 z-40
           min-[870px]:hidden
           ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
@@ -56,60 +56,48 @@ export const MobileNav = ({
           <div className="flex flex-col gap-8 divide-y divide-[#FFFFFF]/40">
             <nav className="flex flex-col w-full divide-y divide-[#FFFFFF]/40 [&>*]:py-4 text-center">
               <Link
-                href="/"
+                href="/events"
                 className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
                 onClick={onClose}
               >
-                Home
+                Events
               </Link>
               <Link
-                href="/how-it-works"
+                href="/my-tickets"
                 className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
                 onClick={onClose}
               >
-                How it Works
+                My Tickets
               </Link>
               <Link
-                href="/about"
+                href="/create-event"
                 className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
                 onClick={onClose}
               >
-                About Us
+                Create Event
               </Link>
               <Link
-                href="/support"
+                href="/rrpp-dashbord"
                 className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
                 onClick={onClose}
               >
-                Customer Support
-              </Link>
-              <Link
-                href="/faqs"
-                className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
-                onClick={onClose}
-              >
-                FAQs
-              </Link>
-              <Link
-                href="/terms"
-                className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
-                onClick={onClose}
-              >
-                Terms and Conditions
+                RRPP Dashbord
               </Link>
             </nav>
 
             <div className="flex flex-col gap-4 w-full  px-12">
-              <button
+              <Link
+                href="/login"
                 onClick={() => {
                   onLogin();
                   onClose();
                 }}
-                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors "
+                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
               >
                 Login
-              </button>
-              <button
+              </Link>
+              <Link
+                href="/register"
                 onClick={() => {
                   onSignup();
                   onClose();
@@ -117,7 +105,7 @@ export const MobileNav = ({
                 className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
               >
                 Sign Up
-              </button>
+              </Link>
             </div>
           </div>
         </div>

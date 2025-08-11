@@ -6,11 +6,58 @@ import { SubRrpp } from './SubRrpp';
 import { SalesReports } from './SalesReport';
 import Analytics from './Analytics';
 import RrppManual from './RrppManual';
+import {
+  LinkSimple,
+  CurrencyDollar,
+  Users,
+  ChartBar,
+  Activity,
+  BookOpen,
+} from '@phosphor-icons/react';
+
+const tabs = [
+  {
+    key: 'links',
+    label: 'Active Links',
+    Icon: LinkSimple,
+    activeClass: 'bg-[#3BAFBB] text-white',
+  },
+  {
+    key: 'cash',
+    label: 'Cash Sales',
+    Icon: CurrencyDollar,
+    activeClass: 'bg-[#3BAFBB] text-white',
+  },
+  {
+    key: 'subrrpp',
+    label: 'Sub RRPPs',
+    Icon: Users,
+    activeClass: 'bg-[#3BAFBB] text-white',
+  },
+  {
+    key: 'sales',
+    label: 'Sales Reports',
+    Icon: ChartBar,
+    activeClass: 'bg-[#3BAFBB] text-white',
+  },
+  {
+    key: 'analytics',
+    label: 'Analytics',
+    Icon: Activity,
+    activeClass: 'bg-[#3BAFBB] text-white',
+  },
+  {
+    key: 'manual',
+    label: 'Manual',
+    Icon: BookOpen,
+    activeClass: 'bg-[#3BAFBB] text-white',
+  },
+] as const;
+
+type TabKey = (typeof tabs)[number]['key'];
 
 export default function RrppDashboardPage() {
-  const [activeTab, setActiveTab] = useState<
-    'links' | 'cash' | 'subrrpp' | 'sales' | 'analytics' | 'manual'
-  >('cash');
+  const [activeTab, setActiveTab] = useState<TabKey>('cash');
 
   const renderComponent = () => {
     switch (activeTab) {
@@ -20,7 +67,7 @@ export default function RrppDashboardPage() {
         return (
           <CashSales
             onSellTickets={() => alert('Sell Tickets clicked')}
-            onViewSales={() => alert('View Sales Summary clicked')}
+            onViewSales={() => {}}
           />
         );
       case 'subrrpp':
@@ -38,79 +85,33 @@ export default function RrppDashboardPage() {
   };
 
   return (
-    <div className="flex flex-col items-center py-10 px-4 gap-6 h-full mt-30 ">
-      <h1 className="text-4xl font-bold text-[#3BAFBB]">RRPP Dashboard</h1>
-      <p className="text-sm text-gray-300 mb-4 text-center">
-        Manage your events, sales, and team from one place
-      </p>
+    <div className="flex flex-col min-h-screen w-full py-10 px-4 gap-6">
+      <div className="flex flex-col items-center gap-6 w-full max-w-[1200px] mx-auto">
+        <h1 className="text-4xl font-bold text-[#3BAFBB]">RRPP Dashboard</h1>
+        <p className="text-sm text-gray-300 mb-4 text-center">
+          Manage your events, sales, and team from one place
+        </p>
 
-      {/* Tabs */}
-      <div className=" gap-2 mb-6 grid grid-cols-6 max-[1200px]:grid-cols-3 max-[700px]:grid-cols-2">
-        <button
-          onClick={() => setActiveTab('links')}
-          className={`px-4 py-2 rounded-full text-sm ${
-            activeTab === 'links'
-              ? 'bg-[#3BAFBB] text-white'
-              : 'bg-[#2C2C3F] text-gray-300'
-          }`}
-        >
-          Active Links
-        </button>
-        <button
-          onClick={() => setActiveTab('cash')}
-          className={`px-4 py-2 rounded-full text-sm ${
-            activeTab === 'cash'
-              ? 'bg-fuchsia-600 text-white'
-              : 'bg-[#2C2C3F] text-gray-300'
-          }`}
-        >
-          Cash Sales
-        </button>
-        <button
-          onClick={() => setActiveTab('subrrpp')}
-          className={`px-4 py-2 rounded-full text-sm ${
-            activeTab === 'subrrpp'
-              ? 'bg-purple-600 text-white'
-              : 'bg-[#2C2C3F] text-gray-300'
-          }`}
-        >
-          Sub RRPPs
-        </button>
+        {/* Tabs */}
+        <div className=" gap-2 mb-6 grid grid-cols-6 max-[1200px]:grid-cols-3 max-[700px]:grid-cols-2">
+          {tabs.map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={` py-3 px-4 rounded-xl text-md cursor-pointer flex items-center gap-2 ${
+                activeTab === tab.key
+                  ? tab.activeClass
+                  : 'bg-[#2C2C3F] text-gray-300'
+              }`}
+            >
+              {tab.Icon ? <tab.Icon size={18} weight="bold" /> : null}
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
-        <button
-          onClick={() => setActiveTab('sales')}
-          className={`px-4 py-2 rounded-full text-sm ${
-            activeTab === 'sales'
-              ? 'bg-fuchsia-600 text-white'
-              : 'bg-[#2C2C3F] text-gray-300'
-          }`}
-        >
-          Sales Reports
-        </button>
-        <button
-          onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 rounded-full text-sm ${
-            activeTab === 'analytics'
-              ? 'bg-fuchsia-600 text-white'
-              : 'bg-[#2C2C3F] text-gray-300'
-          }`}
-        >
-          Analytics
-        </button>
-
-        <button
-          onClick={() => setActiveTab('manual')}
-          className={`px-4 py-2 rounded-full text-sm ${
-            activeTab === 'manual'
-              ? 'bg-purple-500 text-white'
-              : 'bg-[#2C2C3F] text-gray-300'
-          }`}
-        >
-          Manual
-        </button>
+        {renderComponent()}
       </div>
-
-      {renderComponent()}
     </div>
   );
 }
