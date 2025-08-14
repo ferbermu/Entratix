@@ -77,13 +77,13 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
       {isCalendarOpen && (
         <div
           ref={calendarRef}
-          className={`bg-[#1C1A1A] ${width} ${locationClass} absolute top-full mt-5 ml-1.5 z-50 transform transition-all duration-200 ease-in-out opacity-100 scale-100 shadow-lg max-sm:fixed max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:top-1/2 max-sm:-translate-y-1/2`}
+          className={`bg-[#1C1A1A] ${width} ${locationClass} absolute top-full mt-5 ml-1.5 z-50 transform transition-all max-[1200px]:w-full max-[970px]:w-1/2 max-[700px]:w-full shadow-lg `}
         >
           <Calendar
             mode="single"
             selected={date}
             onSelect={handleDateSelect}
-            className="rounded-md border w-full bg-[#3BAFBB1A] text-[#3BAFBB] border-[#3BAFBB] shadow-xl max-sm:w-[calc(100vw-2rem)]"
+            className="rounded-md border w-full bg-[#3BAFBB1A] text-[#3BAFBB] border-[#3BAFBB] shadow-xl"
             locale={es}
             showOutsideDays={false}
           />

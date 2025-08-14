@@ -44,7 +44,7 @@ export const Dropdown = ({
   return (
     <div ref={dropdownRef} className={`relative w-full ${className ?? ''}`}>
       <div
-        className="w-full relative cursor-pointer flex items-center"
+        className="relative cursor-pointer flex items-center w-full"
         onClick={() => setIsOpen(!isOpen)}
       >
         <input
@@ -52,7 +52,7 @@ export const Dropdown = ({
           placeholder={placeholder}
           value={selectedValue}
           readOnly
-          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer"
+          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer min-w-0"
         />
         <CaretDown className="text-[#3BAFBB]" size={30} />
       </div>

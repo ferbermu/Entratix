@@ -23,8 +23,8 @@ const subRrpps = [
 
 export const SubRrpp = () => {
   return (
-    <div className="flex flex-col gap-6 w-full px-4 sm:px-6 md:px-12 xl:px-80 max-[700px]:px-4">
-      <div className="flex justify-between items-center mb-6 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-3">
+    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 xl:px-12">
+      <div className="flex justify-between items-center mb-6 max-[700px]:flex-col max-[700px]:items-stretch max-[700px]:gap-3">
         <h2 className="text-2xl font-bold text-white">Sub RRPPs</h2>
         <button className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md flex items-center gap-2 max-[700px]:w-full max-[700px]:justify-center">
           <UserPlus size={16} /> Add Sub RRPP
@@ -34,7 +34,7 @@ export const SubRrpp = () => {
       {subRrpps.map((rrpp, index) => (
         <div
           key={index}
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB]/60 rounded-xl p-4 md:p-6 shadow-md grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-4 gap-y-3 max-[700px]:p-4"
+          className="bg-[#3BAFBB]/10 border border-[#3BAFBB]/60 rounded-xl p-4 md:p-6 shadow-md grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-6 gap-y-4 max-[700px]:p-4"
         >
           <div className="flex flex-col gap-1 flex-1 col-[1] row-[1]">
             <h2 className="text-lg font-semibold text-white">{rrpp.name}</h2>

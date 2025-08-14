@@ -26,7 +26,7 @@ export const CreateTicket = () => {
 
   return (
     <div className="bg-[#3BAFBB1A] max-w-[1400px] rounded-xl p-8 mx-auto mt-8 border border-[#3BAFBB]">
-      <div className="flex items-center justify-between mb-16 ">
+      <div className="flex items-center justify-between mb-16 max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-4">
         <div className="flex items-center gap-2">
           <CurrencyDollarSimple className="text-[#3BAFBB]" size={24} />
           <span className="text-gray-300 text-xl font-bold">
@@ -60,8 +60,8 @@ export const CreateTicket = () => {
               </div>
             )}
 
-            <div className=" flex gap-4">
-              <div className="flex flex-col w-1/3">
+            <div className=" flex gap-4 max-[800px]:flex-col">
+              <div className="flex flex-col w-1/3 max-[800px]:w-full">
                 <label className="text-gray-300 text-sm mb-2">Type</label>
                 <input
                   type="text"
@@ -69,7 +69,7 @@ export const CreateTicket = () => {
                   placeholder="Enter ticket type"
                 />
               </div>
-              <div className="flex flex-col w-1/3">
+              <div className="flex flex-col w-1/3 max-[800px]:w-full">
                 <label className="text-gray-300 text-sm mb-2">Price</label>
                 <input
                   type="number"
@@ -79,7 +79,7 @@ export const CreateTicket = () => {
                   placeholder="0"
                 />
               </div>
-              <div className="flex flex-col w-1/3">
+              <div className="flex flex-col w-1/3 max-[800px]:w-full">
                 <label className="text-gray-300 text-sm mb-2">Quantity</label>
                 <input
                   type="number"

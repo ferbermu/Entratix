@@ -4,15 +4,36 @@ import Image from 'next/image';
 import { Navbutton } from './Navbutton';
 import { MobileNavButton } from './MobileNavButton';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
 import { MobileSearch } from './MobileSearch';
+import {
+  Ticket,
+  CalendarPlus,
+  ChartBar,
+  UserPlus,
+  SignIn,
+} from '@phosphor-icons/react';
+import cn from 'classnames';
 
 export const Navbar = () => {
   const isScrolled = useScroll({ threshold: 700 });
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const pathname = usePathname();
+
+  const activeClass =
+    'bg-[#3baebb32] !border-[#3BAFBB] rounded-md text-[#3BAFBB]';
+  const hoverClass =
+    'hover:bg-[#3baebb32]  hover:text-[#3BAFBB] transition-colors';
+  const isEvents = pathname?.startsWith('/events');
+  const isMyTickets = pathname?.startsWith('/my-tickets');
+  const isCreateEvent = pathname?.startsWith('/create-event');
+  const isRrpp = pathname?.startsWith('/rrpp-dashbord');
+  const isRegister = pathname?.startsWith('/register');
+  const isLoginPath = pathname?.startsWith('/login');
 
   const handleLogin = () => {
     console.log('Login clicked');
@@ -20,10 +41,6 @@ export const Navbar = () => {
 
   const handleSignup = () => {
     console.log('Signup clicked');
-  };
-
-  const handleMyTickets = () => {
-    console.log('My Tickets clicked');
   };
 
   const toggleMobileNav = () => {
@@ -70,16 +87,38 @@ export const Navbar = () => {
             />
           </Link>
 
-          <div className="text-white pl-8 flex gap-6 max-[870px]:hidden">
-            <Navbutton text="Events" onClick={handleMyTickets} />
+          <div className="text-white pl-8 flex gap-6 max-[870px]:hidden items-center text-lg ">
+            <Link href="/events">
+              <Navbutton
+                text="Events"
+                onClick={() => {}}
+                className={cn(hoverClass, { [activeClass]: isEvents })}
+                icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
+              />
+            </Link>
             <Link href="/my-tickets">
-              <Navbutton text="My Tickets" onClick={() => {}} />
+              <Navbutton
+                text="My Tickets"
+                onClick={() => {}}
+                className={cn(hoverClass, { [activeClass]: isMyTickets })}
+                icon={<Ticket size={20} className="text-[#3BAFBB]" />}
+              />
             </Link>
             <Link href="/create-event">
-              <Navbutton text="Create Event" onClick={() => {}} />
+              <Navbutton
+                text="Create Event"
+                onClick={() => {}}
+                className={cn(hoverClass, { [activeClass]: isCreateEvent })}
+                icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
+              />
             </Link>
             <Link href="/rrpp-dashbord">
-              <Navbutton text="RRPP Dashbord" onClick={() => {}} />
+              <Navbutton
+                text="RRPP Dashbord"
+                onClick={() => {}}
+                className={cn(hoverClass, { [activeClass]: isRrpp })}
+                icon={<ChartBar size={20} className="text-[#3BAFBB] " />}
+              />
             </Link>
           </div>
         </div>
@@ -87,16 +126,24 @@ export const Navbar = () => {
         <div className="flex items-center gap-6 max-[870px]:hidden">
           <Link href="/register">
             <Navbutton
-              className="text-white"
+              className={cn('text-white text-lg', hoverClass, {
+                [activeClass]: isRegister,
+              })}
               text="Sign up"
               onClick={handleSignup}
+              icon={<UserPlus size={20} className="text-[#3BAFBB]" />}
             />
           </Link>
           <Link href="/login">
             <Navbutton
-              className="bg-[#3baebb32] rounded-md border border-[#3BAFBB] text-[#3BAFBB] text-md"
+              className={cn(
+                'bg-[#3baebb32] rounded-md border border-transparent text-[#3BAFBB] text-lg',
+                hoverClass,
+                { [activeClass]: isLoginPath }
+              )}
               text="Login"
               onClick={handleLogin}
+              icon={<SignIn size={20} className="text-[#3BAFBB]" />}
             />
           </Link>
         </div>

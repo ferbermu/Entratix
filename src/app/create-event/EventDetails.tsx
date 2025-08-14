@@ -64,8 +64,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           />
         </div>
 
-        <div className="mt-8 w-full flex gap-8">
-          <div className="flex flex-col w-full">
+        <div className="mt-8 w-full flex gap-8 max-[970px]:flex-col">
+          <div className="flex flex-col w-full max-[970px]:order-2">
             <label className="text-gray-300 text-md mb-2">Date *</label>
             <div className="border border-[#3BAFBB] py-1 px-4 rounded-lg">
               <CalendarDropdownSimple
@@ -77,7 +77,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               />
             </div>
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full max-[970px]:order-1">
             <label className="text-gray-300 text-md mb-2">Time Range *</label>
             <TimeInput
               startHour={startHour}
@@ -93,7 +93,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
         </div>
 
-        <div className="mt-8 w-full flex gap-8">
+        <div className="mt-8 w-full flex gap-8 max-[700px]:flex-col">
           <div className="flex flex-col w-full">
             <label className="text-gray-300 text-md mb-2">Address *</label>
             <div className="border border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-2">
@@ -109,7 +109,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
           <div className="flex flex-col w-full">
             <label className="text-gray-300 text-md mb-2">Location *</label>
-            <div className="border border-[#3BAFBB] h-full px-4 rounded-lg">
+            <div className="border border-[#3BAFBB] h-full px-4 rounded-lg w-full">
               <LocationDropdown
                 selectedValue={location}
                 onValueChange={setLocation}

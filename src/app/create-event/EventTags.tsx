@@ -35,12 +35,14 @@ export const EventTags = () => {
         {tags.map((tag, index) => (
           <div
             key={index}
-            className="bg-[#3baebb32] hover:bg-[#3baebb32]/20 text-white px-3 py-1 rounded-full flex items-center gap-2"
+            className="bg-[#3baebb32] hover:bg-[#3baebb32]/20 text-white px-3 py-1 rounded-full flex items-center gap-2 max-w-[260px] md:max-w-[360px] lg:max-w-[420px]"
           >
-            <span className="text-sm ">{tag}</span>
+            <span className="text-sm truncate min-w-0" title={tag}>
+              {tag}
+            </span>
             <button
               onClick={() => removeTag(index)}
-              className="hover:text-gray-200  transition cursor-pointer"
+              className="hover:text-gray-200 transition cursor-pointer flex-shrink-0"
             >
               <X size={14} />
             </button>

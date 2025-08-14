@@ -32,7 +32,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         </div>
 
         <form className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <label
                 htmlFor="firstName"
@@ -96,7 +96,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6 ">
             <div className="flex flex-col">
               <label
                 htmlFor="phoneNumber"
@@ -133,7 +133,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <InputPassword
               id="password"
               label="Password *"
