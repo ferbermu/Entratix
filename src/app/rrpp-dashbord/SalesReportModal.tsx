@@ -48,13 +48,9 @@ export const SalesReportModal: React.FC<SalesReportModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/60
-"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[95%] max-w-[1150px] bg-[#3BAFBB]/10 rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden backdrop-blur-sm">
+      <div className="relative w-[95%] max-w-[1150px] bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden backdrop-blur-sm">
         {/* Header */}
         <div className="flex items-start justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
           <div>

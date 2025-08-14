@@ -1,13 +1,14 @@
 'use client';
 import React from 'react';
 import { SalesReportModal, SalesRow } from './SalesReportModal';
+import SellTicketsModal from './SellTicketsModal';
 
 interface CashSalesProps {
   onSellTickets: () => void;
   onViewSales: () => void;
 }
 
-export const CashSales = ({ onSellTickets, onViewSales }: CashSalesProps) => {
+export const CashSales = ({ onViewSales }: CashSalesProps) => {
   const events = [
     {
       name: 'Underground Techno Night',
@@ -16,6 +17,7 @@ export const CashSales = ({ onSellTickets, onViewSales }: CashSalesProps) => {
   ];
 
   const [isReportOpen, setIsReportOpen] = React.useState(false);
+  const [isSellOpen, setIsSellOpen] = React.useState(false);
 
   const salesRows: SalesRow[] = [
     {
@@ -73,7 +75,9 @@ export const CashSales = ({ onSellTickets, onViewSales }: CashSalesProps) => {
           <div className="flex  gap-2 items-start ">
             <div className="flex gap-2 max-[700px]:flex-col max-[700px]:items-start max-[700px]:w-full">
               <button
-                onClick={onSellTickets}
+                onClick={() => {
+                  setIsSellOpen(true);
+                }}
                 className="cursor-pointer bg-[#3BAFBB] max-[700px]:w-full hover:bg-[#2B9FA9] text-white px-3 py-1.5 text-sm rounded-md"
               >
                 Sell Tickets
@@ -120,6 +124,13 @@ export const CashSales = ({ onSellTickets, onViewSales }: CashSalesProps) => {
           link.click();
           URL.revokeObjectURL(url);
         }}
+      />
+      <SellTicketsModal
+        isOpen={isSellOpen}
+        onClose={() => setIsSellOpen(false)}
+        eventName={events[0].name}
+        ticketsLeft={events[0].ticketsLeft}
+        onComplete={() => setIsSellOpen(false)}
       />
     </div>
   );

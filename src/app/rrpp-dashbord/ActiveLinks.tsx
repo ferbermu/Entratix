@@ -1,6 +1,9 @@
 'use client';
 import React from 'react';
 import { Calendar, Eye, DownloadSimple } from '@phosphor-icons/react';
+import ActiveLinksReportModal, {
+  type ActiveLinksRow,
+} from './ActiveLinksReportModal';
 
 const events = [
   {
@@ -31,6 +34,111 @@ type FilterKey = 'all' | 'active' | 'finished' | 'suspended';
 
 export const ActiveLinks = () => {
   const [filter, setFilter] = React.useState<FilterKey>('all');
+  const [isReportOpen, setIsReportOpen] = React.useState(false);
+  const [reportEventName, setReportEventName] = React.useState<string>('');
+  const [reportRows, setReportRows] = React.useState<ActiveLinksRow[]>([]);
+  const [reportTotals, setReportTotals] = React.useState({
+    revenue: 0,
+    customers: 0,
+  });
+
+  const openReportForEvent = (eventName: string) => {
+    setReportEventName(eventName);
+    // Datos de ejemplo similares a la UI adjunta
+    const rows: ActiveLinksRow[] = [
+      {
+        fullName: 'Ana García Rodríguez',
+        email: 'ana.garcia@email.com',
+        phone: '+1234567890',
+        ticketType: 'VIP',
+        value: 120,
+        paymentMethod: 'Credit Card',
+        status: 'Valid',
+        purchaseDate: '14/7/2024',
+      },
+      {
+        fullName: 'Carlos Mendoza Silva',
+        email: 'carlos.mendoza@email.com',
+        phone: '+1234567891',
+        ticketType: 'General',
+        value: 80,
+        paymentMethod: 'Debit Card',
+        status: 'Used',
+        purchaseDate: '17/7/2024',
+      },
+      {
+        fullName: 'María José López',
+        email: 'maria.lopez@email.com',
+        phone: '+1234567892',
+        ticketType: 'Early Bird',
+        value: 60,
+        paymentMethod: 'Paypal',
+        status: 'Valid',
+        purchaseDate: '9/7/2024',
+      },
+      {
+        fullName: 'Roberto Fernández',
+        email: 'roberto.fernandez@email.com',
+        phone: '+1234567893',
+        ticketType: 'VIP',
+        value: 120,
+        paymentMethod: 'Bank Transfer',
+        status: 'Expired',
+        purchaseDate: '24/6/2024',
+      },
+      {
+        fullName: 'Isabella Torres',
+        email: 'isabella.torres@email.com',
+        phone: '+1234567894',
+        ticketType: 'General',
+        value: 80,
+        paymentMethod: 'Cash',
+        status: 'Valid',
+        purchaseDate: '19/7/2024',
+      },
+    ];
+
+    const revenue = rows.reduce((acc, r) => acc + r.value, 0);
+    const customers = rows.length;
+    setReportRows(rows);
+    setReportTotals({ revenue, customers });
+    setIsReportOpen(true);
+  };
+
+  const exportCsv = () => {
+    const headers = [
+      'Full Name',
+      'Email',
+      'Phone',
+      'Ticket Type',
+      'Value',
+      'Payment Method',
+      'Status',
+      'Purchase Date',
+    ];
+    const rows = reportRows.map(r => [
+      r.fullName,
+      r.email,
+      r.phone,
+      r.ticketType,
+      `$${r.value}`,
+      r.paymentMethod,
+      r.status,
+      r.purchaseDate,
+    ]);
+    const csvContent = [headers, ...rows]
+      .map(cols =>
+        cols.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')
+      )
+      .join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${reportEventName.replace(/\s+/g, '_')}_sales.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const filteredEvents = events.filter(e =>
     filter === 'all' ? true : e.status === filter
@@ -127,7 +235,10 @@ export const ActiveLinks = () => {
 
           {/* Action Buttons */}
           <div className="flex gap-2 mt-4 max-[1200px]:justify-between max-[340px]:flex-col  ">
-            <button className="max-[340px]:w-full max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md">
+            <button
+              className="max-[340px]:w-full max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md"
+              onClick={() => openReportForEvent(event.name)}
+            >
               <Eye size={16} /> View Details
             </button>
             <button className="max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center  flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]">
@@ -136,6 +247,14 @@ export const ActiveLinks = () => {
           </div>
         </div>
       ))}
+      <ActiveLinksReportModal
+        isOpen={isReportOpen}
+        onClose={() => setIsReportOpen(false)}
+        eventName={reportEventName}
+        rows={reportRows}
+        totals={reportTotals}
+        onExportCsv={exportCsv}
+      />
     </div>
   );
 };
