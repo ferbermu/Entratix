@@ -115,7 +115,7 @@ const StatusPill = ({ status }: { status: ActiveLinksRow['status'] }) => {
 };
 
 const TicketPill = ({ type }: { type: ActiveLinksRow['ticketType'] }) => (
-  <span className="inline-flex px-3 py-1 rounded-full text-xs bg-purple-600/20 text-purple-300 border border-purple-500/30">
+  <span className="inline-flex px-3 py-1 rounded-full text-xs bg-[#3BAFBB]/30 text-white border border-[#3BAFBB]">
     {type}
   </span>
 );
@@ -292,7 +292,7 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
                     <td className="px-4 py-3">{row.fullName}</td>
                     <td className="px-4 py-3">{row.email}</td>
                     <td className="px-4 py-3">{row.phone}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-nowrap">
                       <TicketPill type={row.ticketType} />
                     </td>
                     <td className="px-4 py-3 text-[#3BAFBB] font-semibold">

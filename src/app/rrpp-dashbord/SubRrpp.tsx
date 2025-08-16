@@ -1,6 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { EnvelopeSimple, UserPlus } from '@phosphor-icons/react';
+import { RrppSalesReportModal, RrppSalesRow } from './RrppSalesReportModal';
+import { AddSubRrppModal, Event } from './AddSubRrppModal';
 
 const subRrpps = [
   {
@@ -21,12 +23,152 @@ const subRrpps = [
   },
 ];
 
+// Datos de ejemplo para eventos
+const sampleEvents: Event[] = [
+  {
+    id: '1',
+    name: 'Underground Techno Night',
+    date: '14/8/2024',
+    status: 'Active',
+  },
+  {
+    id: '2',
+    name: 'Latin Beats Festival',
+    date: '21/8/2024',
+    status: 'Active',
+  },
+  {
+    id: '3',
+    name: 'Summer Electronic Festival',
+    date: '4/9/2024',
+    status: 'Active',
+  },
+  {
+    id: '4',
+    name: 'Jazz & Blues Night',
+    date: '11/9/2024',
+    status: 'Active',
+  },
+  {
+    id: '5',
+    name: 'Rock Revolution',
+    date: '18/9/2024',
+    status: 'Active',
+  },
+];
+
+// Datos de ejemplo para el modal de reporte de ventas
+const sampleSalesData: RrppSalesRow[] = [
+  {
+    event: 'Underground Techno Night',
+    ticketId: 'TKT-001',
+    fullName: 'Ana García Rodríguez',
+    email: 'ana.garcia@email.com',
+    ticketType: 'VIP',
+    value: 120,
+    paymentMethod: 'Credit Card',
+    status: 'Valid',
+    purchaseDate: '14/7/2024',
+  },
+  {
+    event: 'Latin Beats Festival',
+    ticketId: 'TKT-002',
+    fullName: 'Carlos Mendoza Silva',
+    email: 'carlos.mendoza@email.com',
+    ticketType: 'General',
+    value: 80,
+    paymentMethod: 'Debit Card',
+    status: 'Used',
+    purchaseDate: '17/7/2024',
+  },
+  {
+    event: 'Underground Techno Night',
+    ticketId: 'TKT-003',
+    fullName: 'María José López',
+    email: 'maria.lopez@email.com',
+    ticketType: 'Early Bird',
+    value: 60,
+    paymentMethod: 'PayPal',
+    status: 'Valid',
+    purchaseDate: '9/7/2024',
+  },
+  {
+    event: 'Summer Electronic Festival',
+    ticketId: 'TKT-004',
+    fullName: 'Roberto Fernández',
+    email: 'roberto.fernandez@email.com',
+    ticketType: 'VIP',
+    value: 120,
+    paymentMethod: 'Bank Transfer',
+    status: 'Expired',
+    purchaseDate: '24/6/2024',
+  },
+  {
+    event: 'Underground Techno Night',
+    ticketId: 'TKT-005',
+    fullName: 'Laura Martínez',
+    email: 'laura.martinez@email.com',
+    ticketType: 'General',
+    value: 80,
+    paymentMethod: 'Credit Card',
+    status: 'Valid',
+    purchaseDate: '12/7/2024',
+  },
+  {
+    event: 'Latin Beats Festival',
+    ticketId: 'TKT-006',
+    fullName: 'Diego Ramírez',
+    email: 'diego.ramirez@email.com',
+    ticketType: 'Early Bird',
+    value: 60,
+    paymentMethod: 'PayPal',
+    status: 'Used',
+    purchaseDate: '15/7/2024',
+  },
+];
+
 export const SubRrpp = () => {
+  const [selectedRrpp, setSelectedRrpp] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddSubRrppModalOpen, setIsAddSubRrppModalOpen] = useState(false);
+
+  const handleViewSalesReport = (rrppName: string) => {
+    setSelectedRrpp(rrppName);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRrpp('');
+  };
+
+  const handleExportCsv = () => {
+    // Implementar lógica de exportación CSV
+    console.log('Exporting CSV for:', selectedRrpp);
+  };
+
+  const handleAddSubRrpp = (
+    email: string,
+    selectedEvents: string[],
+    enableCashSales: boolean
+  ) => {
+    // Implementar lógica para agregar Sub RRPP
+    console.log('Adding Sub RRPP:', {
+      email,
+      selectedEvents,
+      enableCashSales,
+    });
+    // Aquí se podría hacer una llamada a la API para guardar el nuevo Sub RRPP
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 xl:px-12">
       <div className="flex justify-between items-center mb-6 max-[700px]:flex-col max-[700px]:items-stretch max-[700px]:gap-3">
         <h2 className="text-2xl font-bold text-white">Sub RRPPs</h2>
-        <button className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md flex items-center gap-2 max-[700px]:w-full max-[700px]:justify-center">
+        <button
+          className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md flex items-center gap-2 max-[700px]:w-full max-[700px]:justify-center"
+          onClick={() => setIsAddSubRrppModalOpen(true)}
+        >
           <UserPlus size={16} /> Add Sub RRPP
         </button>
       </div>
@@ -71,12 +213,36 @@ export const SubRrpp = () => {
           </div>
 
           <div className="col-[2] row-[2] flex items-center justify-end ">
-            <button className=" bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md">
+            <button
+              className=" bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md"
+              onClick={() => handleViewSalesReport(rrpp.name)}
+            >
               View Sales Report
             </button>
           </div>
         </div>
       ))}
+
+      {/* Sales Report Modal */}
+      <RrppSalesReportModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        rrppName={selectedRrpp || ''}
+        rows={sampleSalesData}
+        totals={{
+          revenue: 580,
+          sales: 6,
+        }}
+        onExportCsv={handleExportCsv}
+      />
+
+      {/* Add Sub RRPP Modal */}
+      <AddSubRrppModal
+        isOpen={isAddSubRrppModalOpen}
+        onClose={() => setIsAddSubRrppModalOpen(false)}
+        events={sampleEvents}
+        onAddSubRrpp={handleAddSubRrpp}
+      />
     </div>
   );
 };

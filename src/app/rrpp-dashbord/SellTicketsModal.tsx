@@ -75,7 +75,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
           <div className="flex flex-col">
             <h3 className="text-2xl font-bold text-white">Sell Tickets</h3>
             <p className="text-sm text-gray-300">{eventName}</p>
-            <p className="text-xs text-purple-300 mt-1">
+            <p className="text-xs text-[#3BAFBB] mt-1">
               {ticketsLeft} tickets remaining
             </p>
           </div>

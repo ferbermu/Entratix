@@ -51,8 +51,6 @@ export default function MyTicketsPage() {
         {tickets.map((ticket, idx) => (
           <CardTicket key={idx} {...ticket} />
         ))}
-      </div>
-      <div>
         <TotalTickets />
       </div>
     </div>

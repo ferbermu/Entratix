@@ -15,6 +15,7 @@ import {
   ChartBar,
   UserPlus,
   SignIn,
+  User,
 } from '@phosphor-icons/react';
 import cn from 'classnames';
 
@@ -32,6 +33,7 @@ export const Navbar = () => {
   const isMyTickets = pathname?.startsWith('/my-tickets');
   const isCreateEvent = pathname?.startsWith('/create-event');
   const isRrpp = pathname?.startsWith('/rrpp-dashbord');
+  const isProfile = pathname?.startsWith('/profile');
   const isRegister = pathname?.startsWith('/register');
   const isLoginPath = pathname?.startsWith('/login');
 
@@ -118,6 +120,14 @@ export const Navbar = () => {
                 onClick={() => {}}
                 className={cn(hoverClass, { [activeClass]: isRrpp })}
                 icon={<ChartBar size={20} className="text-[#3BAFBB] " />}
+              />
+            </Link>
+            <Link href="/profile">
+              <Navbutton
+                text="Profile"
+                onClick={() => {}}
+                className={cn(hoverClass, { [activeClass]: isProfile })}
+                icon={<User size={20} className="text-[#3BAFBB]" />}
               />
             </Link>
           </div>
