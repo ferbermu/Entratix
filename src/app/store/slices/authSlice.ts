@@ -27,8 +27,10 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await authService.login(credentials);
       return response;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error en el login');
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error en el login';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -40,8 +42,10 @@ export const verifyUserToken = createAsyncThunk(
     try {
       const response = await authService.verifyToken();
       return response;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error verificando token');
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error verificando token';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -53,8 +57,10 @@ export const logoutUser = createAsyncThunk(
     try {
       await authService.logout();
       return true;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error en el logout');
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error en el logout';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -79,13 +85,15 @@ export const checkInitialAuth = createAsyncThunk(
         }
       }
       throw new Error('No hay usuario autenticado');
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Limpiar estado en caso de error
       authService.clearToken();
       authService.clearCurrentUser();
-      return rejectWithValue(
-        error.message || 'Error verificando autenticación'
-      );
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Error verificando autenticación';
+      return rejectWithValue(errorMessage);
     }
   }
 );

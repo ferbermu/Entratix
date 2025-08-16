@@ -1,34 +1,37 @@
-import { useAuthContext } from '../contexts/AuthContext';
+import { useAppSelector } from '../store/hooks';
 
 /**
- * Hook para acceder al estado de autenticación global
- * Este hook debe ser usado dentro de un AuthProvider
+ * Hook para acceder al estado de autenticación global usando Redux
+ * Este hook debe ser usado dentro de un Redux Provider
  */
 export const useAuthState = () => {
-  const auth = useAuthContext();
+  const { user, isAuthenticated, isLoading, error } = useAppSelector(
+    state => state.auth
+  );
 
   return {
     // Estado de autenticación
-    user: auth.user,
-    isAuthenticated: auth.isAuthenticated,
-    isLoading: auth.isLoading,
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
 
-    // Acciones de autenticación
-    login: auth.login,
-    logout: auth.logout,
-    verifyToken: auth.verifyToken,
+    // Acciones de autenticación (estas se manejan a través de useAuthRedux)
+    // login: auth.login,
+    // logout: auth.logout,
+    // verifyToken: auth.verifyToken,
 
     // Utilidades
-    isUser: auth.user?.role === 'user',
-    isProducer: auth.user?.role === 'producer',
-    isAdmin: auth.user?.role === 'admin',
-    hasRole: (role: string) => auth.user?.role === role,
-    hasAnyRole: (roles: string[]) => roles.includes(auth.user?.role || ''),
+    isUser: user?.role === 'user',
+    isProducer: user?.role === 'producer',
+    isAdmin: user?.role === 'admin',
+    hasRole: (role: string) => user?.role === role,
+    hasAnyRole: (roles: string[]) => roles.includes(user?.role || ''),
 
     // Información del usuario
-    userName: auth.user?.name || '',
-    userEmail: auth.user?.email || '',
-    userId: auth.user?.id,
-    tenantId: auth.user?.tenantId,
+    userName: user?.name || '',
+    userEmail: user?.email || '',
+    userId: user?.id,
+    tenantId: user?.tenantId,
   };
 };

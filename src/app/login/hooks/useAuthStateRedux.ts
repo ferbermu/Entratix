@@ -30,3 +30,4 @@ export const useAuthStateRedux = () => {
     tenantId: user?.tenantId,
   };
 };
+

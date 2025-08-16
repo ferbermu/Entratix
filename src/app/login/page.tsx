@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { LoginPage } from './LoginPage';
 
-export default function RegisterPage() {
+export default function LoginPageWrapper() {
   const [date, setDate] = useState<DateRange | undefined>();
   return (
     <div>

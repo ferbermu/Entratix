@@ -1,4 +1,3 @@
-// Interfaces para tipar las respuestas del backend
 export interface LoginUserDto {
   email: string;
   password: string;

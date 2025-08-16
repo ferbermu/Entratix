@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { MusicNotes, EnvelopeSimple, GoogleLogo } from '@phosphor-icons/react';
 import { InputPassword } from '@/register/InputPassword';
