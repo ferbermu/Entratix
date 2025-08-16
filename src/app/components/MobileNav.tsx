@@ -2,20 +2,18 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-
-interface MobileNavProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onLogin: () => void;
-  onSignup: () => void;
-}
+import { useAuthRedux } from '../login/hooks/useAuthRedux';
+import { User, SignOut } from '@phosphor-icons/react';
 
 export const MobileNav = ({
   isOpen,
   onClose,
-  onLogin,
-  onSignup,
-}: MobileNavProps) => {
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const { user, isAuthenticated, logout } = useAuthRedux();
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -85,27 +83,42 @@ export const MobileNav = ({
               </Link>
             </nav>
 
-            <div className="flex flex-col gap-4 w-full  px-12">
-              <Link
-                href="/login"
-                onClick={() => {
-                  onLogin();
-                  onClose();
-                }}
-                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => {
-                  onSignup();
-                  onClose();
-                }}
-                className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
-              >
-                Sign Up
-              </Link>
+            <div className="flex flex-col gap-4 w-full px-12">
+              {!isAuthenticated ? (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={onClose}
+                    className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={onClose}
+                    className="w-full px-6 py-3 text-center text-[#3BAFBB] border border-[#3BAFBB] rounded-lg hover:bg-[#3BAFBB]/10 transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-center gap-2 py-3 text-white">
+                    <User size={20} className="text-[#3BAFBB]" />
+                    <span>{user?.name}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      onClose();
+                    }}
+                    className="w-full px-6 py-3 text-center text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    <SignOut size={20} />
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

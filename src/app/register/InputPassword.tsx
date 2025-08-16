@@ -11,6 +11,7 @@ interface InputPasswordProps {
   className?: string;
   placeholderClassName?: string;
   iconColor?: string;
+  disabled?: boolean;
 }
 
 export const InputPassword: React.FC<InputPasswordProps> = ({
@@ -23,6 +24,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
   className = '',
   placeholderClassName = 'placeholder-[#3BAFBB]',
   iconColor = 'text-[#3BAFBB]',
+  disabled = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -46,7 +48,8 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white ${placeholderClassName} focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix`}
+          disabled={disabled}
+          className={`w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white ${placeholderClassName} focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix disabled:opacity-50`}
         />
         {showToggle && (
           <button

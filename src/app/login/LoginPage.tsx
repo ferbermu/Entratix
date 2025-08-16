@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MusicNotes, EnvelopeSimple, GoogleLogo } from '@phosphor-icons/react';
 import { InputPassword } from '@/register/InputPassword';
 import { DateRange } from 'react-day-picker';
+import { useLogin } from './hooks/useLogin';
 
 interface LoginPageProps {
   date: DateRange | undefined;
@@ -9,8 +10,21 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    email,
+    password,
+    error,
+    isSubmitting,
+    handleEmailChange,
+    handlePasswordChange,
+    handleSubmit,
+  } = useLogin();
+
+  const handleGoogleLogin = () => {
+    // TODO: Implementar login con Google
+    // Por ahora solo mostramos un mensaje
+    console.log('Login con Google no implementado aún');
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 ">
@@ -25,7 +39,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
           </p>
         </div>
 
-        <form className="space-y-6">
+        {/* Mostrar error si existe */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+            <p className="text-red-400 text-sm text-center">{error}</p>
+          </div>
+        )}
+
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <label
               htmlFor="email"
@@ -43,8 +64,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
                 id="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                onChange={e => handleEmailChange(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix disabled:opacity-50"
               />
             </div>
           </div>
@@ -57,7 +79,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
               placeholderClassName="placeholder-[#3BAFBB]"
               iconColor="text-[#3BAFBB]"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => handlePasswordChange(e.target.value)}
+              disabled={isSubmitting}
             />
             <div className="text-right text-sm mt-2">
               <a href="#" className="text-[#3BAFBB] hover:underline">
@@ -68,20 +91,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
 
           <button
             type="submit"
-            className="cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out"
+            disabled={isSubmitting}
+            className="cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: '#3BAFBB',
               boxShadow: '0 4px 15px rgba(59, 175, 187, 0.4)',
             }}
           >
-            Sign in
+            {isSubmitting ? 'Iniciando sesión...' : 'Sign in'}
           </button>
 
           <div className="text-center text-gray-400">or</div>
 
           <button
             type="button"
-            className="cursor-pointer w-full flex items-center justify-center py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white font-semibold mb-4 hover:bg-[#3BAFBB] hover:text-white transition duration-300 ease-in-out"
+            onClick={handleGoogleLogin}
+            disabled={isSubmitting}
+            className="cursor-pointer w-full flex items-center justify-center py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white font-semibold mb-4 hover:bg-[#3BAFBB] hover:text-white transition duration-300 ease-in-out disabled:opacity-50"
           >
             <GoogleLogo size={24} weight="fill" className="mr-3 " />
             Continue with Google

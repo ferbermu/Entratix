@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
 import { MobileSearch } from './MobileSearch';
+import { useAuthRedux } from '../login/hooks/useAuthRedux';
 import {
   Ticket,
   CalendarPlus,
@@ -16,6 +17,7 @@ import {
   UserPlus,
   SignIn,
   User,
+  SignOut,
 } from '@phosphor-icons/react';
 import cn from 'classnames';
 
@@ -24,6 +26,7 @@ export const Navbar = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const pathname = usePathname();
+  const { user, isAuthenticated, logout, isLoading } = useAuthRedux();
 
   const activeClass =
     'bg-[#3baebb32] !border-[#3BAFBB] rounded-md text-[#3BAFBB]';
@@ -134,46 +137,76 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-6 max-[870px]:hidden">
-          <Link href="/register">
-            <Navbutton
-              className={cn('text-white text-lg', hoverClass, {
-                [activeClass]: isRegister,
-              })}
-              text="Sign up"
-              onClick={handleSignup}
-              icon={<UserPlus size={20} className="text-[#3BAFBB]" />}
-            />
-          </Link>
-          <Link href="/login">
-            <Navbutton
-              className={cn(
-                'bg-[#3baebb32] rounded-md border border-transparent text-[#3BAFBB] text-lg',
-                hoverClass,
-                { [activeClass]: isLoginPath }
-              )}
-              text="Login"
-              onClick={handleLogin}
-              icon={<SignIn size={20} className="text-[#3BAFBB]" />}
-            />
-          </Link>
+          {isLoading ? (
+            <div className="flex items-center space-x-2 text-white">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <span>Cargando...</span>
+            </div>
+          ) : !isAuthenticated ? (
+            <>
+              <Link href="/register">
+                <Navbutton
+                  className={cn('text-white text-lg', hoverClass, {
+                    [activeClass]: isRegister,
+                  })}
+                  text="Sign up"
+                  onClick={handleSignup}
+                  icon={<UserPlus size={20} className="text-[#3BAFBB]" />}
+                />
+              </Link>
+              <Link href="/login">
+                <Navbutton
+                  className={cn(
+                    'bg-[#3baebb32] rounded-md border border-transparent text-[#3BAFBB] text-lg',
+                    hoverClass,
+                    { [activeClass]: isLoginPath }
+                  )}
+                  text="Login"
+                  onClick={handleLogin}
+                  icon={<SignIn size={20} className="text-[#3BAFBB]" />}
+                />
+              </Link>
+            </>
+          ) : (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-2 text-white">
+                <User size={20} className="text-[#3BAFBB]" />
+                <span className="text-white">{user?.name}</span>
+              </div>
+              <button
+                onClick={logout}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                title="Cerrar sesión"
+              >
+                <SignOut size={20} />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
         </div>
         <div className="flex gap-2 items-center min-[870px]:hidden">
-          <MobileNavButton
-            icon={iconChange('/assets/icons/nav_bar/search.svg', true)}
-            onClick={toggleMobileSearch}
-          />
-          <MobileNavButton
-            icon={iconChange('/assets/icons/nav_bar/vector.svg')}
-            onClick={toggleMobileNav}
-          />
+          {isLoading ? (
+            <div className="flex items-center space-x-2 text-white">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            </div>
+          ) : (
+            <>
+              <MobileNavButton
+                icon={iconChange('/assets/icons/nav_bar/search.svg', true)}
+                onClick={toggleMobileSearch}
+              />
+              <MobileNavButton
+                icon={iconChange('/assets/icons/nav_bar/vector.svg')}
+                onClick={toggleMobileNav}
+              />
+            </>
+          )}
         </div>
       </nav>
       {isMobileNavOpen && window.innerWidth < 870 && (
         <MobileNav
           isOpen={isMobileNavOpen}
           onClose={() => setIsMobileNavOpen(false)}
-          onLogin={handleLogin}
-          onSignup={handleSignup}
         />
       )}
 
