@@ -2,7 +2,7 @@ import React from 'react';
 
 export const TotalTickets = () => {
   return (
-    <div className="col-span-2 bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-xl w-full">
+    <div className="col-span-2 bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-xl w-full mb-16">
       <div className="px-8 py-4 border-b border-[#3BAFBB]">
         <div className="text-lg font-semibold text-[#3BAFBB] text-center">
           Your Event Stats
