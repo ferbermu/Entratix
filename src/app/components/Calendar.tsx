@@ -72,12 +72,15 @@ function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          'relative has-focus:border-ring border border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] rounded-md',
+          'relative bg-[#3BAFBB1A] text-[#3BAFBB1A] text-sm shadow-none rounded-lg ', // agregamos bg y text, reducimos tamaño
           defaultClassNames.dropdown_root
         ),
-        dropdown: cn('absolute inset-0 opacity-0', defaultClassNames.dropdown),
+        dropdown: cn(
+          'absolute inset-0 opacity-0 bg-[#1C1A1A] text-[#3BAFBB] text-sm ',
+          defaultClassNames.dropdown
+        ),
         caption_label: cn(
-          'select-none font-medium',
+          ' font-medium text-[#3BAFBB]  px-2 py-1 ',
           captionLayout === 'label'
             ? 'text-sm max-[700px]:text-xs'
             : 'rounded-md pl-2 pr-1 flex items-center gap-1 text-sm max-[700px]:text-xs h-8 [&>svg]:text-muted-foreground [&>svg]:size-3.5',
