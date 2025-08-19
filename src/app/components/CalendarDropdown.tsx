@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDown, X } from '@phosphor-icons/react';
 import { Calendar } from './Calendar';
 import { es } from 'date-fns/locale';
 import { format } from 'date-fns';
@@ -11,6 +11,7 @@ interface CalendarDropdownProps {
   onDateChange: (date: DateRange | undefined) => void;
   width?: string;
   location?: 'right' | 'left' | 'center';
+  customIcon?: React.ReactNode;
 }
 
 export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
@@ -21,18 +22,22 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+
   const locationClass =
     location === 'right'
       ? 'right-0'
       : location === 'center'
       ? 'left-1/2 -translate-x-1/2'
       : 'left-0';
-  // Cierra el calendario si se hace click fuera
+
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         calendarRef.current &&
-        !calendarRef.current.contains(event.target as Node)
+        !calendarRef.current.contains(event.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(event.target as Node)
       ) {
         setIsCalendarOpen(false);
       }
@@ -43,12 +48,20 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
     };
   }, []);
 
+  // Determinar el texto a mostrar
+  const displayText = date?.from
+    ? date.to
+      ? `${format(date.from, 'dd/MM/yyyy')} - ${format(date.to, 'dd/MM/yyyy')}`
+      : format(date.from, 'dd/MM/yyyy')
+    : 'Date';
+
   return (
-    <div className="relative w-full">
-      <button
-        type="button"
-        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-        className="cursor-pointer border-l-[#3BAFBB33] flex items-center gap-3 pl-2 w-full justify-between"
+    <div className="relative w-full h-full">
+      {/* Trigger */}
+      <div
+        ref={triggerRef}
+        onClick={() => setIsCalendarOpen(prev => !prev)}
+        className={`h-full flex items-center py-1 gap-3 pl-2 pr-2 ${width} cursor-pointer border-l-[#3BAFBB33]`}
       >
         <Image
           src="/assets/icons/search_bar/calendar_month.svg"
@@ -56,25 +69,36 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
           width={16}
           height={16}
         />
-        <input
-          type="text"
-          placeholder="Date"
-          value={
-            date?.from
-              ? date.to
-                ? `${format(date.from, 'dd/MM/yyyy')} - ${format(
-                    date.to,
-                    'dd/MM/yyyy'
-                  )}`
-                : format(date.from, 'dd/MM/yyyy')
-              : ''
-          }
-          readOnly
-          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer"
-          onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-        />
-        <CaretDown className="text-[#3BAFBB]" size={32} />
-      </button>
+
+        {/* 👇 AQUÍ ESTÁ EL CAMBIO PRINCIPAL 👇 */}
+        {/* Reemplazamos el <input> por un <p> para un estilo idéntico */}
+        <p className="flex-1 min-w-0 text-left truncate">
+          <span
+            className={
+              date?.from
+                ? 'text-[#3BAFBB]' // Color del valor seleccionado
+                : 'text-[#3BAFBB]/70' // Color del placeholder (con opacidad para diferenciar)
+            }
+          >
+            {displayText}
+          </span>
+        </p>
+
+        {date?.from ? (
+          <X
+            size={20}
+            className="text-[#3BAFBB] cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              onDateChange(undefined);
+            }}
+          />
+        ) : (
+          <CaretDown className="text-[#3BAFBB]" size={20} />
+        )}
+      </div>
+
+      {/* Dropdown */}
       {isCalendarOpen && (
         <div
           ref={calendarRef}

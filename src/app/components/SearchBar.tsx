@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { type DateRange } from 'react-day-picker';
 import { LocationDropdown } from './LocationDropdown';
 import { CalendarDropdown } from './CalendarDropdown';
+import { XCircle } from '@phosphor-icons/react';
 
 interface SearchBarProps {
   onFilterChange: (filters: {
@@ -53,9 +54,13 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
   }, [searchTerm, date, location, onFilterChange]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+    setSearchTerm(e.target.value);
   };
+
+  const handleClearSearch = () => setSearchTerm('');
+  const handleClearDate = () => setDate(undefined);
+  const handleClearLocation = () => setLocation('');
+
   const handleDateSelect = (selectedDate: DateRange | undefined) => {
     setDate(selectedDate);
   };
@@ -83,7 +88,8 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
           }
         `}
       >
-        <div className="flex items-center gap-3 w-full">
+        {/* Search Input */}
+        <div className="flex items-center gap-2 w-full relative">
           <Image
             src="/assets/icons/search_bar/search.svg"
             alt="search"
@@ -97,18 +103,52 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
             placeholder="Search Event"
             className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent"
           />
+          {searchTerm && (
+            <button
+              onClick={handleClearSearch}
+              className="absolute right-2 text-[#3BAFBB] hover:text-white"
+            >
+              <XCircle size={20} weight="bold" />
+            </button>
+          )}
         </div>
-        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-3 justify-center pl-2 w-full">
+
+        {/* CalendarDropdown con X en vez de caret */}
+        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-2 justify-center pl-2 w-full">
           <CalendarDropdown
             width="w-full"
             date={date}
             onDateChange={handleDateSelect}
+            customIcon={
+              date ? (
+                <button onClick={handleClearDate}>
+                  <XCircle
+                    size={20}
+                    className="text-[#3BAFBB] hover:text-white"
+                  />
+                </button>
+              ) : undefined
+            }
           />
         </div>
-        <LocationDropdown
-          selectedValue={location}
-          onValueChange={setLocation}
-        />
+
+        {/* LocationDropdown con X en vez de caret */}
+        <div className="relative w-full">
+          <LocationDropdown
+            selectedValue={location}
+            onValueChange={setLocation}
+            customIcon={
+              location ? (
+                <button onClick={handleClearLocation}>
+                  <XCircle
+                    size={20}
+                    className="text-[#3BAFBB] hover:text-white"
+                  />
+                </button>
+              ) : undefined
+            }
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { CaretDown } from '@phosphor-icons/react';
 import { Calendar } from './Calendar';
@@ -18,10 +20,13 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
   onDateChange,
   width = 'w-full',
   location = 'left',
-  placeholder = 'Date of Birth', // Placeholder por defecto
+  placeholder = 'Date of Birth',
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(date);
+  const [month, setMonth] = useState<Date>(date || new Date());
   const calendarRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
   const locationClass =
     location === 'right'
@@ -30,32 +35,35 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
       ? 'left-1/2 -translate-x-1/2'
       : 'left-0';
 
-  // Close calendar when clicking outside
-  React.useEffect(() => {
+  // Cierra el calendario si se hace click fuera (excepto en el trigger)
+  useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         calendarRef.current &&
-        !calendarRef.current.contains(event.target as Node)
+        !calendarRef.current.contains(event.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(event.target as Node)
       ) {
         setIsCalendarOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleDateSelect = (selectedDate: Date | undefined) => {
-    onDateChange(selectedDate);
+  const handleDateSelect = (date: Date | undefined) => {
+    setSelectedDate(date);
+    setMonth(date || new Date());
+    onDateChange(date);
     setIsCalendarOpen(false);
   };
 
   return (
     <div className="relative w-full">
-      <button
-        type="button"
-        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+      {/* Trigger */}
+      <div
+        ref={triggerRef}
+        onClick={() => setIsCalendarOpen(prev => !prev)}
         className="cursor-pointer border-l-[#3BAFBB33] flex items-center gap-3 pl-2 w-full justify-between"
       >
         <Image
@@ -67,22 +75,26 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
         <input
           type="text"
           placeholder={placeholder}
-          value={date ? format(date, 'dd/MM/yyyy') : ''}
+          value={selectedDate ? format(selectedDate, 'dd/MM/yyyy') : ''}
           readOnly
           className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer"
-          onClick={() => setIsCalendarOpen(!isCalendarOpen)}
         />
         <CaretDown className="text-[#3BAFBB]" size={32} />
-      </button>
+      </div>
+
+      {/* Dropdown */}
       {isCalendarOpen && (
         <div
           ref={calendarRef}
-          className={`bg-[#1C1A1A] ${width} ${locationClass} absolute top-full mt-5 ml-1.5 z-50 transform transition-all max-[1200px]:w-full max-[970px]:w-1/2 max-[700px]:w-full shadow-lg `}
+          className={`bg-[#1C1A1A] ${width} ${locationClass} absolute top-full mt-2 ml-1.5 z-50 transform transition-all duration-200 ease-in-out opacity-100 scale-100 shadow-lg`}
         >
           <Calendar
             mode="single"
-            selected={date}
+            selected={selectedDate}
             onSelect={handleDateSelect}
+            month={month}
+            onMonthChange={setMonth}
+            captionLayout="dropdown"
             className="rounded-md border w-full bg-[#3BAFBB1A] text-[#3BAFBB] border-[#3BAFBB] shadow-xl"
             locale={es}
             showOutsideDays={false}

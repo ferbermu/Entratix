@@ -13,6 +13,7 @@ export interface ArtistSocialLinks {
   url: string;
   icon: string;
 }
+
 export const EventArtist = ({
   photo,
   name,
@@ -20,9 +21,11 @@ export const EventArtist = ({
   artistSocialLinks,
 }: EventArtistProps) => {
   return (
-    <div className=" w-full flex flex-col py-6">
-      <div className="flex justify-between items-center">
-        <div className="flex gap-4 items-center">
+    <div className="w-full flex flex-col py-6">
+      {/* Contenedor principal */}
+      <div className="flex justify-between items-center max-[400px]:flex-col max-[400px]:items-center gap-2">
+        {/* Foto + Nombre + Descripción */}
+        <div className="flex gap-4 items-center max-[400px]:flex-col">
           <Image
             className="w-12 h-12 rounded-full object-cover"
             src={photo}
@@ -30,14 +33,18 @@ export const EventArtist = ({
             width={48}
             height={48}
           />
-          <div className="flex flex-col gap">
-            <span className="text-md text-start text-white">{name}</span>
-            <span className="text-xs text-start text-gray-200">
+          <div className="flex flex-col max-[400px]:items-center">
+            <span className="text-md text-white max-[400px]:text-center">
+              {name}
+            </span>
+            <span className="text-xs text-gray-200 max-[400px]:text-center">
               {description}
             </span>
           </div>
         </div>
-        <div className="flex gap-4">
+
+        {/* Links Sociales */}
+        <div className="flex gap-4 max-[400px]:mt-2 max-[400px]:justify-center max-[400px]:w-full">
           {artistSocialLinks.map((socialLink, key) => (
             <Link
               key={key}

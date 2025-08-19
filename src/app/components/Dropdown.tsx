@@ -1,7 +1,4 @@
-'use client';
-
-import React, { useState, useRef, useEffect } from 'react';
-import { CaretDown } from '@phosphor-icons/react';
+import React, { useState, useRef, useEffect, ReactNode } from 'react';
 
 interface DropdownProps {
   options: string[];
@@ -9,66 +6,84 @@ interface DropdownProps {
   onValueChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  customIcon?: ReactNode;
 }
 
-export const Dropdown = ({
+export const Dropdown: React.FC<DropdownProps> = ({
   options,
   selectedValue,
   onValueChange,
-  placeholder = 'Select an option',
-  className,
-}: DropdownProps) => {
+  placeholder = 'Select',
+  className = '',
+  customIcon,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
-    };
+    }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  const handleSelect = (option: string) => {
-    onValueChange(option);
-    setIsOpen(false);
-  };
-
   return (
-    <div ref={dropdownRef} className={`relative w-full ${className ?? ''}`}>
+    <div ref={dropdownRef} className={`relative ${className}`}>
+      {/* Trigger */}
       <div
-        className="relative cursor-pointer flex items-center w-full"
+        className="flex items-center justify-between cursor-pointer 
+                   text-[#3BAFBB] bg-[#1C1A1A] border border-[#3BAFBB66] 
+                   rounded-lg px-3 py-2 hover:border-[#3BAFBB] transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={selectedValue}
-          readOnly
-          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer min-w-0"
-        />
-        <CaretDown className="text-[#3BAFBB]" size={30} />
+        <span className="truncate text-sm">{selectedValue || placeholder}</span>
+        {customIcon ? (
+          customIcon
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-[#3BAFBB]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        )}
       </div>
+
+      {/* Options */}
       {isOpen && (
-        <div className="absolute w-full top-full left-0 mt-5 z-50 bg-[#1C1A1A] border border-[#3BAFBB] rounded-lg shadow-lg">
-          <ul className="max-h-60 overflow-y-auto">
-            {options.map(option => (
-              <li
-                key={option}
-                className="p-2 text-[#3BAFBB] hover:bg-[#3BAFBB33] cursor-pointer"
-                onClick={() => handleSelect(option)}
-              >
-                {option}
-              </li>
-            ))}
-          </ul>
+        <div
+          className="absolute z-10 mt-2 w-full bg-[#1E1E1E] border border-[#3BAFBB66] 
+                        rounded-lg shadow-lg max-h-60 overflow-y-auto"
+        >
+          {options.map(option => (
+            <div
+              key={option}
+              className="px-3 py-2 text-sm text-[#E0E0E0] cursor-pointer 
+                         hover:bg-[#3BAFBB33] hover:text-white transition-colors"
+              onClick={() => {
+                onValueChange(option);
+                setIsOpen(false);
+              }}
+            >
+              {option}
+            </div>
+          ))}
         </div>
       )}
     </div>

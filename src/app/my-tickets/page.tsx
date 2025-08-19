@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Header } from './Header';
-import { type DateRange } from 'react-day-picker';
+
 import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
 import { TotalTickets } from './TotalTickets';

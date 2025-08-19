@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Dropdown } from './Dropdown';
+import { X } from '@phosphor-icons/react';
 
 const departments = [
   'Artigas',
@@ -28,6 +29,7 @@ interface LocationDropdownProps {
   selectedValue: string;
   onValueChange: (value: string) => void;
   width?: string;
+  customIcon?: React.ReactNode; // 👈 NUEVO
 }
 
 export const LocationDropdown: React.FC<LocationDropdownProps> = ({
@@ -50,6 +52,18 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
       onValueChange={onValueChange}
       placeholder="Location"
       className="flex-1 min-w-0"
+      customIcon={
+        selectedValue ? (
+          <X
+            size={20}
+            className="text-[#3BAFBB] cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              onValueChange(''); // 🔥 resetea valor
+            }}
+          />
+        ) : undefined
+      }
     />
   </div>
 );

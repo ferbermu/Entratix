@@ -207,3 +207,33 @@
   outline: none;
   box-shadow: 0 0 0 2px rgba(59, 175, 187, 0.5); /* Teal focus ring */
 }
+/* Aplica a todos los inputs, textareas y selects que usan autofill */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-input) inset !important;
+  -webkit-text-fill-color: var(--color-foreground) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Opcional: Para hover, focus y active */
+input:-webkit-autofill:hover,
+textarea:-webkit-autofill:hover,
+select:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-input) inset !important;
+  -webkit-text-fill-color: var(--color-foreground) !important;
+}
+
+/* Firefox */
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+  box-shadow: 0 0 0px 1000px var(--color-input) inset !important;
+  -moz-text-fill-color: var(--color-foreground) !important;
+}
