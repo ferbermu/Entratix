@@ -1,3 +1,4 @@
+import { CaretDown } from '@phosphor-icons/react';
 import React, { useState, useRef, useEffect, ReactNode } from 'react';
 
 interface DropdownProps {
@@ -41,27 +42,14 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <div
         className="flex items-center justify-between cursor-pointer 
                    text-[#3BAFBB] bg-[#1C1A1A] border border-[#3BAFBB66] 
-                   rounded-lg px-3 py-2 hover:border-[#3BAFBB] transition-colors"
+                   rounded-md px-4 py-2 hover:border-[#3BAFBB] transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="truncate text-sm">{selectedValue || placeholder}</span>
+        <span className="truncate text-md">{selectedValue || placeholder}</span>
         {customIcon ? (
           customIcon
         ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-[#3BAFBB]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+          <CaretDown className="text-[#3BAFBB]" size={20} />
         )}
       </div>
 

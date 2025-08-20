@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { type DateRange } from 'react-day-picker';
 import { LocationDropdown } from './LocationDropdown';
 import { CalendarDropdown } from './CalendarDropdown';
-import { XCircle } from '@phosphor-icons/react';
+import { X } from '@phosphor-icons/react';
 
 interface SearchBarProps {
   onFilterChange: (filters: {
@@ -89,64 +89,58 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
         `}
       >
         {/* Search Input */}
-        <div className="flex items-center gap-2 w-full relative">
+        <div className="flex items-center gap-2 w-full">
+          {/* Icono fuera del recuadro */}
           <Image
             src="/assets/icons/search_bar/search.svg"
             alt="search"
-            width={16}
-            height={16}
+            width={18}
+            height={18}
+            className="text-[#3BAFBB]"
           />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearch}
-            placeholder="Search Event"
-            className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent"
-          />
-          {searchTerm && (
-            <button
-              onClick={handleClearSearch}
-              className="absolute right-2 text-[#3BAFBB] hover:text-white"
-            >
-              <XCircle size={20} weight="bold" />
-            </button>
-          )}
+
+          {/* Input con mismo estilo que Calendar/Location */}
+          <div
+            className=" cursor-pointer
+      flex items-center justify-between gap-2 px-4 py-2 rounded-md w-full
+      bg-[#1C1A1A] border border-[#3BAFBB66] hover:border-[#3BAFBB]
+    "
+          >
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Search Event"
+              className="
+        placeholder:text-[#3BAFBB] text-[#3BAFBB]
+        bg-transparent outline-none w-full
+      "
+            />
+
+            {/* Clear Button */}
+            {searchTerm && (
+              <button
+                onClick={handleClearSearch}
+                className="text-[#3BAFBB] hover:text-white"
+              >
+                <X size={18} className="cursor-pointer" />
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* CalendarDropdown con X en vez de caret */}
-        <div className="relative border-l-[#3BAFBB33] border-l-2 flex items-center gap-2 justify-center pl-2 w-full">
+        <div className="relative  border-l-[#3BAFBB33] border-l-2 flex items-center gap-2 justify-center pl-2 w-full">
           <CalendarDropdown
             width="w-full"
             date={date}
             onDateChange={handleDateSelect}
-            customIcon={
-              date ? (
-                <button onClick={handleClearDate}>
-                  <XCircle
-                    size={20}
-                    className="text-[#3BAFBB] hover:text-white"
-                  />
-                </button>
-              ) : undefined
-            }
           />
         </div>
 
-        {/* LocationDropdown con X en vez de caret */}
         <div className="relative w-full">
           <LocationDropdown
             selectedValue={location}
             onValueChange={setLocation}
-            customIcon={
-              location ? (
-                <button onClick={handleClearLocation}>
-                  <XCircle
-                    size={20}
-                    className="text-[#3BAFBB] hover:text-white"
-                  />
-                </button>
-              ) : undefined
-            }
           />
         </div>
       </div>
