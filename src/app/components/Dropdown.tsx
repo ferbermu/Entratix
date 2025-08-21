@@ -8,62 +8,84 @@ interface DropdownProps {
   placeholder?: string;
   className?: string;
   customIcon?: ReactNode;
+  variant?: 'default' | 'simple';
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
   selectedValue,
   onValueChange,
-  placeholder = 'Select',
+  placeholder = 'Location',
   className = '',
   customIcon,
+  variant = 'default',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
     };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <div ref={dropdownRef} className={`relative ${className}`}>
       {/* Trigger */}
-      <div
-        className="flex items-center justify-between cursor-pointer 
-                   text-[#3BAFBB] bg-[#1C1A1A] border border-[#3BAFBB66] 
-                   rounded-md px-4 py-2 hover:border-[#3BAFBB] transition-colors"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className="truncate text-md">{selectedValue || placeholder}</span>
-        {customIcon ? (
-          customIcon
-        ) : (
-          <CaretDown className="text-[#3BAFBB]" size={20} />
-        )}
-      </div>
+      {variant === 'default' ? (
+        <div
+          className="flex items-center justify-between cursor-pointer 
+                     text-[#3BAFBB] 
+                     rounded-md px-4 py-2 transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className="truncate text-md">
+            {selectedValue || placeholder}
+          </span>
+          {customIcon ?? <CaretDown className="text-[#3BAFBB]" size={20} />}
+        </div>
+      ) : (
+        <div
+          className="relative cursor-pointer flex items-center w-full"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <input
+            type="text"
+            placeholder={placeholder}
+            value={selectedValue}
+            readOnly
+            className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer min-w-0"
+          />
+          {customIcon ?? <CaretDown className="text-[#3BAFBB]" size={30} />}
+        </div>
+      )}
 
       {/* Options */}
       {isOpen && (
         <div
-          className="absolute z-10 mt-2 w-full bg-[#1E1E1E] border border-[#3BAFBB66] 
-                        rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className={`absolute z-10 mt-2 w-full max-h-60 overflow-y-auto rounded-lg shadow-lg
+          ${
+            variant === 'default'
+              ? 'bg-[#1E1E1E] border border-[#3BAFBB66]'
+              : 'bg-[#1C1A1A] border border-[#3BAFBB] mt-5'
+          }`}
         >
           {options.map(option => (
             <div
               key={option}
-              className="px-3 py-2 text-sm text-[#E0E0E0] cursor-pointer 
-                         hover:bg-[#3BAFBB33] hover:text-white transition-colors"
+              className={`cursor-pointer transition-colors
+              ${
+                variant === 'default'
+                  ? 'px-3 py-2 text-sm text-[#E0E0E0] hover:bg-[#3BAFBB33] hover:text-white'
+                  : 'p-2 text-[#3BAFBB] hover:bg-[#3BAFBB33]'
+              }`}
               onClick={() => {
                 onValueChange(option);
                 setIsOpen(false);

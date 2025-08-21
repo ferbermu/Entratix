@@ -51,7 +51,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
       selectedValue={selectedValue}
       onValueChange={onValueChange}
       placeholder="Location"
-      className="flex-1 min-w-0  "
+      className="flex-1 min-w-0 bg-[#1C1A1A]  border border-[#3BAFBB66] hover:border-[#3BAFBB] rounded-md "
       customIcon={
         selectedValue ? (
           <X

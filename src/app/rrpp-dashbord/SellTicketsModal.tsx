@@ -7,6 +7,7 @@ import {
   EnvelopeSimple,
   Ticket as TicketIcon,
 } from '@phosphor-icons/react';
+import { CustomDropdown } from './CustomDropdown';
 
 type TicketType = 'VIP' | 'General' | 'Early Bird';
 
@@ -99,7 +100,6 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
               <h4 className="text-white font-semibold">Customer Information</h4>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Full name */}
               <div className="relative">
                 <input
                   type="text"
@@ -109,7 +109,6 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   className="w-full bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
                 />
               </div>
-              {/* ID */}
               <div className="relative">
                 <input
                   type="text"
@@ -119,7 +118,6 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   className="w-full bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
                 />
               </div>
-              {/* Phone */}
               <div className="relative">
                 <Phone
                   size={18}
@@ -133,7 +131,6 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   className="w-full pl-9 bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
                 />
               </div>
-              {/* Email */}
               <div className="relative">
                 <EnvelopeSimple
                   size={18}
@@ -160,17 +157,13 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
             </div>
             <div className="grid grid-cols-1 gap-4">
               <div className="relative">
-                <select
-                  value={ticketType}
-                  onChange={e => setTicketType(e.target.value as TicketType)}
-                  className="w-full appearance-none bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
-                >
-                  {(Object.keys(TICKET_PRICES) as TicketType[]).map(t => (
-                    <option key={t} value={t} className="bg-[#1C1A1A]">
-                      {t}
-                    </option>
-                  ))}
-                </select>
+                <CustomDropdown
+                  options={(Object.keys(TICKET_PRICES) as TicketType[]).map(k =>
+                    String(k)
+                  )}
+                  selected={ticketType}
+                  onSelect={val => setTicketType(val as TicketType)}
+                />
                 <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#A3A3A3]">
                   ▾
                 </span>

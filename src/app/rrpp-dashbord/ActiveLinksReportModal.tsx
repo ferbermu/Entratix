@@ -12,6 +12,7 @@ import {
   ClockCounterClockwise,
   XCircle,
 } from '@phosphor-icons/react';
+import { CustomDropdown } from './CustomDropdown';
 
 export interface ActiveLinksRow {
   fullName: string;
@@ -40,58 +41,6 @@ export interface ActiveLinksReportModalProps {
   };
   onExportCsv?: () => void;
 }
-
-const FilterDropdown = ({
-  value,
-  options,
-  onChange,
-}: {
-  value: string;
-  options: string[];
-  onChange: (val: string) => void;
-}) => {
-  const [open, setOpen] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    const close = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node))
-        setOpen(false);
-    };
-    document.addEventListener('mousedown', close);
-    return () => document.removeEventListener('mousedown', close);
-  }, []);
-  return (
-    <div ref={ref} className="relative">
-      <button
-        className="cursor-pointer bg-[#1C2530] border border-[#2F3C4A] text-[#A3A3A3] px-4 h-11 rounded-md text-sm min-w-[180px] flex items-center justify-between gap-2"
-        onClick={() => setOpen(o => !o)}
-      >
-        <span className="truncate">{value}</span>
-        <span className="text-[#A3A3A3]">▾</span>
-      </button>
-      {open && (
-        <div className="absolute left-0 top-full mt-2 z-20 bg-[#1F2A36] border border-[#2F3C4A] rounded-md shadow-lg min-w-full">
-          {options.map(opt => (
-            <button
-              key={opt}
-              className={`w-full text-left px-3 py-2 text-sm ${
-                opt === value
-                  ? 'bg-[#2F3C4A] text-white'
-                  : 'text-[#A3A3A3] hover:bg-[#2F3C4A]'
-              }`}
-              onClick={() => {
-                onChange(opt);
-                setOpen(false);
-              }}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const StatusPill = ({ status }: { status: ActiveLinksRow['status'] }) => {
   const map: Record<ActiveLinksRow['status'], string> = {
@@ -197,14 +146,13 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[98%] max-w-[1280px] bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden">
+      <div className="relative w-full   bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
           <div>
             <h3 className="text-2xl font-bold text-white">{eventName}</h3>
             <p className="text-sm text-[#A3A3A3]">Customer Purchase Details</p>
           </div>
-          {/* Export CSV se movió a la barra de búsqueda */}
         </div>
 
         {/* Search + Filters */}
@@ -231,18 +179,18 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
           </div>
 
           <div className="flex gap-2 mt-3 items-start">
-            <FilterDropdown
-              value={status}
+            <CustomDropdown
+              selected={status}
               options={['All Status', 'Valid', 'Used', 'Expired']}
-              onChange={setStatus}
+              onSelect={setStatus}
             />
-            <FilterDropdown
-              value={ticketType}
+            <CustomDropdown
+              selected={ticketType}
               options={['All Ticket Types', 'VIP', 'General', 'Early Bird']}
-              onChange={setTicketType}
+              onSelect={setTicketType}
             />
-            <FilterDropdown
-              value={paymentMethod}
+            <CustomDropdown
+              selected={paymentMethod}
               options={[
                 'All Payment Methods',
                 'Credit Card',
@@ -251,7 +199,7 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
                 'Bank Transfer',
                 'Cash',
               ]}
-              onChange={setPaymentMethod}
+              onSelect={setPaymentMethod}
             />
           </div>
         </div>
@@ -271,9 +219,9 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
         </div>
 
         {/* Table */}
-        <div className="px-5 pb-5">
-          <div className="overflow-auto max-h-[460px] rounded-lg border border-[#3BAFBB40]">
-            <table className="min-w-full text-sm text-gray-200">
+        <div className="px-5 pb-5 flex-1 overflow-auto">
+          <div className="rounded-lg border border-[#3BAFBB40] min-h-full">
+            <table className="text-sm text-gray-200">
               <thead className="bg-[#3BAFBB1A] text-left sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-3">Full Name</th>

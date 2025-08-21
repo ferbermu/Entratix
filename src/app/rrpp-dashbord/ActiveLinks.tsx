@@ -41,10 +41,10 @@ export const ActiveLinks = () => {
     revenue: 0,
     customers: 0,
   });
+  const [copiedLink, setCopiedLink] = React.useState<string | null>(null); // 👈
 
   const openReportForEvent = (eventName: string) => {
     setReportEventName(eventName);
-    // Datos de ejemplo similares a la UI adjunta
     const rows: ActiveLinksRow[] = [
       {
         fullName: 'Ana García Rodríguez',
@@ -156,8 +156,15 @@ export const ActiveLinks = () => {
         return 'bg-white/10 text-white border-white/20';
     }
   };
+
+  const handleCopy = (link: string) => {
+    navigator.clipboard.writeText(link);
+    setCopiedLink(link);
+    setTimeout(() => setCopiedLink(null), 2000); // vuelve al estado original después de 2s
+  };
+
   return (
-    <div className="flex flex-col  w-full px-20  max-[700px]:px-0 max-[1200px]:px-10 gap-6   ">
+    <div className="flex flex-col  w-full px-20  max-[700px]:px-0 max-[1200px]:px-10 gap-6">
       <div className="flex gap-3 mb-1 p-1 bg-[#3BAFBB]/10 rounded-lg max-[700px]:grid max-[700px]:grid-cols-2 max-[700px]:gap-2">
         {(
           [
@@ -221,32 +228,40 @@ export const ActiveLinks = () => {
             />
           </div>
 
-          {/* Event Link + Buttons */}
+          {/* Event Link + Copy Button */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
             <input
               readOnly
               value={event.link}
               className="bg-[#1C1C2E]/10 text-sm text-white px-4 py-2 rounded-md w-full border border-[#3BAFBB40]"
             />
-            <button className="text-white bg-[#3BAFBB] hover:bg-[#2B9FA9] px-4 py-2 text-sm rounded-lg shrink-0">
-              Copy
+            <button
+              onClick={() => handleCopy(event.link)}
+              className={`px-4 py-2 text-sm rounded-lg shrink-0 transition-colors duration-200 cursor-pointer ${
+                copiedLink === event.link
+                  ? 'bg-green-500 text-white'
+                  : 'bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white'
+              }`}
+            >
+              {copiedLink === event.link ? 'Copiado' : 'Copy'}
             </button>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-2 mt-4 max-[1200px]:justify-between max-[340px]:flex-col  ">
+          <div className="flex gap-2 mt-4 max-[1200px]:justify-between max-[340px]:flex-col">
             <button
               className="max-[340px]:w-full max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md"
               onClick={() => openReportForEvent(event.name)}
             >
               <Eye size={16} /> View Details
             </button>
-            <button className="max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center  flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]">
+            <button className="max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]">
               <DownloadSimple size={16} /> Download Report
             </button>
           </div>
         </div>
       ))}
+
       <ActiveLinksReportModal
         isOpen={isReportOpen}
         onClose={() => setIsReportOpen(false)}

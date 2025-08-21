@@ -8,8 +8,8 @@ import {
   CheckCircle,
   Eye,
   XCircle,
-  CaretDown,
 } from '@phosphor-icons/react';
+import { CustomDropdown } from './CustomDropdown';
 
 export interface RrppSalesRow {
   event: string;
@@ -28,7 +28,7 @@ export interface RrppSalesReportModalProps {
   onClose: () => void;
   rrppName: string;
   rows: RrppSalesRow[];
-  totals: {
+  totals?: {
     revenue: number;
     sales: number;
   };
@@ -49,9 +49,7 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
   const [selectedStatus, setSelectedStatus] = useState<string>('All Status');
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<string>('All Payment Method');
-  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
 
-  // Obtener valores únicos para los dropdowns
   const uniqueEvents = useMemo(
     () => ['All Events', ...Array.from(new Set(rows.map(row => row.event)))],
     [rows]
@@ -75,7 +73,6 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
     [rows]
   );
 
-  // Filtrar datos
   const filteredRows = useMemo(() => {
     return rows.filter(row => {
       const matchesSearch =
@@ -120,22 +117,6 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
   }, [filteredRows]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownOpen &&
-        !(event.target as Element).closest('.dropdown-container')
-      ) {
-        setDropdownOpen(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [dropdownOpen]);
-
-  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -160,28 +141,6 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
       default:
         return null;
     }
-  };
-
-  const handleDropdownToggle = (dropdown: string) => {
-    setDropdownOpen(dropdownOpen === dropdown ? null : dropdown);
-  };
-
-  const handleDropdownSelect = (dropdown: string, value: string) => {
-    switch (dropdown) {
-      case 'event':
-        setSelectedEvent(value);
-        break;
-      case 'ticketType':
-        setSelectedTicketType(value);
-        break;
-      case 'status':
-        setSelectedStatus(value);
-        break;
-      case 'paymentMethod':
-        setSelectedPaymentMethod(value);
-        break;
-    }
-    setDropdownOpen(null);
   };
 
   return (
@@ -236,103 +195,39 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
           </div>
 
           {/* Event Dropdown */}
-          <div className="col-span-1 relative dropdown-container">
-            <button
-              className="w-full cursor-pointer flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40] px-3 py-2 text-sm rounded-md justify-between"
-              onClick={() => handleDropdownToggle('event')}
-            >
-              <span className="truncate">{selectedEvent}</span>
-              <CaretDown size={12} />
-            </button>
-            {dropdownOpen === 'event' && (
-              <div className="absolute top-full left-0 mt-1 bg-[#1C1A1A] border border-[#3BAFBB40] rounded-md shadow-lg z-20 w-full">
-                {uniqueEvents.map(event => (
-                  <button
-                    key={event}
-                    className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[#3BAFBB1A] first:rounded-t-md last:rounded-b-md"
-                    onClick={() => handleDropdownSelect('event', event)}
-                  >
-                    {event}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="col-span-1 relative">
+            <CustomDropdown
+              options={uniqueEvents}
+              selected={selectedEvent}
+              onSelect={val => setSelectedEvent(val)}
+            />
           </div>
 
           {/* Ticket Type Dropdown */}
-          <div className="col-span-1 relative dropdown-container">
-            <button
-              className="w-full cursor-pointer flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40] px-3 py-2 text-sm rounded-md justify-between"
-              onClick={() => handleDropdownToggle('ticketType')}
-            >
-              <span className="truncate">{selectedTicketType}</span>
-              <CaretDown size={12} />
-            </button>
-            {dropdownOpen === 'ticketType' && (
-              <div className="absolute top-full left-0 mt-1 bg-[#1C1A1A] border border-[#3BAFBB40] rounded-md shadow-lg z-20 w-full">
-                {uniqueTicketTypes.map(ticketType => (
-                  <button
-                    key={ticketType}
-                    className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[#3BAFBB1A] first:rounded-t-md last:rounded-b-md"
-                    onClick={() =>
-                      handleDropdownSelect('ticketType', ticketType)
-                    }
-                  >
-                    {ticketType}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="col-span-1 relative">
+            <CustomDropdown
+              options={uniqueTicketTypes}
+              selected={selectedTicketType}
+              onSelect={val => setSelectedTicketType(val)}
+            />
           </div>
 
           {/* Status Dropdown */}
-          <div className="col-span-1 relative dropdown-container">
-            <button
-              className="w-full cursor-pointer flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40] px-3 py-2 text-sm rounded-md justify-between"
-              onClick={() => handleDropdownToggle('status')}
-            >
-              <span className="truncate">{selectedStatus}</span>
-              <CaretDown size={12} />
-            </button>
-            {dropdownOpen === 'status' && (
-              <div className="absolute top-full left-0 mt-1 bg-[#1C1A1A] border border-[#3BAFBB40] rounded-md shadow-lg z-20 w-full">
-                {uniqueStatuses.map(status => (
-                  <button
-                    key={status}
-                    className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[#3BAFBB1A] first:rounded-t-md last:rounded-b-md"
-                    onClick={() => handleDropdownSelect('status', status)}
-                  >
-                    {status}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="col-span-1 relative">
+            <CustomDropdown
+              options={uniqueStatuses}
+              selected={selectedStatus}
+              onSelect={val => setSelectedStatus(val)}
+            />
           </div>
 
           {/* Payment Method Dropdown */}
-          <div className="col-span-1 relative dropdown-container">
-            <button
-              className="w-full cursor-pointer flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40] px-3 py-2 text-sm rounded-md justify-between"
-              onClick={() => handleDropdownToggle('paymentMethod')}
-            >
-              <span className="truncate">{selectedPaymentMethod}</span>
-              <CaretDown size={12} />
-            </button>
-            {dropdownOpen === 'paymentMethod' && (
-              <div className="absolute top-full left-0 mt-1 bg-[#1C1A1A] border border-[#3BAFBB40] rounded-md shadow-lg z-20 w-full">
-                {uniquePaymentMethods.map(paymentMethod => (
-                  <button
-                    key={paymentMethod}
-                    className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[#3BAFBB1A] first:rounded-t-md last:rounded-b-md"
-                    onClick={() =>
-                      handleDropdownSelect('paymentMethod', paymentMethod)
-                    }
-                  >
-                    {paymentMethod}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="col-span-1 relative">
+            <CustomDropdown
+              options={uniquePaymentMethods}
+              selected={selectedPaymentMethod}
+              onSelect={val => setSelectedPaymentMethod(val)}
+            />
           </div>
 
           <button
