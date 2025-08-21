@@ -58,8 +58,6 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
   };
 
   const handleClearSearch = () => setSearchTerm('');
-  const handleClearDate = () => setDate(undefined);
-  const handleClearLocation = () => setLocation('');
 
   const handleDateSelect = (selectedDate: DateRange | undefined) => {
     setDate(selectedDate);

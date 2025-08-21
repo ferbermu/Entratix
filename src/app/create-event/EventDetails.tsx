@@ -6,7 +6,7 @@ import { MusicNotesPlus, Trash, FolderSimple } from '@phosphor-icons/react';
 import { MapPin, Plus } from 'lucide-react';
 import { TimeInput } from '@/components/TimeInput';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
-import { LocationDropdown } from '@/components/LocationDropdown';
+
 import { Dropdown } from '@/components/Dropdown';
 
 interface EventDetailsProps {

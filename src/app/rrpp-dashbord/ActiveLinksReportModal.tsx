@@ -121,6 +121,18 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
   );
   const [search, setSearch] = React.useState<string>('');
 
+  // BLOQUEO DE SCROLL DEL BODY CUANDO EL MODAL ESTÁ ABIERTO
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const filteredRows = React.useMemo(() => {
     return rows.filter(r => {
       const matchesSearch =
@@ -143,10 +155,10 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-2 md:px-0">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-full   bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden flex flex-col">
+      <div className="relative oveflow-y-auto max-w-full  h-[66vh] max-[700px]:h-full bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-auto flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
           <div>
@@ -156,16 +168,16 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
         </div>
 
         {/* Search + Filters */}
-        <div className="px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="flex-1 relative">
+        <div className="px-6 py-4 flex-shrink-0">
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex-1 relative min-w-[200px]">
               <MagnifyingGlass
                 size={16}
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3]"
               />
               <input
                 placeholder="Search by name or email..."
-                className="w-full bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-lg text-sm text-white placeholder:text-[#A3A3A3] pl-9 pr-3 h-11"
+                className="w-full bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-lg text-sm text-white placeholder:text-[#A3A3A3] pl-9 pr-3 h-11 "
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -178,7 +190,7 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
             </button>
           </div>
 
-          <div className="flex gap-2 mt-3 items-start">
+          <div className="flex gap-2 mt-3 flex-wrap">
             <CustomDropdown
               selected={status}
               options={['All Status', 'Valid', 'Used', 'Expired']}
@@ -205,7 +217,7 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
         </div>
 
         {/* Badges */}
-        <div className="flex items-center gap-4 px-5 py-3">
+        <div className="flex items-center gap-4 px-5 py-3 flex-shrink-0 flex-wrap">
           <div className="bg-[#3BAFBB1A] text-[#A3A3A3] px-4 py-2 rounded-md text-sm border border-[#3BAFBB]">
             Total Customers:{' '}
             <span className="text-white font-semibold">{totals.customers}</span>
@@ -220,8 +232,8 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
 
         {/* Table */}
         <div className="px-5 pb-5 flex-1 overflow-auto">
-          <div className="rounded-lg border border-[#3BAFBB40] min-h-full">
-            <table className="text-sm text-gray-200">
+          <div className="overflow-auto max-h-[460px] max-[700px]:h-full rounded-lg border border-[#3BAFBB40]">
+            <table className="min-w-full text-sm text-gray-200">
               <thead className="bg-[#3BAFBB1A] text-left sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-3">Full Name</th>
