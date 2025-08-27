@@ -77,7 +77,7 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
           placeholder={placeholder}
           value={selectedDate ? format(selectedDate, 'dd/MM/yyyy') : ''}
           readOnly
-          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer"
+          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer focus-none ring-none no-global-ring"
         />
         <CaretDown className="text-[#3BAFBB]" size={32} />
       </div>

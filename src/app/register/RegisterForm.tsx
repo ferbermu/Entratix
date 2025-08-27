@@ -69,7 +69,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   type="text"
                   id="lastName"
                   placeholder="Last name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2  focus:border-[#3BAFBB] autofill-fix"
                 />
               </div>
             </div>
@@ -91,7 +91,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                className=" w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
               />
             </div>
           </div>

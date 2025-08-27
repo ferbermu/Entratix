@@ -38,7 +38,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
   width = 'w-full',
 }) => (
   <div
-    className={`relative h-full flex items-center py-1 gap-3 justify-start pl-2 ${width} max-[700px]:w-full`}
+    className={`relative h-full flex items-center px-4 py-2 gap-3 justify-start pl-2 ${width} max-[700px]:w-full`}
   >
     <Image
       src="/assets/icons/search_bar/location.svg"
@@ -51,7 +51,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
       selectedValue={selectedValue}
       onValueChange={onValueChange}
       placeholder="Location"
-      className="flex-1 min-w-0"
+      className="flex-1 min-w-0 bg-[#1C1A1A]  border border-[#3BAFBB66] hover:border-[#3BAFBB] rounded-md "
       customIcon={
         selectedValue ? (
           <X
@@ -59,7 +59,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
             className="text-[#3BAFBB] cursor-pointer"
             onClick={e => {
               e.stopPropagation();
-              onValueChange(''); // 🔥 resetea valor
+              onValueChange('');
             }}
           />
         ) : undefined

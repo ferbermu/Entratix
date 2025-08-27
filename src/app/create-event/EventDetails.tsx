@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LocationDropdown } from '@/components/LocationDropdown';
+
 import { MusicNotesPlus, Trash, FolderSimple } from '@phosphor-icons/react';
 import { MapPin, Plus } from 'lucide-react';
 import { TimeInput } from '@/components/TimeInput';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
+
+import { Dropdown } from '@/components/Dropdown';
 
 interface EventDetailsProps {
   eventDate: Date | undefined;
@@ -147,11 +149,32 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
           <div className="flex flex-col w-full">
             <label className="text-gray-300 text-md mb-2">Location *</label>
-            <div className="border border-[#3BAFBB] h-full px-4 rounded-lg w-full">
-              <LocationDropdown
+            <div className="border border-[#3BAFBB] h-full px-4 rounded-lg w-full flex items-center">
+              <Dropdown
                 selectedValue={location}
                 onValueChange={setLocation}
-                width="w-full"
+                className="w-full "
+                options={[
+                  'Artigas',
+                  'Canelones',
+                  'Cerro Largo',
+                  'Colonia',
+                  'Durazno',
+                  'Flores',
+                  'Florida',
+                  'Lavalleja',
+                  'Maldonado',
+                  'Montevideo',
+                  'Paysandú',
+                  'Río Negro',
+                  'Rivera',
+                  'Rocha',
+                  'Salto',
+                  'San José',
+                  'Soriano',
+                  'Tacuarembó',
+                  'Treinta y Tres',
+                ]}
               />
             </div>
           </div>
@@ -173,7 +196,6 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 placeholder="https://example.com/event-image.jpg"
               />
 
-              {/* Botón de adjuntar archivo */}
               <label className="bg-[#3BAFBB] hover:bg-[#2f8f99] text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center">
                 <FolderSimple size={18} />
                 <input
@@ -186,7 +208,6 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 />
               </label>
 
-              {/* Botón de eliminar */}
               <button
                 type="button"
                 onClick={() => handleRemoveImage(index)}
