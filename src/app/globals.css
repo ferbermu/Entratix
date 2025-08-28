@@ -194,9 +194,19 @@
     @apply outline-none ring-2 ring-[#3BAFBB];
   }
 
+  /* Quitar outline del calendario */
+  div[class*='border'] input:focus {
+    @apply ring-0;
+  }
+
   input:-webkit-autofill {
     @apply bg-white text-black shadow-inner;
     -webkit-text-fill-color: white;
     transition: background-color 5000s ease-in-out 0s;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1e1e1e;
+    border-radius: 9999px; /* 🔥 redondea el track */
+    margin: 4px; /* opcional: deja margen arriba/abajo para que no tape las esquinas */
   }
 }
