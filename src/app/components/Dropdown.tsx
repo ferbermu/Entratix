@@ -21,6 +21,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   variant = 'default',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [, setIsFocused] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setIsFocused(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -61,6 +63,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
             placeholder={placeholder}
             value={selectedValue}
             readOnly
+            tabIndex={0}
+            onFocus={() => setIsOpen(true)}
             className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer min-w-0"
           />
           {customIcon ?? <CaretDown className="text-[#3BAFBB]" size={30} />}
@@ -70,7 +74,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       {/* Options */}
       {isOpen && (
         <div
-          className={`absolute z-10 mt-2 w-full max-h-60 overflow-y-auto rounded-lg shadow-lg
+          className={`absolute z-10 mt-2 w-full max-h-60 overflow-y-scroll rounded-lg shadow-lg 
           ${
             variant === 'default'
               ? 'bg-[#1E1E1E] border border-[#3BAFBB66]'

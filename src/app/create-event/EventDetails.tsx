@@ -2,12 +2,22 @@
 
 import React, { useState } from 'react';
 
-import { MusicNotesPlus, Trash, FolderSimple } from '@phosphor-icons/react';
-import { MapPin, Plus } from 'lucide-react';
+// ✅ Todos los íconos desde Phosphor
+import {
+  MusicNotesPlus,
+  Trash,
+  FolderSimple,
+  MapPin,
+  Plus,
+  ImageSquare,
+  Check,
+} from '@phosphor-icons/react';
+
 import { TimeInput } from '@/components/TimeInput';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
-
 import { Dropdown } from '@/components/Dropdown';
+import { InputField } from '@/components/InputField';
+import { InputFieldIcon } from '@/components/InputFieldIcon';
 
 interface EventDetailsProps {
   eventDate: Date | undefined;
@@ -43,31 +53,35 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
   };
 
   const handleAddImage = () => {
-    setEventImages([...eventImages, '']);
+    setEventImages(prev => [...prev, '']);
   };
 
   const handleRemoveImage = (index: number) => {
-    const newImages = [...eventImages];
-    newImages.splice(index, 1);
-    setEventImages(newImages);
+    setEventImages(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleImageChange = (index: number, value: string) => {
-    const newImages = [...eventImages];
-    newImages[index] = value;
-    setEventImages(newImages);
+    setEventImages(prev => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
   };
 
   const handleFileUpload = (index: number, file: File | null) => {
     if (!file) return;
-    const newImages = [...eventImages];
-    newImages[index] = URL.createObjectURL(file); // preview local image
-    setEventImages(newImages);
+    const url = URL.createObjectURL(file); // preview local image
+    setEventImages(prev => {
+      const next = [...prev];
+      next[index] = url;
+      return next;
+    });
   };
 
   return (
     <div className="flex items-center justify-center gap-6 px-4">
       <form className="bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-xl w-full max-w-[1400px] p-8">
+        {/* Header */}
         <div className="flex items-center gap-4">
           <MusicNotesPlus className="text-[#3BAFBB]" size={36} />
           <p className="text-gray-300 text-2xl font-semibold">Event Details</p>
@@ -75,38 +89,31 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
 
         {/* Título y categoría */}
         <div className="mt-8 w-full flex gap-8">
-          <div className="flex flex-col w-full">
-            <label className="text-gray-300 text-md mb-2">Event Title *</label>
-            <input
-              type="text"
-              className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
-              placeholder="Enter event title"
-            />
-          </div>
-          <div className="flex flex-col w-full">
-            <label className="text-gray-300 text-md mb-2">Category *</label>
-            <input
-              type="text"
-              className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
-              placeholder="Enter event category"
-            />
-          </div>
-        </div>
-
-        {/* Descripción */}
-        <div className="flex flex-col w-full mt-6">
-          <label className="text-gray-300 text-md mb-2">Description *</label>
-          <textarea
-            className="border border-[#3BAFBB] rounded-lg w-full min-h-[180px] p-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] resize-none"
-            placeholder="Describe your event..."
+          <InputField
+            label="Event Title"
+            required
+            placeholder="Enter event title"
+          />
+          <InputField
+            label="Category"
+            required
+            placeholder="Enter event category"
           />
         </div>
 
-        {/* Fecha y horario */}
-        <div className="mt-8 w-full flex gap-8 max-[970px]:flex-col">
-          <div className="flex flex-col w-full max-[970px]:order-2">
+        {/* Descripción */}
+        <InputField
+          label="Description"
+          required
+          placeholder="Describe your event..."
+          textarea
+          className="mt-6"
+        />
+
+        <div className="mt-8 w-full flex gap-8 max-[970px]:flex-col h-20 items-center">
+          <div className="flex flex-col w-full max-[970px]:order-2  ">
             <label className="text-gray-300 text-md mb-2">Date *</label>
-            <div className="border border-[#3BAFBB] py-1 px-4 rounded-lg">
+            <div className="border-1 border-[#3BAFBB]/60 focus-within:border-2  focus-within:border-[#3BAFBB] py-1 px-4 rounded-lg focus-within:ring-[#3BAFBB]">
               <CalendarDropdownSimple
                 width="w-1/2"
                 location="right"
@@ -116,8 +123,9 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               />
             </div>
           </div>
-          <div className="flex flex-col w-full max-[970px]:order-1">
-            <label className="text-gray-300 text-md mb-2">Time Range *</label>
+
+          <div className="flex flex-col w-full max-[970px]:order-1 ">
+            <label className="text-gray-300 text-md  mb-2">Time Range *</label>
             <TimeInput
               startHour={startHour}
               startMinute={startMinute}
@@ -134,26 +142,20 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
 
         {/* Dirección y ubicación */}
         <div className="mt-8 w-full flex gap-8 max-[700px]:flex-col">
-          <div className="flex flex-col w-full">
-            <label className="text-gray-300 text-md mb-2">Address *</label>
-            <div className="border border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-2">
-              <div className="flex items-center gap-2 w-full ml-2">
-                <MapPin className="h-full text-[#3BAFBB] w-4" />
-                <input
-                  type="text"
-                  className="border-none placeholder:text-sm outline-none w-full text-gray-300 bg-transparent"
-                  placeholder="Enter address"
-                />
-              </div>
-            </div>
-          </div>
+          <InputFieldIcon
+            label="Address"
+            required
+            placeholder="Enter address"
+            icon={<MapPin size={18} weight="bold" />}
+          />
+
           <div className="flex flex-col w-full">
             <label className="text-gray-300 text-md mb-2">Location *</label>
-            <div className="border border-[#3BAFBB] h-full px-4 rounded-lg w-full flex items-center">
+            <div className="border border-[#3BAFBB] group h-full px-4 rounded-lg w-full flex items-center focus-within:border-2">
               <Dropdown
                 selectedValue={location}
                 onValueChange={setLocation}
-                className="w-full "
+                className="w-full"
                 options={[
                   'Artigas',
                   'Canelones',
@@ -180,24 +182,26 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
         </div>
 
-        {/* === SECCIÓN NUEVA: IMÁGENES Y OPCIONES === */}
+        {/* Imágenes y opciones */}
         <div className="mt-10 border-t border-[#3BAFBB]/50 pt-8">
           <p className="text-gray-300 text-xl font-semibold mb-4">
             Event Images
           </p>
 
           {eventImages.map((img, index) => (
-            <div key={index} className="flex items-center gap-2 mb-3">
-              <input
-                type="text"
-                value={img}
-                onChange={e => handleImageChange(index, e.target.value)}
-                className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
-                placeholder="https://example.com/event-image.jpg"
-              />
+            <div key={index} className="flex items-end gap-2 mb-3">
+              <div className="flex-1">
+                <InputFieldIcon
+                  label={`Image ${index + 1} URL`}
+                  placeholder="https://example.com/event-image.jpg"
+                  value={img}
+                  onChange={val => handleImageChange(index, val)}
+                  icon={<ImageSquare size={18} weight="bold" />}
+                />
+              </div>
 
-              <label className="bg-[#3BAFBB] hover:bg-[#2f8f99] text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center">
-                <FolderSimple size={18} />
+              <label className="bg-[#3BAFBB] hover:bg-[#2f8f99] text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center h-[42px]">
+                <FolderSimple size={18} weight="bold" />
                 <input
                   type="file"
                   accept="image/*"
@@ -211,9 +215,11 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               <button
                 type="button"
                 onClick={() => handleRemoveImage(index)}
-                className="bg-[#3baebb32] hover:bg-[#3baebb32]/20 text-white px-3 py-2 cursor-pointer rounded-lg flex items-center justify-center"
+                className="bg-[#3baebb32] hover:bg-[#3baebb32]/20 text-white px-3 py-2 cursor-pointer rounded-lg flex items-center justify-center h-[42px]"
+                aria-label={`Remove image ${index + 1}`}
+                title="Remove"
               >
-                <Trash size={18} />
+                <Trash size={18} weight="bold" />
               </button>
             </div>
           ))}
@@ -223,45 +229,40 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
             onClick={handleAddImage}
             className="flex items-center cursor-pointer gap-2 text-[#3BAFBB] mt-2 hover:underline"
           >
-            <Plus size={18} /> Add Image
+            <Plus size={18} weight="bold" /> Add Image
           </button>
 
           {/* Main Event */}
           <div className="mt-6">
-            <label className="flex items-center gap-3 text-gray-300 cursor-pointer">
+            <label
+              className="flex items-center gap-3 text-gray-300 cursor-pointer select-none"
+              onClick={() => setIsMainEvent(!isMainEvent)}
+            >
+              {/* cuadrado custom */}
+              <div
+                className={`h-5 w-5 flex items-center justify-center border rounded 
+        border-[#3BAFBB] bg-[#3BAFBB1A] transition-all duration-200
+        ${isMainEvent ? 'bg-[#3BAFBB80]' : ''}`}
+              >
+                {isMainEvent && <Check size={14} weight="bold" color="white" />}
+              </div>
+              {/* input escondido para accesibilidad */}
               <input
                 type="checkbox"
                 checked={isMainEvent}
                 onChange={() => setIsMainEvent(!isMainEvent)}
-                className={`
-        appearance-none h-5 w-5 cursor-pointer border border-[#3BAFBB]
-        bg-[#3BAFBB1A] 
-        checked:bg-[#3BAFBB80]
-        flex items-center justify-center
-        transition-all duration-200
-      `}
-                style={{
-                  backgroundImage: isMainEvent
-                    ? "url(\"data:image/svg+xml;utf8,<svg fill='white' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8.25 8.25a1 1 0 01-1.414 0l-3.75-3.75a1 1 0 011.414-1.414l3.043 3.043 7.543-7.543a1 1 0 011.414 0z' clip-rule='evenodd'/></svg>\")"
-                    : 'none',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  backgroundSize: '14px',
-                }}
+                className="hidden"
               />
               Main Event
             </label>
 
             {isMainEvent && (
               <div className="mt-3">
-                <label className="text-gray-300 text-md mb-2 block">
-                  Main Event Image *
-                </label>
-                <input
-                  type="text"
+                <InputField
+                  label="Main Event Image"
+                  required
                   value={mainEventImage}
-                  onChange={e => setMainEventImage(e.target.value)}
-                  className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
+                  onChange={setMainEventImage}
                   placeholder="https://example.com/main-event-image.jpg"
                 />
                 <p className="text-sm text-gray-500 mt-1">
@@ -278,13 +279,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 type="checkbox"
                 checked={isFeatured}
                 onChange={() => setIsFeatured(!isFeatured)}
-                className={`
-        appearance-none h-5 w-5 cursor-pointer border border-[#3BAFBB]
-        bg-[#3BAFBB1A] 
-        checked:bg-[#3BAFBB80]
-        flex items-center justify-center
-        transition-all duration-200
-      `}
+                className="appearance-none h-5 w-5 cursor-pointer border border-[#3BAFBB] bg-[#3BAFBB1A] checked:bg-[#3BAFBB80] transition-all duration-200"
                 style={{
                   backgroundImage: isFeatured
                     ? "url(\"data:image/svg+xml;utf8,<svg fill='white' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8.25 8.25a1 1 0 01-1.414 0l-3.75-3.75a1 1 0 011.414-1.414l3.043 3.043 7.543-7.543a1 1 0 011.414 0z' clip-rule='evenodd'/></svg>\")"

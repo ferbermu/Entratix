@@ -59,7 +59,7 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full ">
       {/* Trigger */}
       <div
         ref={triggerRef}

@@ -124,7 +124,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   return (
     <div className=" flex gap-4 w-full max-[700px]:flex-col max-[700px]:gap-3">
       {/* Start Time */}
-      <div className="border border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full">
+      <div className="border border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full focus-within:border-2">
         <Clock className="text-[#3BAFBB] ml-2" size={16} />
         <span className="text-gray-300 text-sm mr-2 max-[700px]:text-xs w-20 max-[700px]:w-16 shrink-0 truncate">
           Start:
@@ -163,7 +163,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
       </div>
 
       {/* End Time */}
-      <div className="border border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full">
+      <div className="border-1 border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full focus-within:border-2">
         <Clock className="text-[#3BAFBB] ml-2" size={16} />
         <span className="text-gray-300 text-sm mr-2 max-[700px]:text-xs w-20 max-[700px]:w-16 shrink-0 truncate">
           End (optional):

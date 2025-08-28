@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MusicNotes,
   User,
@@ -18,6 +18,52 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   birthDate,
   setBirthDate,
 }) => {
+  // Estados para cada campo obligatorio
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [agreeTerms, setAgreeTerms] = useState(false);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // Validación de email simple
+  const validateEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+  // Validar todo el formulario cada vez que cambien los estados
+  useEffect(() => {
+    const valid =
+      firstName.trim() !== '' &&
+      lastName.trim() !== '' &&
+      validateEmail(email) &&
+      phoneNumber.trim() !== '' &&
+      birthDate !== undefined &&
+      password.length >= 6 &&
+      confirmPassword === password &&
+      agreeTerms;
+
+    setIsFormValid(valid);
+  }, [
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    birthDate,
+    password,
+    confirmPassword,
+    agreeTerms,
+  ]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) return;
+    // enviar datos
+    console.log('Formulario válido, enviando...');
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen p-4 my-30">
       <div className="rounded-xl shadow-lg w-full max-w-2xl p-8 bg-[#3BAFBB1A]/40 border border-[#3BAFBB]">
@@ -31,13 +77,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           </p>
         </div>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          {/* Nombre y Apellido */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <div className="flex flex-col">
-              <label
-                htmlFor="firstName"
-                className="text-gray-300 text-sm font-medium mb-2"
-              >
+              <label className="text-gray-300 text-sm font-medium mb-2">
                 First Name *
               </label>
               <div className="relative">
@@ -47,17 +91,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 />
                 <input
                   type="text"
-                  id="firstName"
+                  value={firstName}
+                  onChange={e => setFirstName(e.target.value)}
                   placeholder="First name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
                 />
               </div>
             </div>
             <div className="flex flex-col">
-              <label
-                htmlFor="lastName"
-                className="text-gray-300 text-sm font-medium mb-2"
-              >
+              <label className="text-gray-300 text-sm font-medium mb-2">
                 Last Name *
               </label>
               <div className="relative">
@@ -67,19 +109,18 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 />
                 <input
                   type="text"
-                  id="lastName"
+                  value={lastName}
+                  onChange={e => setLastName(e.target.value)}
                   placeholder="Last name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2  focus:border-[#3BAFBB] autofill-fix"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
                 />
               </div>
             </div>
           </div>
 
+          {/* Email */}
           <div className="flex flex-col">
-            <label
-              htmlFor="email"
-              className="text-gray-300 text-sm font-medium mb-2"
-            >
+            <label className="text-gray-300 text-sm font-medium mb-2">
               Email Address *
             </label>
             <div className="relative">
@@ -89,19 +130,18 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               />
               <input
                 type="email"
-                id="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className=" w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
               />
             </div>
           </div>
 
+          {/* Teléfono y fecha */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6 ">
             <div className="flex flex-col">
-              <label
-                htmlFor="phoneNumber"
-                className="text-gray-300 text-sm font-medium mb-2"
-              >
+              <label className="text-gray-300 text-sm font-medium mb-2">
                 Phone Number *
               </label>
               <div className="relative">
@@ -111,17 +151,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 />
                 <input
                   type="tel"
-                  id="phoneNumber"
+                  value={phoneNumber}
+                  onChange={e => setPhoneNumber(e.target.value)}
                   placeholder="+1 (555) 123-4567"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
                 />
               </div>
             </div>
             <div className="flex flex-col">
-              <label
-                htmlFor="dateOfBirth"
-                className="text-gray-300 text-sm font-medium mb-2"
-              >
+              <label className="text-gray-300 text-sm font-medium mb-2">
                 Date of Birth *
               </label>
               <div className="border border-[#3BAFBB] rounded-lg pr-2 pl-1 py-2">
@@ -133,6 +171,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </div>
           </div>
 
+          {/* Password */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <InputPassword
               id="password"
@@ -140,23 +179,34 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               placeholder="Create password"
               placeholderClassName="placeholder-[#3BAFBB]"
               iconColor="text-[#3BAFBB]"
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(e.target.value)
+              }
             />
+
             <InputPassword
               id="confirmPassword"
               label="Confirm Password *"
               placeholder="Confirm password"
               placeholderClassName="placeholder-[#3BAFBB]"
               iconColor="text-[#3BAFBB]"
+              value={confirmPassword}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setConfirmPassword(e.target.value)
+              }
             />
           </div>
 
+          {/* Términos */}
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
-              id="agreeTerms"
-              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB] custom-checkbox"
+              checked={agreeTerms}
+              onChange={e => setAgreeTerms(e.target.checked)}
+              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB]"
             />
-            <label htmlFor="agreeTerms" className="text-gray-300 text-sm">
+            <label className="text-gray-300 text-sm">
               I agree to the{' '}
               <a href="#" className="text-[#3BAFBB] hover:underline">
                 Terms of Service
@@ -168,11 +218,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </label>
           </div>
 
+          {/* Opcional */}
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="receiveUpdates"
-              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB] custom-checkbox"
+              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB]"
             />
             <label
               htmlFor="receiveUpdates"
@@ -182,9 +233,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </label>
           </div>
 
+          {/* Botón principal */}
           <button
             type="submit"
-            className="cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out"
+            disabled={!isFormValid}
+            className={`cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out ${
+              isFormValid ? '' : 'opacity-50 cursor-not-allowed'
+            }`}
             style={{
               backgroundColor: '#3BAFBB',
               boxShadow: '0 4px 15px rgba(59, 175, 187, 0.4)',
