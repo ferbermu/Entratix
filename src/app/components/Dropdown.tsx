@@ -21,7 +21,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   variant = 'default',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
