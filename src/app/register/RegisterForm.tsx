@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import {
-  MusicNotes,
-  User,
-  EnvelopeSimple,
-  Phone,
-  GoogleLogo,
-} from '@phosphor-icons/react';
+'use client';
+import React, { useState, useEffect, useCallback } from 'react';
+import { MusicNotes, User, EnvelopeSimple, Phone } from '@phosphor-icons/react';
 import { InputPassword } from './InputPassword';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
 
@@ -18,7 +13,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   birthDate,
   setBirthDate,
 }) => {
-  // Estados para cada campo obligatorio
+  // Estados de campos
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,25 +22,52 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
 
+  // Estados de errores
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    birthDate: '',
+    password: '',
+    confirmPassword: '',
+  });
+
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // Validación de email simple
+  // ✅ Validación de email: debe ser gmail, hotmail u outlook
   const validateEmail = (value: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    /^[^\s@]+@(gmail\.com|hotmail\.com|outlook\.com)$/i.test(value);
 
-  // Validar todo el formulario cada vez que cambien los estados
-  useEffect(() => {
-    const valid =
-      firstName.trim() !== '' &&
-      lastName.trim() !== '' &&
-      validateEmail(email) &&
-      phoneNumber.trim() !== '' &&
-      birthDate !== undefined &&
-      password.length >= 6 &&
-      confirmPassword === password &&
-      agreeTerms;
+  // ✅ Validación de teléfono: solo números, + o -
+  const validatePhone = (value: string) => /^[-+]?[0-9]+$/.test(value);
 
-    setIsFormValid(valid);
+  // Validaciones individuales envueltas en useCallback
+  const validateFields = useCallback(() => {
+    const newErrors = {
+      firstName: firstName.trim() === '' ? 'First name is required' : '',
+      lastName: lastName.trim() === '' ? 'Last name is required' : '',
+      email:
+        email.trim() === '' || !validateEmail(email)
+          ? 'Please enter a valid email (gmail, hotmail or outlook)'
+          : '',
+      phoneNumber:
+        phoneNumber.trim() === '' || !validatePhone(phoneNumber)
+          ? 'Please enter a valid phone number'
+          : '',
+      birthDate: birthDate === undefined ? 'Date of birth is required' : '',
+      password:
+        password.length < 6 ? 'Password must be at least 6 characters' : '',
+      confirmPassword:
+        confirmPassword !== password ? 'Passwords do not match' : '',
+    };
+
+    setErrors(newErrors);
+
+    // Si no hay errores → form válido
+    setIsFormValid(
+      Object.values(newErrors).every(err => err === '') && agreeTerms
+    );
   }, [
     firstName,
     lastName,
@@ -57,12 +79,25 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     agreeTerms,
   ]);
 
+  // Ejecutar validaciones en tiempo real
+  useEffect(() => {
+    validateFields();
+  }, [validateFields]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    validateFields();
     if (!isFormValid) return;
-    // enviar datos
     console.log('Formulario válido, enviando...');
   };
+
+  // 🔴 clases dinámicas de border
+  const inputClass = (field: keyof typeof errors) =>
+    `w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border ${
+      errors[field] ? 'border-red-500' : 'border-[#3BAFBB]'
+    } text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 ${
+      errors[field] ? 'focus:ring-red-500' : 'focus:ring-[#3BAFBB]'
+    } autofill-fix`;
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 my-30">
@@ -94,10 +129,16 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   value={firstName}
                   onChange={e => setFirstName(e.target.value)}
                   placeholder="First name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
+                  className={inputClass('firstName')}
                 />
               </div>
+              {errors.firstName && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.firstName}
+                </span>
+              )}
             </div>
+
             <div className="flex flex-col">
               <label className="text-gray-300 text-sm font-medium mb-2">
                 Last Name *
@@ -112,9 +153,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   value={lastName}
                   onChange={e => setLastName(e.target.value)}
                   placeholder="Last name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
+                  className={inputClass('lastName')}
                 />
               </div>
+              {errors.lastName && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.lastName}
+                </span>
+              )}
             </div>
           </div>
 
@@ -133,9 +179,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
+                className={inputClass('email')}
               />
             </div>
+            {errors.email && (
+              <span className="text-red-500 text-sm mt-1">{errors.email}</span>
+            )}
           </div>
 
           {/* Teléfono y fecha */}
@@ -153,49 +202,64 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   type="tel"
                   value={phoneNumber}
                   onChange={e => setPhoneNumber(e.target.value)}
-                  placeholder="+1 (555) 123-4567"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] autofill-fix"
+                  placeholder="+15551234567"
+                  className={inputClass('phoneNumber')}
                 />
               </div>
+              {errors.phoneNumber && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.phoneNumber}
+                </span>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="text-gray-300 text-sm font-medium mb-2">
                 Date of Birth *
               </label>
-              <div className="border border-[#3BAFBB] rounded-lg pr-2 pl-1 py-2">
+              <div
+                className={`border rounded-lg pr-2 pl-1 py-2 ${
+                  errors.birthDate ? 'border-red-500' : 'border-[#3BAFBB]'
+                }`}
+              >
                 <CalendarDropdownSimple
                   date={birthDate}
                   onDateChange={setBirthDate}
                 />
               </div>
+              {errors.birthDate && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.birthDate}
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Password */}
+          {/* Passwords */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
-            <InputPassword
-              id="password"
-              label="Password *"
-              placeholder="Create password"
-              placeholderClassName="placeholder-[#3BAFBB]"
-              iconColor="text-[#3BAFBB]"
-              value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
-            />
+            <div className="flex flex-col">
+              <InputPassword
+                id="password"
+                label="Password *"
+                placeholder="Create password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+            </div>
 
-            <InputPassword
-              id="confirmPassword"
-              label="Confirm Password *"
-              placeholder="Confirm password"
-              placeholderClassName="placeholder-[#3BAFBB]"
-              iconColor="text-[#3BAFBB]"
-              value={confirmPassword}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setConfirmPassword(e.target.value)
-              }
-            />
+            <div className="flex flex-col">
+              <InputPassword
+                id="confirmPassword"
+                label="Confirm Password *"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+                matchWith={password}
+              />
+            </div>
           </div>
 
           {/* Términos */}
@@ -218,22 +282,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </label>
           </div>
 
-          {/* Opcional */}
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="receiveUpdates"
-              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB]"
-            />
-            <label
-              htmlFor="receiveUpdates"
-              className="text-gray-300 text-sm cursor-pointer"
-            >
-              I want to receive updates about new events and special offers
-            </label>
-          </div>
-
-          {/* Botón principal */}
           <button
             type="submit"
             disabled={!isFormValid}
@@ -247,24 +295,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           >
             Create Account
           </button>
-
-          <div className="text-center text-gray-400 ">or</div>
-
-          <button
-            type="button"
-            className="cursor-pointer w-full flex items-center justify-center py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white font-semibold mb-4 hover:bg-[#3BAFBB] hover:text-white transition duration-300 ease-in-out"
-          >
-            <GoogleLogo size={24} weight="fill" className="mr-3 " />
-            Sign up with Google
-          </button>
         </form>
-
-        <p className="text-center text-gray-300 mt-8 text-sm">
-          Already have an account?{' '}
-          <a href="#" className="text-[#3BAFBB] hover:underline">
-            Sign in here
-          </a>
-        </p>
       </div>
     </div>
   );

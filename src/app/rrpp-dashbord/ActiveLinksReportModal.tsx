@@ -13,6 +13,7 @@ import {
   XCircle,
 } from '@phosphor-icons/react';
 import { CustomDropdown } from './CustomDropdown';
+import { useExportCsv } from '@/hooks/useExportCsv';
 
 export interface ActiveLinksRow {
   fullName: string;
@@ -39,7 +40,6 @@ export interface ActiveLinksReportModalProps {
     revenue: number;
     customers: number;
   };
-  onExportCsv?: () => void;
 }
 
 const StatusPill = ({ status }: { status: ActiveLinksRow['status'] }) => {
@@ -111,7 +111,6 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
   eventName,
   rows,
   totals,
-  onExportCsv,
 }) => {
   const [status, setStatus] = React.useState<string>('All Status');
   const [ticketType, setTicketType] =
@@ -120,6 +119,8 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
     'All Payment Methods'
   );
   const [search, setSearch] = React.useState<string>('');
+
+  const { exportToCsv } = useExportCsv();
 
   // BLOQUEO DE SCROLL DEL BODY CUANDO EL MODAL ESTÁ ABIERTO
   React.useEffect(() => {
@@ -152,13 +153,26 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
     });
   }, [rows, search, status, ticketType, paymentMethod]);
 
+  const handleExportCsv = () => {
+    exportToCsv('active-links-report', filteredRows, [
+      { key: 'fullName', header: 'Full Name' },
+      { key: 'email', header: 'Email' },
+      { key: 'phone', header: 'Phone' },
+      { key: 'ticketType', header: 'Ticket Type' },
+      { key: 'value', header: 'Value' },
+      { key: 'paymentMethod', header: 'Payment Method' },
+      { key: 'status', header: 'Status' },
+      { key: 'purchaseDate', header: 'Purchase Date' },
+    ]);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-2 md:px-0">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative oveflow-y-auto max-w-full  h-[66vh] max-[700px]:h-full bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-auto flex flex-col">
+      <div className="relative oveflow-y-auto max-w-full h-[66vh] max-[700px]:h-full bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-auto flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
           <div>
@@ -177,14 +191,14 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
               />
               <input
                 placeholder="Search by name or email..."
-                className="w-full bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-lg text-sm text-white placeholder:text-[#A3A3A3] pl-9 pr-3 h-11 "
+                className="w-full bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-lg text-sm text-white placeholder:text-[#A3A3A3] pl-9 pr-3 h-11"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
             </div>
             <button
               className="cursor-pointer flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white px-4 h-11 text-sm rounded-md"
-              onClick={onExportCsv}
+              onClick={handleExportCsv}
             >
               <DownloadSimple size={18} /> Export CSV
             </button>

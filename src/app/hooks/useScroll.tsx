@@ -13,8 +13,6 @@ export const useScroll = (options?: UseScrollOptions) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Para la página principal, usar el threshold proporcionado o 800 por defecto
-      // Para otras páginas, mantener el comportamiento actual (threshold 0)
       const scrollThreshold = pathname === '/' ? options?.threshold || 800 : 0;
       setIsScrolled(window.scrollY > scrollThreshold);
     };

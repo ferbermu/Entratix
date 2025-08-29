@@ -4,6 +4,8 @@ import { Calendar, Eye, DownloadSimple } from '@phosphor-icons/react';
 import ActiveLinksReportModal, {
   type ActiveLinksRow,
 } from './ActiveLinksReportModal';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const events = [
   {
@@ -41,10 +43,12 @@ export const ActiveLinks = () => {
     revenue: 0,
     customers: 0,
   });
-  const [copiedLink, setCopiedLink] = React.useState<string | null>(null); // 👈
+  const [copiedLink, setCopiedLink] = React.useState<string | null>(null);
 
   const openReportForEvent = (eventName: string) => {
     setReportEventName(eventName);
+
+    // Datos de ejemplo, estos vendrán del backend
     const rows: ActiveLinksRow[] = [
       {
         fullName: 'Ana García Rodríguez',
@@ -105,39 +109,48 @@ export const ActiveLinks = () => {
     setIsReportOpen(true);
   };
 
-  const exportCsv = () => {
-    const headers = [
-      'Full Name',
-      'Email',
-      'Phone',
-      'Ticket Type',
-      'Value',
-      'Payment Method',
-      'Status',
-      'Purchase Date',
-    ];
-    const rows = reportRows.map(r => [
-      r.fullName,
-      r.email,
-      r.phone,
-      r.ticketType,
-      `$${r.value}`,
-      r.paymentMethod,
-      r.status,
-      r.purchaseDate,
-    ]);
-    const csvContent = [headers, ...rows]
-      .map(cols =>
-        cols.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')
-      )
-      .join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${reportEventName.replace(/\s+/g, '_')}_sales.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+  const exportPdf = () => {
+    const doc = new jsPDF();
+
+    // Título
+    doc.setFontSize(18);
+    doc.text(`Sales Report - ${reportEventName}`, 14, 20);
+
+    // Totales
+    doc.setFontSize(12);
+    doc.text(`Revenue: $${reportTotals.revenue}`, 14, 30);
+    doc.text(`Customers: ${reportTotals.customers}`, 14, 38);
+
+    // Tabla
+    autoTable(doc, {
+      startY: 45,
+      head: [
+        [
+          'Full Name',
+          'Email',
+          'Phone',
+          'Ticket Type',
+          'Value',
+          'Payment Method',
+          'Status',
+          'Purchase Date',
+        ],
+      ],
+      body: reportRows.map(r => [
+        r.fullName,
+        r.email,
+        r.phone,
+        r.ticketType,
+        `$${r.value}`,
+        r.paymentMethod,
+        r.status,
+        r.purchaseDate,
+      ]),
+      styles: { fontSize: 8, cellPadding: 2 },
+      headStyles: { fillColor: [59, 175, 187] }, // celeste
+    });
+
+    doc.save(`${reportEventName.replace(/\s+/g, '_')}_sales.pdf`);
   };
 
   const filteredEvents = events.filter(e =>
@@ -160,11 +173,12 @@ export const ActiveLinks = () => {
   const handleCopy = (link: string) => {
     navigator.clipboard.writeText(link);
     setCopiedLink(link);
-    setTimeout(() => setCopiedLink(null), 2000); // vuelve al estado original después de 2s
+    setTimeout(() => setCopiedLink(null), 2000);
   };
 
   return (
-    <div className="flex flex-col  w-full px-20  max-[700px]:px-0 max-[1200px]:px-10 gap-6">
+    <div className="flex flex-col w-full px-20 max-[700px]:px-0 max-[1200px]:px-10 gap-6">
+      {/* Tabs */}
       <div className="flex gap-3 mb-1 p-1 bg-[#3BAFBB]/10 rounded-lg max-[700px]:grid max-[700px]:grid-cols-2 max-[700px]:gap-2">
         {(
           [
@@ -188,6 +202,7 @@ export const ActiveLinks = () => {
         ))}
       </div>
 
+      {/* Eventos */}
       {filteredEvents.map((event, i) => (
         <div
           key={i}
@@ -250,12 +265,15 @@ export const ActiveLinks = () => {
           {/* Action Buttons */}
           <div className="flex gap-2 mt-4 max-[1200px]:justify-between max-[340px]:flex-col">
             <button
-              className="max-[340px]:w-full max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md"
+              className="cursor-pointer max-[340px]:w-full max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md"
               onClick={() => openReportForEvent(event.name)}
             >
               <Eye size={16} /> View Details
             </button>
-            <button className="max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]">
+            <button
+              onClick={exportPdf}
+              className="cursor-pointer max-[700px]:w-full max-[340px]:justify-center max-[340px]:text-center flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]"
+            >
               <DownloadSimple size={16} /> Download Report
             </button>
           </div>
@@ -268,7 +286,6 @@ export const ActiveLinks = () => {
         eventName={reportEventName}
         rows={reportRows}
         totals={reportTotals}
-        onExportCsv={exportCsv}
       />
     </div>
   );

@@ -2,6 +2,7 @@
 import React from 'react';
 import { SalesReportModal, SalesRow } from './SalesReportModal';
 import SellTicketsModal from './SellTicketsModal';
+import { useExportCsv } from '@/hooks/useExportCsv';
 
 interface CashSalesProps {
   onSellTickets: () => void;
@@ -9,6 +10,8 @@ interface CashSalesProps {
 }
 
 export const CashSales = ({ onViewSales }: CashSalesProps) => {
+  const { exportToCsv } = useExportCsv();
+
   const events = [
     {
       name: 'Underground Techno Night',
@@ -58,8 +61,23 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
     },
   ];
 
+  const handleExportCsv = () => {
+    exportToCsv('cash-sales-report', salesRows, [
+      { key: 'id', header: 'ID' },
+      { key: 'customer', header: 'Customer' },
+      { key: 'ci', header: 'CI' },
+      { key: 'phone', header: 'Phone' },
+      { key: 'email', header: 'Email' },
+      { key: 'type', header: 'Ticket Type' },
+      { key: 'qty', header: 'Qty' },
+      { key: 'unit', header: 'Unit Price' },
+      { key: 'total', header: 'Total' },
+      { key: 'date', header: 'Date' },
+    ]);
+  };
+
   return (
-    <div className="w-full max-[1200px]:px-4 flex flex-col max-w-[1400px]   bg-[#3BAFBB]/10 p-6 rounded-2xl border border-[#3BAFBB40] text-white shadow-md">
+    <div className="w-full max-[1200px]:px-4 flex flex-col max-w-[1400px] bg-[#3BAFBB]/10 p-6 rounded-2xl border border-[#3BAFBB40] text-white shadow-md">
       <h2 className="text-lg font-semibold mb-4">Cash Sales Events</h2>
       {events.map((event, index) => (
         <div
@@ -72,12 +90,10 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
               {event.ticketsLeft} tickets left
             </p>
           </div>
-          <div className="flex  gap-2 items-start ">
+          <div className="flex gap-2 items-start ">
             <div className="flex gap-2 max-[700px]:flex-col max-[700px]:items-start max-[700px]:w-full">
               <button
-                onClick={() => {
-                  setIsSellOpen(true);
-                }}
+                onClick={() => setIsSellOpen(true)}
                 className="cursor-pointer bg-[#3BAFBB] max-[700px]:w-full hover:bg-[#2B9FA9] text-white px-3 py-1.5 text-sm rounded-md"
               >
                 Sell Tickets
@@ -104,27 +120,9 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
         eventName="Underground Techno Night"
         rows={salesRows}
         totals={{ revenue: 1260, tickets: 13, customers: 6 }}
-        onExportCsv={() => {
-          // Placeholder export handler
-          const header =
-            'id,customer,ci,phone,email,type,qty,unit,total,date\n';
-          const body = salesRows
-            .map(
-              r =>
-                `${r.id},${r.customer},${r.ci},${r.phone},${r.email},${r.type},${r.qty},${r.unit},${r.total},${r.date}`
-            )
-            .join('\n');
-          const blob = new Blob([header + body], {
-            type: 'text/csv;charset=utf-8;',
-          });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = 'cash-sales-report.csv';
-          link.click();
-          URL.revokeObjectURL(url);
-        }}
+        onExportCsv={handleExportCsv}
       />
+
       <SellTicketsModal
         isOpen={isSellOpen}
         onClose={() => setIsSellOpen(false)}

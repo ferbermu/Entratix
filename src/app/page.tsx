@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardProps } from './components/Card';
 import { CarrouselImage } from './components/CarrouselImage';
 import { JoinNow } from './components/JoinNow';
@@ -8,12 +7,6 @@ import { SearchBar } from './components/SearchBar';
 import { CardCarousel } from './components/CardCarousel';
 import { type DateRange } from 'react-day-picker';
 
-const imageURLsFromDataBase: string[] = [
-  '/assets/show1.jpg',
-  '/assets/show2.jpg',
-  '/assets/show3.jpg',
-  '/assets/show4.jpg',
-];
 const CardData: CardProps[] = [
   {
     title: 'ArtLab presents Eddy M & more',
@@ -22,38 +15,73 @@ const CardData: CardProps[] = [
     imageUrl: '/assets/show1.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Music',
+    time: '21:00',
+    location: 'Montevideo',
+    description: 'Un show imperdible con Eddy M',
+    price: '$50',
+    artists: ['Eddy M'],
+    attendees: 200,
   },
   {
-    title: 'ArtLab presents Eddy M & more',
+    title: 'ArtLab presents DJ Luna',
     address: 'Canelones',
-    date: '17/07/2025',
-    imageUrl: '/assets/show1.jpg',
+    date: '20/07/2025',
+    imageUrl: '/assets/show2.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Electronic',
+    time: '22:00',
+    location: 'Canelones',
+    description: 'Una noche llena de beats y energía',
+    price: '$45',
+    artists: ['DJ Luna'],
+    attendees: 150,
   },
   {
-    title: 'ArtLab presents Eddy M & more',
+    title: 'Rock & Roll Night',
     address: 'Maldonado',
-    date: '08/08/2025',
-    imageUrl: '/assets/show1.jpg',
+    date: '05/08/2025',
+    imageUrl: '/assets/show3.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Rock',
+    time: '20:30',
+    location: 'Maldonado',
+    description: 'Los clásicos del rock en vivo',
+    price: '$60',
+    artists: ['The Rockers'],
+    attendees: 300,
   },
   {
-    title: 'ArtLab presents Eddy M & more',
+    title: 'Jazz Evening',
     address: 'Rocha',
-    date: '10/09/2025',
-    imageUrl: '/assets/show1.jpg',
+    date: '12/09/2025',
+    imageUrl: '/assets/show4.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Jazz',
+    time: '19:00',
+    location: 'Rocha',
+    description: 'Un ambiente relajado con jazz en vivo',
+    price: '$40',
+    artists: ['Smooth Jazz Band'],
+    attendees: 120,
   },
   {
-    title: 'ArtLab presents Eddy M & more',
+    title: 'Pop Festival',
     address: 'Paysandú',
     date: '25/10/2025',
-    imageUrl: '/assets/show1.jpg',
+    imageUrl: '/assets/show5.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Pop',
+    time: '18:00',
+    location: 'Paysandú',
+    description: 'Los hits del pop internacional',
+    price: '$55',
+    artists: ['Pop Stars'],
+    attendees: 400,
   },
   {
     title: 'Key on Tour - Plaza de Toros Colonia',
@@ -62,30 +90,58 @@ const CardData: CardProps[] = [
     imageUrl: '/assets/show1.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Music',
+    time: '21:00',
+    location: 'Colonia',
+    description: 'Una gira inolvidable con Key',
+    price: '$70',
+    artists: ['Key'],
+    attendees: 500,
   },
   {
-    title: 'Key on Tour - Plaza de Toros Colonia',
+    title: 'Latin Night',
     address: 'Salto',
     date: '15/11/2025',
-    imageUrl: '/assets/show1.jpg',
+    imageUrl: '/assets/show2.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Latin',
+    time: '22:00',
+    location: 'Salto',
+    description: 'Salsa, bachata y más',
+    price: '$50',
+    artists: ['Latin Band'],
+    attendees: 250,
   },
   {
-    title: 'Key on Tour - Plaza de Toros Colonia',
+    title: 'Electronic Sunrise',
     address: 'Soriano',
     date: '20/12/2025',
-    imageUrl: '/assets/show1.jpg',
+    imageUrl: '/assets/show3.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Electronic',
+    time: '23:00',
+    location: 'Soriano',
+    description: 'Música electrónica hasta el amanecer',
+    price: '$60',
+    artists: ['DJ Aurora'],
+    attendees: 350,
   },
   {
-    title: 'Key on Tour - Plaza de Toros Colonia',
+    title: 'Winter Beats',
     address: 'Rivera',
     date: '30/01/2026',
-    imageUrl: '/assets/show1.jpg',
+    imageUrl: '/assets/show4.jpg',
     dateIcon: '/assets/icons/cards/calendar_month.svg',
     addressIcon: '/assets/icons/cards/location.svg',
+    category: 'Electronic',
+    time: '21:30',
+    location: 'Rivera',
+    description: 'Electrónica y buen ambiente',
+    price: '$55',
+    artists: ['DJ Winter'],
+    attendees: 300,
   },
 ];
 
@@ -96,17 +152,6 @@ const HomePage = () => {
     dateRange: undefined as DateRange | undefined,
     location: '',
   });
-
-  useEffect(() => {
-    const handleMobileSearch = (event: CustomEvent<string>) => {
-      setFilters(prevFilters => ({ ...prevFilters, searchTerm: event.detail }));
-    };
-
-    window.addEventListener('search', handleMobileSearch as EventListener);
-    return () => {
-      window.removeEventListener('search', handleMobileSearch as EventListener);
-    };
-  }, []);
 
   const handleFilterChange = useCallback(
     (newFilters: {
@@ -121,54 +166,36 @@ const HomePage = () => {
 
   useEffect(() => {
     const { searchTerm, dateRange, location } = filters;
-    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    const lowerSearch = searchTerm.toLowerCase();
 
-    const filtered = CardData.filter(card => {
-      const searchTermMatch =
-        lowercasedSearchTerm === ''
-          ? true
-          : card.title.toLowerCase().includes(lowercasedSearchTerm) ||
-            card.address.toLowerCase().includes(lowercasedSearchTerm) ||
-            card.date.toLowerCase().includes(lowercasedSearchTerm);
+    setFilteredCards(
+      CardData.filter(card => {
+        const searchMatch =
+          lowerSearch === '' ||
+          card.title?.toLowerCase().includes(lowerSearch) ||
+          card.address?.toLowerCase().includes(lowerSearch) ||
+          card.date?.toLowerCase().includes(lowerSearch);
+        const locationMatch = !location || card.address === location;
 
-      const locationMatch = location === '' ? true : card.address === location;
-
-      let dateMatch = true;
-      if (dateRange?.from) {
-        const dateParts = card.date.trim().split('/');
-        const cardDate = new Date(
-          parseInt(dateParts[2]),
-          parseInt(dateParts[1]) - 1,
-          parseInt(dateParts[0])
-        );
-
-        if (isNaN(cardDate.getTime())) {
-          dateMatch = false;
-        } else {
+        let dateMatch = true;
+        if (dateRange?.from && card.date) {
+          const [d, m, y] = card.date.split('/');
+          const cardDate = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
           const fromDate = new Date(dateRange.from);
           fromDate.setHours(0, 0, 0, 0);
-
-          if (dateRange.to) {
-            const toDate = new Date(dateRange.to);
-            toDate.setHours(23, 59, 59, 999);
-            dateMatch = cardDate >= fromDate && cardDate <= toDate;
-          } else {
-            dateMatch = cardDate.getTime() === fromDate.getTime();
-          }
+          const toDate = dateRange.to ? new Date(dateRange.to) : fromDate;
+          toDate.setHours(23, 59, 59, 999);
+          dateMatch = cardDate >= fromDate && cardDate <= toDate;
         }
-      }
 
-      return searchTermMatch && locationMatch && dateMatch;
-    });
-
-    setFilteredCards(filtered);
+        return searchMatch && locationMatch && dateMatch;
+      })
+    );
   }, [filters]);
 
   return (
-    <div className="flex flex-col w-full bg-[#1C1A1A]">
-      <div className="w-full">
-        <CarrouselImage imageURLs={imageURLsFromDataBase} />
-      </div>
+    <div className="flex flex-col w-full">
+      <CarrouselImage events={CardData} interval={5000} />
 
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
         <div className="flex flex-col w-full max-w-[1400px] gap-12">
@@ -176,16 +203,17 @@ const HomePage = () => {
             <SearchBar onFilterChange={handleFilterChange} />
           </div>
 
-          <div className="w-full ">
+          <div className="w-full">
             <CardCarousel
               cards={CardData}
               autoPlayInterval={5000}
               cardsToShow={4}
             />
           </div>
+
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className="w-full text-3xl font-semibold text-white mb-8">
-              All Events
+              All Events{' '}
               {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
             </h1>
 
@@ -211,6 +239,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
       <JoinNow />
     </div>
   );

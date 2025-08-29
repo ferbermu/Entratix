@@ -101,7 +101,7 @@ const EventOrganizerData: EventOrganizerProps = {
 };
 export default function Page() {
   return (
-    <div className="grid grid-cols-3 max-[1280px]:grid-cols-1 gap-6 px-24 max-[1280px]:px-4 pt-8 my-20 bg-[#1C1A1A]">
+    <div className="grid grid-cols-3 max-[1280px]:grid-cols-1 gap-6 px-24 max-[1280px]:px-4 pt-8 my-20 ">
       <div className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-1">
         <EventBanner />
       </div>
