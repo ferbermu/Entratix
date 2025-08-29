@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { EnvelopeSimple, UserPlus } from '@phosphor-icons/react';
 import { RrppSalesReportModal, RrppSalesRow } from './RrppSalesReportModal';
 import { AddSubRrppModal, Event } from './AddSubRrppModal';
+import { useExportCsv } from '@/hooks/useExportCsv';
 
 const subRrpps = [
   {
@@ -23,7 +24,6 @@ const subRrpps = [
   },
 ];
 
-// Datos de ejemplo para eventos
 const sampleEvents: Event[] = [
   {
     id: '1',
@@ -43,21 +43,10 @@ const sampleEvents: Event[] = [
     date: '4/9/2024',
     status: 'Active',
   },
-  {
-    id: '4',
-    name: 'Jazz & Blues Night',
-    date: '11/9/2024',
-    status: 'Active',
-  },
-  {
-    id: '5',
-    name: 'Rock Revolution',
-    date: '18/9/2024',
-    status: 'Active',
-  },
+  { id: '4', name: 'Jazz & Blues Night', date: '11/9/2024', status: 'Active' },
+  { id: '5', name: 'Rock Revolution', date: '18/9/2024', status: 'Active' },
 ];
 
-// Datos de ejemplo para el modal de reporte de ventas
 const sampleSalesData: RrppSalesRow[] = [
   {
     event: 'Underground Techno Night',
@@ -128,6 +117,8 @@ const sampleSalesData: RrppSalesRow[] = [
 ];
 
 export const SubRrpp = () => {
+  const { exportToCsv } = useExportCsv();
+
   const [selectedRrpp, setSelectedRrpp] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddSubRrppModalOpen, setIsAddSubRrppModalOpen] = useState(false);
@@ -143,8 +134,17 @@ export const SubRrpp = () => {
   };
 
   const handleExportCsv = () => {
-    // Implementar lógica de exportación CSV
-    console.log('Exporting CSV for:', selectedRrpp);
+    exportToCsv('rrpp-sales-report', sampleSalesData, [
+      { key: 'event', header: 'Event' },
+      { key: 'ticketId', header: 'Ticket ID' },
+      { key: 'fullName', header: 'Full Name' },
+      { key: 'email', header: 'Email' },
+      { key: 'ticketType', header: 'Ticket Type' },
+      { key: 'value', header: 'Value' },
+      { key: 'paymentMethod', header: 'Payment Method' },
+      { key: 'status', header: 'Status' },
+      { key: 'purchaseDate', header: 'Purchase Date' },
+    ]);
   };
 
   const handleAddSubRrpp = (
@@ -152,13 +152,7 @@ export const SubRrpp = () => {
     selectedEvents: string[],
     enableCashSales: boolean
   ) => {
-    // Implementar lógica para agregar Sub RRPP
-    console.log('Adding Sub RRPP:', {
-      email,
-      selectedEvents,
-      enableCashSales,
-    });
-    // Aquí se podría hacer una llamada a la API para guardar el nuevo Sub RRPP
+    console.log('Adding Sub RRPP:', { email, selectedEvents, enableCashSales });
   };
 
   return (
@@ -223,20 +217,15 @@ export const SubRrpp = () => {
         </div>
       ))}
 
-      {/* Sales Report Modal */}
       <RrppSalesReportModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         rrppName={selectedRrpp || ''}
         rows={sampleSalesData}
-        totals={{
-          revenue: 580,
-          sales: 6,
-        }}
+        totals={{ revenue: 580, sales: 6 }}
         onExportCsv={handleExportCsv}
       />
 
-      {/* Add Sub RRPP Modal */}
       <AddSubRrppModal
         isOpen={isAddSubRrppModalOpen}
         onClose={() => setIsAddSubRrppModalOpen(false)}

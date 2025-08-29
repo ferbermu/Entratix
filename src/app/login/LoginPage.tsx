@@ -4,6 +4,7 @@ import { MusicNotes, EnvelopeSimple, GoogleLogo } from '@phosphor-icons/react';
 import { InputPassword } from '@/register/InputPassword';
 import { DateRange } from 'react-day-picker';
 import { useLogin } from './hooks/useLogin';
+import Link from 'next/link';
 
 interface LoginPageProps {
   date: DateRange | undefined;
@@ -115,11 +116,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
           </button>
         </form>
 
-        <p className="text-center text-gray-300 mt-8 text-sm">
-          Dont have an account?
-          <a href="#" className="text-[#3BAFBB] hover:underline">
+        <p className="flex gap-2 justify-center items-center text-gray-300 mt-8 text-sm">
+          <span>Don’t have an account?</span>
+          <Link href="/register" className="text-[#3BAFBB] hover:underline">
             Sign up here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

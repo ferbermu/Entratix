@@ -66,11 +66,11 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
   return (
     <div
       className={`
-        w-full transition-all duration-500 ease-in-out
+        w-full transition-all duration-500 ease-in-out 
         ${
           isSticky
             ? 'fixed top-[88px] left-0 right-0 z-40 px-0 w-full bg-[#1C1A1A]'
-            : ''
+            : 'bg-[#1C1A1A]'
         }
       `}
     >
