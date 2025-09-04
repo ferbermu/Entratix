@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CardProps } from './Card';
@@ -30,19 +30,28 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
-  const goToSlide = (newIndex: number, dir: number) => {
-    setDirection(dir);
-    setIndex((newIndex + events.length) % events.length);
-  };
+  const goToSlide = useCallback(
+    (newIndex: number, dir: number) => {
+      setDirection(dir);
+      setIndex((newIndex + events.length) % events.length);
+    },
+    [events.length]
+  );
 
-  const nextSlide = () => goToSlide(index + 1, 1);
-  const prevSlide = () => goToSlide(index - 1, -1);
+  const nextSlide = useCallback(
+    () => goToSlide(index + 1, 1),
+    [index, goToSlide]
+  );
+  const prevSlide = useCallback(
+    () => goToSlide(index - 1, -1),
+    [index, goToSlide]
+  );
 
   useEffect(() => {
     clearExistingTimeout();
     timeoutRef.current = setTimeout(() => nextSlide(), interval);
     return () => clearExistingTimeout();
-  }, [index, interval]);
+  }, [nextSlide, interval]);
 
   const variants = {
     enter: (direction: number) => ({
