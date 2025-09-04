@@ -110,7 +110,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
           {cards.map((item, key) => (
             <div
               key={key}
-              className="bg-[#1C1A1A] flex-shrink-0 rounded-2xl border-2 border-[#4E4B4B] hover:border-[#3BAFBB] transition-colors overflow-hidden"
+              className="bg-[#1C1A1A]/50 hover:bg-[#1C1A1A]  flex-shrink-0 rounded-2xl border-2 border-[#4E4B4B] hover:border-[#3BAFBB] transition-colors overflow-hidden"
               style={{
                 width: `${CARD_WIDTH}px`,
               }}

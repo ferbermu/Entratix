@@ -4,6 +4,7 @@ import { EnvelopeSimple, UserPlus } from '@phosphor-icons/react';
 import { RrppSalesReportModal, RrppSalesRow } from './RrppSalesReportModal';
 import { AddSubRrppModal, Event } from './AddSubRrppModal';
 import { useExportCsv } from '@/hooks/useExportCsv';
+import { motion } from 'framer-motion';
 
 const subRrpps = [
   {
@@ -81,39 +82,6 @@ const sampleSalesData: RrppSalesRow[] = [
     status: 'Valid',
     purchaseDate: '9/7/2024',
   },
-  {
-    event: 'Summer Electronic Festival',
-    ticketId: 'TKT-004',
-    fullName: 'Roberto Fernández',
-    email: 'roberto.fernandez@email.com',
-    ticketType: 'VIP',
-    value: 120,
-    paymentMethod: 'Bank Transfer',
-    status: 'Expired',
-    purchaseDate: '24/6/2024',
-  },
-  {
-    event: 'Underground Techno Night',
-    ticketId: 'TKT-005',
-    fullName: 'Laura Martínez',
-    email: 'laura.martinez@email.com',
-    ticketType: 'General',
-    value: 80,
-    paymentMethod: 'Credit Card',
-    status: 'Valid',
-    purchaseDate: '12/7/2024',
-  },
-  {
-    event: 'Latin Beats Festival',
-    ticketId: 'TKT-006',
-    fullName: 'Diego Ramírez',
-    email: 'diego.ramirez@email.com',
-    ticketType: 'Early Bird',
-    value: 60,
-    paymentMethod: 'PayPal',
-    status: 'Used',
-    purchaseDate: '15/7/2024',
-  },
 ];
 
 export const SubRrpp = () => {
@@ -157,20 +125,29 @@ export const SubRrpp = () => {
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 xl:px-12">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6 max-[700px]:flex-col max-[700px]:items-stretch max-[700px]:gap-3">
-        <h2 className="text-2xl font-bold text-white">Sub RRPPs</h2>
-        <button
+        <h2 className="text-2xl font-bold text-white animate-fadeInDown">
+          Sub RRPPs
+        </h2>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md flex items-center gap-2 max-[700px]:w-full max-[700px]:justify-center"
           onClick={() => setIsAddSubRrppModalOpen(true)}
         >
           <UserPlus size={16} /> Add Sub RRPP
-        </button>
+        </motion.button>
       </div>
 
+      {/* RRPP Cards */}
       {subRrpps.map((rrpp, index) => (
-        <div
+        <motion.div
           key={index}
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB]/60 rounded-xl p-4 md:p-6 shadow-md grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-6 gap-y-4 max-[700px]:p-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1, duration: 0.4 }}
+          className="bg-[#3BAFBB]/10 border border-[#3BAFBB]/60 rounded-xl p-4 md:p-6 shadow-md grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-6 gap-y-4 max-[700px]:p-4 hover:shadow-xl transition-shadow duration-300"
         >
           <div className="flex flex-col gap-1 flex-1 col-[1] row-[1]">
             <h2 className="text-lg font-semibold text-white">{rrpp.name}</h2>
@@ -195,26 +172,26 @@ export const SubRrpp = () => {
           </div>
 
           <div className="col-[1] row-[2] flex items-center">
-            {rrpp.cashSalesEnabled ? (
-              <span className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-medium px-3 py-1 rounded-full border border-[#3BAFBB40]">
-                Cash Sales Enabled
-              </span>
-            ) : (
-              <span className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-medium px-3 py-1 rounded-full border border-[#3BAFBB40]">
-                Link Only
-              </span>
-            )}
+            <motion.span
+              className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-medium px-3 py-1 rounded-full border border-[#3BAFBB40]"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              {rrpp.cashSalesEnabled ? 'Cash Sales Enabled' : 'Link Only'}
+            </motion.span>
           </div>
 
           <div className="col-[2] row-[2] flex items-center justify-end ">
-            <button
-              className=" bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md"
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md"
               onClick={() => handleViewSalesReport(rrpp.name)}
             >
               View Sales Report
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       ))}
 
       <RrppSalesReportModal

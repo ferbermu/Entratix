@@ -33,7 +33,7 @@ export const Card = ({
     <Link
       href="/events"
       className={`
-        group relative w-[340px] h-[543px] rounded-2xl overflow-hidden bg-[#1C1A1A] cursor-pointer transition-colors duration-300
+        group relative w-[340px] h-[543px] rounded-2xl overflow-hidden bg-[#1C1A1A]/50 hover:bg-[#1C1A1A] cursor-pointer transition-colors duration-300
         ${!isCarousel ? 'border-2 border-[#4E4B4B] hover:border-[#3BAFBB]' : ''}
       `}
     >
@@ -49,7 +49,7 @@ export const Card = ({
       </div>
 
       <div className="p-6 gap-6 text-white flex flex-col h-full">
-        <h3 className="text-3xl">{title}</h3>
+        <h3 className="text-3xl line-clamp-2 h-20 ">{title}</h3>
 
         {addressIcon && (
           <div className="flex items-center gap-2 text-md text-gray-300">

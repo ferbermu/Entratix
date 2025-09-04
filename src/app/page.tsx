@@ -84,7 +84,7 @@ const CardData: CardProps[] = [
     attendees: 400,
   },
   {
-    title: 'Key on Tour - Plaza de Toros Colonia',
+    title: 'Key on Tour - Plaza de Toros Colonia ',
     address: 'Colonia',
     date: '12/11/2025',
     imageUrl: '/assets/show1.jpg',

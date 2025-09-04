@@ -5,6 +5,7 @@ import {
   CalendarBlank,
   User,
 } from '@phosphor-icons/react';
+import { motion } from 'framer-motion';
 
 const salesData = [
   {
@@ -19,30 +20,42 @@ const salesData = [
 
 export const SalesReports = () => {
   return (
-    <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto ">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 ">
-        <MetricCard
-          label="Total Revenue"
-          value="$100"
-          icon={<CurrencyDollarSimple size={24} />}
-          color="text-white"
-        />
-        <MetricCard
-          label="Tickets Sold"
-          value="2"
-          icon={<User size={24} />}
-          color="text-white"
-        />
-        <MetricCard
-          label="Active Events"
-          value="2"
-          icon={<CalendarBlank size={24} />}
-          color="text-white"
-        />
+    <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+      {/* Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          {
+            label: 'Total Revenue',
+            value: '$100',
+            icon: <CurrencyDollarSimple size={24} />,
+          },
+          { label: 'Tickets Sold', value: '2', icon: <User size={24} /> },
+          {
+            label: 'Active Events',
+            value: '2',
+            icon: <CalendarBlank size={24} />,
+          },
+        ].map((metric, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1, duration: 0.4 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <MetricCard {...metric} color="text-white" />
+          </motion.div>
+        ))}
       </div>
 
       {/* Recent Sales Table */}
-      <div className="bg-[#3BAFBB]/10 rounded-xl border border-[#3BAFBB40] p-6 shadow-md">
+      <motion.div
+        className="bg-[#3BAFBB]/10 rounded-xl border border-[#3BAFBB40] p-6 shadow-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <h2 className="text-lg font-semibold text-white mb-4">Recent Sales</h2>
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm text-left text-white">
@@ -58,23 +71,33 @@ export const SalesReports = () => {
             </thead>
             <tbody>
               {salesData.map((sale, i) => (
-                <tr key={i} className="border-b border-[#3BAFBB20]">
+                <motion.tr
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.3 }}
+                  className="border-b border-[#3BAFBB20]"
+                >
                   <td className="px-4 py-3">{sale.event}</td>
                   <td className="px-4 py-3">{sale.buyer}</td>
                   <td className="px-4 py-3">{sale.tickets}</td>
                   <td className="px-4 py-3 text-[#3BAFBB]">${sale.amount}</td>
                   <td className="px-4 py-3">
-                    <span className="bg-[#3BAFBB1A] text-[#3BAFBB]  text-xs font-medium px-2 py-1 rounded-full border border-[#3BAFBB40]">
+                    <motion.span
+                      className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-medium px-2 py-1 rounded-full border border-[#3BAFBB40]"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                    >
                       {sale.type}
-                    </span>
+                    </motion.span>
                   </td>
                   <td className="px-4 py-3">{sale.date}</td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

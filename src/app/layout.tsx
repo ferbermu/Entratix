@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable}  min-h-screen flex flex-col antialiased `}
       >
-        <div className="bg-gradient-to-bl from-[#1C1A1A] via-[#1F4C52] to-[#1C1A1A]">
+        <div className="bg-[#1C1A1A]  ">
           <ReduxProvider>
             <Navbar />
             {children}
