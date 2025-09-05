@@ -40,23 +40,26 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
   <div
     className={`relative h-full flex items-center px-4 py-2 gap-3 justify-start pl-2 ${width} max-[700px]:w-full`}
   >
-    <Image
-      src="/assets/icons/search_bar/location.svg"
-      alt="location"
-      width={16}
-      height={16}
-    />
+    <div className="relative">
+      <Image
+        src="/assets/icons/search_bar/location.svg"
+        alt="location"
+        width={16}
+        height={16}
+        className="drop-shadow-[0_0_8px_rgba(59,175,187,0.6)] filter brightness-125"
+      />
+    </div>
     <Dropdown
       options={departments}
       selectedValue={selectedValue}
       onValueChange={onValueChange}
       placeholder="Location"
-      className="flex-1 min-w-0 bg-[#1C1A1A]  border border-[#3BAFBB66] hover:border-[#3BAFBB] rounded-md "
+      className="flex-1 min-w-0 bg-gradient-to-r from-black/80 via-[#1C1A1A]/90 to-black/80 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 focus-within:shadow-[0_0_15px_rgba(59,175,187,0.4)] rounded-md transition-all duration-300 shadow-lg"
       customIcon={
         selectedValue ? (
           <X
             size={20}
-            className="text-[#3BAFBB] cursor-pointer"
+            className="text-[#3BAFBB] cursor-pointer hover:text-cyan-300 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(59,175,187,0.8)] hover:scale-110"
             onClick={e => {
               e.stopPropagation();
               onValueChange('');

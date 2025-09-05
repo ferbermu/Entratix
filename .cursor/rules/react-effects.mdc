@@ -1,0 +1,249 @@
+---
+description: Evitar useEffect innecesarios siguiendo las mejores prácticas oficiales de React
+globs: ["**/*.tsx", "**/*.jsx", "**/hooks/*.ts"]
+alwaysApply: true
+---
+
+# React Effects - Solo Para Sincronización Externa
+
+Sigue la [documentación oficial de React](https://react.dev/learn/you-might-not-need-an-effect): **No necesitas Effects para transformar datos o manejar eventos**.
+
+## ❌ NO uses useEffect para
+
+### Transformar datos para renderizado
+
+```typescript
+// ❌ Estado redundante con Effect
+function UserProfile({ user }) {
+  const [fullName, setFullName] = useState("");
+
+  useEffect(() => {
+    setFullName(`${user.firstName} ${user.lastName}`);
+  }, [user.firstName, user.lastName]);
+
+  return <h1>{fullName}</h1>;
+}
+```
+
+```typescript
+// ✅ Calculado durante el render
+function UserProfile({ user }) {
+  const fullName = `${user.firstName} ${user.lastName}`;
+  return <h1>{fullName}</h1>;
+}
+```
+
+### Manejar eventos de usuario
+
+```typescript
+// ❌ Lógica de eventos en Effect
+function BuyButton({ product }) {
+  useEffect(() => {
+    if (shouldBuy) {
+      buyProduct(product);
+      showNotification("Comprado!");
+    }
+  }, [shouldBuy, product]);
+}
+```
+
+```typescript
+// ✅ Lógica en event handler
+function BuyButton({ product }) {
+  const handleBuy = () => {
+    buyProduct(product);
+    showNotification("Comprado!");
+  };
+
+  return <button onClick={handleBuy}>Comprar</button>;
+}
+```
+
+### Cálculos costosos
+
+```typescript
+// ❌ Recalcula en cada render
+function ProductList({ products, filter }) {
+  const filteredProducts = products.filter(p => p.category === filter);
+  return <div>{filteredProducts.map(...)}</div>;
+}
+```
+
+```typescript
+// ✅ Memoizado con useMemo
+function ProductList({ products, filter }) {
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => p.category === filter);
+  }, [products, filter]);
+
+  return <div>{filteredProducts.map(...)}</div>;
+}
+```
+
+## ✅ SÍ usa useEffect para
+
+### Sincronización con APIs
+
+```typescript
+function UserData({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+
+    fetchUser(userId).then((userData) => {
+      if (!ignore) {
+        setUser(userData);
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, [userId]);
+
+  return user ? <UserProfile user={user} /> : <Loading />;
+}
+```
+
+### Integración con bibliotecas externas
+
+```typescript
+function MapComponent({ coordinates }) {
+  const mapRef = useRef();
+
+  useEffect(() => {
+    const map = new GoogleMap(mapRef.current);
+    map.setCenter(coordinates);
+
+    return () => {
+      map.destroy();
+    };
+  }, [coordinates]);
+
+  return <div ref={mapRef} />;
+}
+```
+
+### Suscripciones a eventos
+
+```typescript
+function WindowSize() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const updateSize = () => {
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", updateSize);
+    updateSize(); // Set initial size
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return (
+    <div>
+      {size.width} x {size.height}
+    </div>
+  );
+}
+```
+
+## Patrones recomendados
+
+### Para datos derivados
+
+```typescript
+// ✅ Variables derivadas simples
+function OrderSummary({ items }) {
+  const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
+  const itemCount = items.length;
+  const hasDiscount = totalPrice > 100;
+
+  return (
+    <div>
+      <p>Items: {itemCount}</p>
+      <p>Total: ${totalPrice}</p>
+      {hasDiscount && <p>¡Descuento aplicado!</p>}
+    </div>
+  );
+}
+```
+
+### Para resetear estado
+
+```typescript
+// ✅ Reset durante el render
+function CommentForm({ postId }) {
+  const [comment, setComment] = useState("");
+
+  // Reset cuando cambia el post
+  if (comment && prevPostId !== postId) {
+    setComment("");
+  }
+
+  return (
+    <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
+  );
+}
+```
+
+### Para cálculos con dependencias
+
+```typescript
+// ✅ useMemo para cálculos costosos
+function DataVisualization({ rawData, filters }) {
+  const processedData = useMemo(() => {
+    return rawData
+      .filter(filters.category)
+      .map((item) => expensiveTransform(item))
+      .sort(filters.sortBy);
+  }, [rawData, filters]);
+
+  return <Chart data={processedData} />;
+}
+```
+
+### Para funciones que dependen de props
+
+```typescript
+// ✅ useCallback para funciones estables
+function TodoList({ todos, onToggle }) {
+  const handleToggle = useCallback(
+    (id) => {
+      onToggle(id);
+      logUserAction("toggle_todo", id);
+    },
+    [onToggle]
+  );
+
+  return (
+    <div>
+      {todos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} onToggle={handleToggle} />
+      ))}
+    </div>
+  );
+}
+```
+
+## Validación antes de useEffect
+
+Antes de escribir `useEffect`, pregúntate:
+
+1. **¿Se puede calcular durante el render?** → Usa variable derivada
+2. **¿Es respuesta a un evento de usuario?** → Usa event handler
+3. **¿Es un cálculo costoso?** → Usa `useMemo`
+4. **¿Es sincronización externa?** → ✅ Usa `useEffect`
+
+## Effects comunes que SÍ necesitas
+
+- **Fetch de datos** de APIs
+- **Timers y intervalos**
+- **Suscripciones** (WebSocket, eventos)
+- **Integración** con librerías externas
+- **Cleanup** de recursos
+- **Sincronización** con localStorage
+
+**Regla clave**: Effects son para "salirse" del mundo React y sincronizar con sistemas externos.

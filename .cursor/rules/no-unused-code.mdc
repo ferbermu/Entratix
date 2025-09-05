@@ -1,0 +1,241 @@
+---
+description: Eliminar valores, imports y parámetros sin usar para código limpio
+globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+alwaysApply: true
+---
+
+# Código Sin Elementos Sin Usar
+
+Elimina todas las variables, imports, parámetros y elementos que no se usen. Mantén el código limpio y sin "ruido".
+
+## Variables y constantes
+
+**❌ Variables sin usar:**
+
+```typescript
+const unusedVariable = "value";
+const [state, setState] = useState("");
+const { used, unused } = object; // 'unused' no se usa
+
+console.log(used);
+```
+
+**✅ Solo lo necesario:**
+
+```typescript
+const usedVariable = "value";
+const [state, setState] = useState("");
+const { used } = object;
+
+console.log(usedVariable);
+console.log(used);
+setState("new value");
+```
+
+## Imports optimizados
+
+**❌ Imports sin usar:**
+
+```typescript
+import { ComponentA, ComponentB, UnusedComponent } from "./components";
+import { usedUtil, unusedUtil } from "./utils";
+
+export function MyComponent() {
+  return (
+    <div>
+      <ComponentA />
+      <ComponentB />
+      {usedUtil()}
+    </div>
+  );
+}
+```
+
+**✅ Solo imports necesarios:**
+
+```typescript
+import { ComponentA, ComponentB } from "./components";
+import { usedUtil } from "./utils";
+
+export function MyComponent() {
+  return (
+    <div>
+      <ComponentA />
+      <ComponentB />
+      {usedUtil()}
+    </div>
+  );
+}
+```
+
+## Parámetros de función
+
+**❌ Parámetros sin usar:**
+
+```typescript
+function handleEvent(event: MouseEvent, unusedParam: string) {
+  console.log("Event handled");
+}
+
+function processData(data: User, _context: Context) {
+  return data.name;
+}
+```
+
+**✅ Solo parámetros necesarios:**
+
+```typescript
+function handleEvent() {
+  console.log("Event handled");
+}
+
+function processData(data: User) {
+  return data.name;
+}
+
+// Solo cuando realmente necesites el parámetro
+function handleClick(event: MouseEvent) {
+  if (event.target) {
+    console.log("Clicked:", event.target);
+  }
+}
+```
+
+## Props de componentes
+
+**❌ Props sin usar:**
+
+```typescript
+interface Props {
+  title: string;
+  description: string;
+  unusedProp: number;
+}
+
+function Component({ title, description, unusedProp }: Props) {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+```
+
+**✅ Solo props necesarias:**
+
+```typescript
+interface Props {
+  title: string;
+  description: string;
+}
+
+function Component({ title, description }: Props) {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+```
+
+## Callbacks y array methods
+
+**❌ Parámetros sin usar en callbacks:**
+
+```typescript
+array.map((item, index, fullArray) => item.name);
+array.forEach((item, unusedIndex) => console.log(item));
+```
+
+**✅ Solo parámetros necesarios:**
+
+```typescript
+array.map((item) => item.name);
+array.forEach((item) => console.log(item));
+
+// Solo cuando uses el índice
+array.map((item, index) => `${index}: ${item.name}`);
+```
+
+## Destructuring selectivo
+
+**❌ Destructuring excesivo:**
+
+```typescript
+const { id, name, email, phone, address, age } = user;
+console.log(name, email);
+```
+
+**✅ Solo lo que necesitas:**
+
+```typescript
+const { name, email } = user;
+console.log(name, email);
+
+// O usar directamente el objeto
+console.log(user.name, user.email);
+```
+
+## Estados y hooks
+
+**❌ Estados sin usar:**
+
+```typescript
+function Component() {
+  const [count, setCount] = useState(0);
+  const [unused, setUnused] = useState("");
+  const [text, setText] = useState("");
+
+  return (
+    <div>
+      <p>{count}</p>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+    </div>
+  );
+}
+```
+
+**✅ Solo estados necesarios:**
+
+```typescript
+function Component() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount((c) => c + 1)}>+</button>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+    </div>
+  );
+}
+```
+
+## Validación antes de crear
+
+Antes de declarar cualquier elemento, pregúntate:
+
+1. **¿Realmente lo voy a usar?** → Solo crear si es necesario
+2. **¿Puedo usar el objeto directamente?** → Evitar destructuring innecesario
+3. **¿Necesito todos los parámetros?** → Omitir parámetros no utilizados
+4. **¿Este import se usa en el código?** → Solo importar lo necesario
+5. **¿Esta prop se renderiza o procesa?** → Solo definir props activas
+
+## Beneficios del código limpio
+
+- **Sin errores de linter** - Elimina warnings "defined but never used"
+- **Código más legible** - Sin distracciones innecesarias
+- **Mejor performance** - Menos memoria y procesamiento
+- **Mantenimiento fácil** - Solo código relevante
+- **Bundle más pequeño** - Imports optimizados
+
+## Herramientas de ayuda
+
+Configura tu editor para mostrar elementos sin usar:
+
+- **ESLint**: `no-unused-vars`, `@typescript-eslint/no-unused-vars`
+- **TypeScript**: `noUnusedLocals`, `noUnusedParameters`
+- **IDE**: Highlighting automático de código sin usar

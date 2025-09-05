@@ -1,0 +1,93 @@
+---
+description: Usar exclusivamente interfaces en lugar de types con organización por carpetas
+globs: ["**/interfaces/**/*.ts", "**/*.ts", "**/*.tsx"]
+alwaysApply: true
+---
+
+# Interfaces TypeScript Organizadas
+
+Usa exclusivamente `interface` en lugar de `type`. Organiza todas las interfaces en carpetas específicas por funcionalidad.
+
+## Estructura de carpetas requerida
+
+```
+src/app/dashboard/clients/
+├── interfaces/
+│   ├── GetClient/
+│   │   └── Client.ts
+│   ├── CreateClient/
+│   │   └── CreateClient.ts
+│   ├── UpdateClient/
+│   │   └── UpdateClient.ts
+│   └── FormClient/
+│       └── FormClient.ts
+├── services/
+├── hooks/
+└── components/
+```
+
+## Conversión de types a interfaces
+
+**❌ Prohibido - tipos:**
+
+```typescript
+type UserStatus = "active" | "inactive" | "pending";
+type ApiResponse<T> = {
+  data: T;
+  status: number;
+};
+```
+
+**✅ Correcto - interfaces:**
+
+```typescript
+interface UserStatus {
+  value: "active" | "inactive" | "pending";
+}
+
+interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message: string;
+}
+```
+
+## Organización por funcionalidad
+
+**Para recursos:**
+
+- `GetResource/Resource.ts` - Entidad completa
+- `CreateResource/CreateResource.ts` - Datos para creación
+- `UpdateResource/UpdateResource.ts` - Datos para actualización
+- `FormResource/FormResource.ts` - Datos del formulario
+
+**Para uniones de strings:**
+
+```typescript
+interface VehicleType {
+  value: "car" | "motorcycle" | "truck";
+}
+
+export const VEHICLE_TYPES = {
+  CAR: "car" as const,
+  MOTORCYCLE: "motorcycle" as const,
+  TRUCK: "truck" as const,
+} as const;
+```
+
+## Reglas estrictas
+
+**NUNCA uses:**
+
+- `type` para objetos, uniones o genéricos
+- `enum` para constantes string
+- Definiciones de tipos fuera de carpetas `interfaces/`
+
+**SIEMPRE usa:**
+
+- `interface` para todas las estructuras
+- Carpetas organizadas por funcionalidad
+- Propiedad `value` para uniones de strings
+- Nomenclatura descriptiva (Get, Create, Update, Form)
+
+@interfaces/

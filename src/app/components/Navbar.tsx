@@ -29,9 +29,9 @@ export const Navbar = () => {
   const { user, isAuthenticated, logout, isLoading } = useAuthRedux();
 
   const activeClass =
-    'bg-[#3baebb32] !border-[#3BAFBB] rounded-md text-[#3BAFBB]';
+    'bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 !border-cyan-400 rounded-md text-cyan-300 shadow-[0_0_15px_rgba(0,255,255,0.4)]';
   const hoverClass =
-    'hover:bg-[#3baebb32]  hover:text-[#3BAFBB] transition-colors';
+    'hover:bg-gradient-to-r hover:from-pink-500/10 hover:via-purple-500/10 hover:to-cyan-400/10 hover:text-cyan-300 transition-all duration-300 hover:shadow-[0_0_10px_rgba(59,175,187,0.3)]';
   const isEvents = pathname?.startsWith('/events');
   const isMyTickets = pathname?.startsWith('/my-tickets');
   const isCreateEvent = pathname?.startsWith('/create-event');
@@ -72,16 +72,20 @@ export const Navbar = () => {
         className={`
           fixed w-full top-0 z-50 
           border-b h-22 flex justify-between px-12 max-[870px]:px-5 
-          transition-all duration-500 ease-in-out
-          max-[870px]:bg-[#1E2122]
+          transition-all duration-500 ease-in-out  overflow-hidden
+          max-[870px]:bg-gradient-to-r max-[870px]:from-black/90 max-[870px]:via-purple-900/20 max-[870px]:to-black/90
           ${
             isScrolled || isMobileNavOpen || isMobileSearchOpen
-              ? 'bg-[#1E2122] border-[#3BAFBB]'
-              : 'bg-[#3BAFBB0D] border-[#3BAFBB33]'
+              ? 'bg-gradient-to-r from-black/90 via-purple-900/20 to-black/90 border-pink-500/50 shadow-[0_0_25px_rgba(255,20,147,0.3)] backdrop-blur-sm'
+              : 'bg-gradient-to-r from-black/60 via-purple-900/10 to-black/60 border-pink-500/30'
           }
         `}
       >
-        <div className="gap-4 flex items-center">
+        {/* Neon background effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-purple-500/5 to-cyan-400/5 blur-xl opacity-50"></div>
+        <div className="absolute inset-0 border-b border-pink-500/20"></div>
+
+        <div className="gap-4 flex items-center relative z-10">
           <Link href="/">
             <Image
               width={200}
@@ -98,7 +102,12 @@ export const Navbar = () => {
                 text="Events"
                 onClick={() => {}}
                 className={cn(hoverClass, { [activeClass]: isEvents })}
-                icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
+                icon={
+                  <CalendarPlus
+                    size={20}
+                    className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                  />
+                }
               />
             </Link>
             <Link href="/my-tickets">
@@ -106,7 +115,12 @@ export const Navbar = () => {
                 text="My Tickets"
                 onClick={() => {}}
                 className={cn(hoverClass, { [activeClass]: isMyTickets })}
-                icon={<Ticket size={20} className="text-[#3BAFBB]" />}
+                icon={
+                  <Ticket
+                    size={20}
+                    className="text-cyan-400 drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]"
+                  />
+                }
               />
             </Link>
             <Link href="/create-event">
@@ -114,7 +128,12 @@ export const Navbar = () => {
                 text="Create Event"
                 onClick={() => {}}
                 className={cn(hoverClass, { [activeClass]: isCreateEvent })}
-                icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
+                icon={
+                  <CalendarPlus
+                    size={20}
+                    className="text-cyan-400 drop-shadow-[0_0_8px_rgba(128,0,255,0.6)]"
+                  />
+                }
               />
             </Link>
             <Link href="/rrpp-dashbord">
@@ -122,7 +141,12 @@ export const Navbar = () => {
                 text="RRPP Dashbord"
                 onClick={() => {}}
                 className={cn(hoverClass, { [activeClass]: isRrpp })}
-                icon={<ChartBar size={20} className="text-[#3BAFBB] " />}
+                icon={
+                  <ChartBar
+                    size={20}
+                    className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                  />
+                }
               />
             </Link>
             <Link href="/profile">
@@ -130,13 +154,18 @@ export const Navbar = () => {
                 text="Profile"
                 onClick={() => {}}
                 className={cn(hoverClass, { [activeClass]: isProfile })}
-                icon={<User size={20} className="text-[#3BAFBB]" />}
+                icon={
+                  <User
+                    size={20}
+                    className="text-cyan-400 drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]"
+                  />
+                }
               />
             </Link>
           </div>
         </div>
 
-        <div className="flex items-center gap-6 max-[870px]:hidden">
+        <div className="flex items-center gap-6 max-[870px]:hidden relative z-10">
           {isLoading ? (
             <div className="flex items-center space-x-2 text-white">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -151,26 +180,39 @@ export const Navbar = () => {
                   })}
                   text="Sign up"
                   onClick={handleSignup}
-                  icon={<UserPlus size={20} className="text-[#3BAFBB]" />}
+                  icon={
+                    <UserPlus
+                      size={20}
+                      className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                    />
+                  }
                 />
               </Link>
               <Link href="/login">
                 <Navbutton
                   className={cn(
-                    'bg-[#3baebb32] rounded-md border border-transparent text-[#3BAFBB] text-lg',
+                    'bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 rounded-md border border-cyan-400/50 text-cyan-300 text-lg shadow-[0_0_15px_rgba(0,255,255,0.4)]',
                     hoverClass,
                     { [activeClass]: isLoginPath }
                   )}
                   text="Login"
                   onClick={handleLogin}
-                  icon={<SignIn size={20} className="text-[#3BAFBB]" />}
+                  icon={
+                    <SignIn
+                      size={20}
+                      className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                    />
+                  }
                 />
               </Link>
             </>
           ) : (
             <div className="flex items-center gap-4">
               <div className="flex items-center space-x-2 text-white">
-                <User size={20} className="text-[#3BAFBB]" />
+                <User
+                  size={20}
+                  className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                />
                 <span className="text-white">{user?.name}</span>
               </div>
               <button

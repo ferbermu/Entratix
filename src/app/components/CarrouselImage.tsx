@@ -92,44 +92,82 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent flex items-center">
-            <div className="max-w-2xl px-24 text-white space-y-6">
-              <span className="uppercase text-sm tracking-wider text-[#3BAFBB] flex items-center gap-2">
-                <MusicNote size={18} /> {currentEvent.category || 'Experience'}
+            <div className="max-w-2xl px-24 text-white space-y-6 relative z-10">
+              <span className="uppercase text-sm tracking-wider text-cyan-300 flex items-center gap-2 font-semibold drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]">
+                <MusicNote
+                  size={18}
+                  className="drop-shadow-[0_0_10px_rgba(0,255,255,0.8)]"
+                />{' '}
+                {currentEvent.category || 'Experience'}
               </span>
-              <h2 className="text-5xl font-bold leading-tight">
+              <h2 className="text-5xl font-bold leading-tight text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
                 {currentEvent.title}
+                {/* Multiple neon glow layers */}
+                <div className="absolute inset-0 text-pink-400 blur-sm opacity-50">
+                  {currentEvent.title}
+                </div>
+                <div className="absolute inset-0 text-cyan-400 blur-md opacity-30">
+                  {currentEvent.title}
+                </div>
               </h2>
               <div className="flex flex-wrap gap-3 text-sm">
                 {currentEvent.date && (
-                  <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
-                    <Calendar size={16} /> {currentEvent.date}
+                  <div className="flex items-center gap-1 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 px-3 py-1 rounded-full border border-pink-500/40 backdrop-blur-sm">
+                    <Calendar
+                      size={16}
+                      className="text-pink-300 drop-shadow-[0_0_6px_rgba(255,20,147,0.6)]"
+                    />
+                    <span className="text-pink-200 font-medium">
+                      {currentEvent.date}
+                    </span>
                   </div>
                 )}
                 {currentEvent.time && (
-                  <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
-                    <Clock size={16} /> {currentEvent.time}
+                  <div className="flex items-center gap-1 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-400/20 px-3 py-1 rounded-full border border-purple-500/40 backdrop-blur-sm">
+                    <Clock
+                      size={16}
+                      className="text-purple-300 drop-shadow-[0_0_6px_rgba(128,0,255,0.6)]"
+                    />
+                    <span className="text-purple-200 font-medium">
+                      {currentEvent.time}
+                    </span>
                   </div>
                 )}
                 {currentEvent.location && (
-                  <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
-                    <MapPin size={16} /> {currentEvent.location}
+                  <div className="flex items-center gap-1 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 px-3 py-1 rounded-full border border-cyan-500/40 backdrop-blur-sm">
+                    <MapPin
+                      size={16}
+                      className="text-cyan-300 drop-shadow-[0_0_6px_rgba(0,255,255,0.6)]"
+                    />
+                    <span className="text-cyan-200 font-medium">
+                      {currentEvent.location}
+                    </span>
                   </div>
                 )}
               </div>
               {currentEvent.description && (
-                <p className="text-gray-200">{currentEvent.description}</p>
+                <p className="text-gray-200 font-light leading-relaxed">
+                  {currentEvent.description}
+                </p>
               )}
               <div className="flex items-center gap-6">
-                <button className="cursor-pointer bg-gradient-to-l from-[#3BAFBB] to-[#3BAFBB]/60 px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition">
+                <button className="cursor-pointer bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,20,147,0.6)] border border-pink-500/50 hover:border-cyan-400">
                   Get Tickets from {currentEvent.price || '$35'}
                 </button>
-                <div className="flex items-center gap-4 text-sm text-gray-300">
-                  <span className="flex items-center gap-1">
-                    <MusicNote size={16} /> {currentEvent.artists?.length || 3}{' '}
-                    Artists
+                <div className="flex items-center gap-4 text-sm text-cyan-200">
+                  <span className="flex items-center gap-1 font-medium">
+                    <MusicNote
+                      size={16}
+                      className="text-pink-300 drop-shadow-[0_0_6px_rgba(255,20,147,0.6)]"
+                    />{' '}
+                    {currentEvent.artists?.length || 3} Artists
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Users size={16} /> {currentEvent.attendees || '500+'} Going
+                  <span className="flex items-center gap-1 font-medium">
+                    <Users
+                      size={16}
+                      className="text-cyan-300 drop-shadow-[0_0_6px_rgba(0,255,255,0.6)]"
+                    />{' '}
+                    {currentEvent.attendees || '500+'} Going
                   </span>
                 </div>
               </div>
@@ -140,15 +178,21 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
 
       <button
         onClick={prevSlide}
-        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-3 rounded-full text-white transition"
+        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-black/60 hover:from-pink-500/50 hover:via-purple-500/50 hover:to-cyan-400/50 p-3 rounded-full text-white transition-all duration-300 border border-pink-500/50 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] backdrop-blur-sm"
       >
-        <CaretLeft size={28} />
+        <CaretLeft
+          size={28}
+          className="drop-shadow-[0_0_8px_rgba(255,20,147,0.8)]"
+        />
       </button>
       <button
         onClick={nextSlide}
-        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-3 rounded-full text-white transition"
+        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-black/60 via-purple-500/30 to-cyan-400/30 hover:from-cyan-400/50 hover:via-purple-500/50 hover:to-pink-500/50 p-3 rounded-full text-white transition-all duration-300 border border-cyan-400/50 hover:border-pink-500 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] backdrop-blur-sm"
       >
-        <CaretRight size={28} />
+        <CaretRight
+          size={28}
+          className="drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]"
+        />
       </button>
     </div>
   );
