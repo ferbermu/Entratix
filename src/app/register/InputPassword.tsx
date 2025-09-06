@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { LockSimple, Eye, EyeSlash } from '@phosphor-icons/react';
 
 interface InputPasswordProps {
@@ -54,22 +54,34 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
 
   const errorId = useMemo(() => `${id}-error`, [id]);
 
-  const validate = (val: string): string => {
-    if (required && val.trim() === '') return requiredMessage;
-    if (minLength && val.length < minLength) return minMsg;
-    if (typeof matchWith === 'string' && val !== matchWith) return matchMessage;
-    if (customValidate) {
-      const custom = customValidate(val);
-      if (custom) return custom;
-    }
-    return '';
-  };
+  const validate = useCallback(
+    (val: string): string => {
+      if (required && val.trim() === '') return requiredMessage;
+      if (minLength && val.length < minLength) return minMsg;
+      if (typeof matchWith === 'string' && val !== matchWith)
+        return matchMessage;
+      if (customValidate) {
+        const custom = customValidate(val);
+        if (custom) return custom;
+      }
+      return '';
+    },
+    [
+      required,
+      requiredMessage,
+      minLength,
+      minMsg,
+      matchWith,
+      matchMessage,
+      customValidate,
+    ]
+  );
 
   // Validación en tiempo real cuando cambia el valor o la referencia a la coincidencia
   useEffect(() => {
     const nextError = validate(value);
     setError(nextError);
-  }, [value, matchWith]);
+  }, [value, matchWith, validate]);
 
   // Notificar cambios de validez al padre si lo necesita
   useEffect(() => {

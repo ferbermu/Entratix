@@ -74,21 +74,21 @@ export const Dropdown: React.FC<DropdownProps> = ({
       {/* Options */}
       {isOpen && (
         <div
-          className={`absolute z-10 mt-2 w-full max-h-60 overflow-y-scroll rounded-lg shadow-lg 
+          className={`absolute z-[9999] mt-2 w-full max-h-60 overflow-y-scroll rounded-lg shadow-2xl border border-[#3BAFBB]/30 backdrop-blur-sm
           ${
             variant === 'default'
-              ? 'bg-[#1E1E1E] border border-[#3BAFBB66]'
-              : 'bg-[#1C1A1A] border border-[#3BAFBB] mt-5'
+              ? 'bg-gradient-to-b from-[#1C1A1A] via-black/95 to-[#1C1A1A]'
+              : 'bg-gradient-to-b from-[#1C1A1A] via-black/95 to-[#1C1A1A] mt-5'
           }`}
         >
           {options.map(option => (
             <div
               key={option}
-              className={`cursor-pointer transition-colors
+              className={`cursor-pointer transition-all duration-300 hover:shadow-[0_0_10px_rgba(59,175,187,0.3)]
               ${
                 variant === 'default'
-                  ? 'px-3 py-2 text-sm text-[#E0E0E0] hover:bg-[#3BAFBB33] hover:text-white'
-                  : 'p-2 text-[#3BAFBB] hover:bg-[#3BAFBB33]'
+                  ? 'px-3 py-2 text-sm text-cyan-200 hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:text-cyan-100'
+                  : 'p-2 text-[#3BAFBB] hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:text-cyan-300'
               }`}
               onClick={() => {
                 onValueChange(option);

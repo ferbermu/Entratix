@@ -60,8 +60,11 @@ const FooterOptionsData: FooterOptionProps[] = [
 export const Footer = () => {
   return (
     <>
-      <footer className="w-full mt-auto bg-[#121010] text-white py-12 relative overflow-hidden ">
-        <div className="flex max-[1280px]:flex-col max-[1280px]:items-center">
+      <footer className="w-full mt-auto bg-gradient-to-b from-black via-purple-900/20 to-black text-white py-12 relative overflow-hidden border-t border-pink-500/30">
+        {/* Neon background effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-purple-500/5 to-cyan-400/5 blur-xl opacity-30"></div>
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/50 to-transparent"></div>
+        <div className="flex max-[1280px]:flex-col max-[1280px]:items-center relative z-10">
           <div className=" flex max-[1280px]:flex-col max-[1280px]:gap-4 max-[1280px]:w-full ">
             <div className="flex flex-col max-[1280px]:items-center   ml-25 max-[1280px]:ml-0 ">
               <Image
@@ -70,7 +73,7 @@ export const Footer = () => {
                 src={'/assets/EntratixFullLogo.png'}
                 alt={''}
               ></Image>
-              <p className="text-gray-300 text-md mb-4 pt-4 max-[1280px]:text-center ">
+              <p className="text-cyan-200 text-md mb-4 pt-4 max-[1280px]:text-center font-light">
                 Rock, Electronica, Latin, and Beyond:
                 <br />
                 Entratix - Your Platform for Musical Diversity.
@@ -113,8 +116,8 @@ export const Footer = () => {
         </div>
       </footer>
 
-      <div className="w-full bg-black text-white py-4">
-        <div className="container mx-auto px-4 text-center text-sm text-gray-400">
+      <div className="w-full bg-gradient-to-r from-black via-purple-900/30 to-black text-white py-4 border-t border-pink-500/20">
+        <div className="container mx-auto px-4 text-center text-sm text-cyan-300 font-medium">
           © 2024 Entratix. All rights reserved.
         </div>
       </div>

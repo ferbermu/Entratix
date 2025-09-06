@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { Header } from './Header';
-
 import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
 import { TotalTickets } from './TotalTickets';
@@ -82,10 +82,30 @@ const tickets: CardTicketProps[] = [
   },
 ];
 
+// Variants para stagger en la grilla
+const container: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, delayChildren: 0.2 },
+  },
+};
+
+// Variants para cada tarjeta
+const item: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: 'easeOut' as const },
+  },
+};
+
 export default function MyTicketsPage() {
   const [selectedStatus, setSelectedStatus] = useState('All');
 
-  // Filtrar tickets según el estado seleccionado (case-insensitive)
+  // Filtrar tickets según el estado seleccionado
   const filteredTickets =
     selectedStatus === 'All'
       ? tickets
@@ -94,20 +114,35 @@ export default function MyTicketsPage() {
         );
 
   return (
-    <div className="w-full h-full min-h-screen px-60 max-[1400px]:px-4  text-white">
+    <div className="w-full h-full min-h-screen px-60 max-[1400px]:px-4 text-white">
       <Header />
-      <div className="py-8">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="py-8"
+      >
         <TicketAdquired
           selected={selectedStatus}
           onSelect={setSelectedStatus}
         />
-      </div>
-      <div className="grid grid-cols-2 max-[1200px]:grid-cols-1 justify-center gap-8">
+      </motion.div>
+
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-2 max-[1200px]:grid-cols-1 justify-center gap-8 mb-8"
+      >
         {filteredTickets.map((ticket, idx) => (
-          <CardTicket key={idx} {...ticket} />
+          <motion.div key={idx} variants={item}>
+            <CardTicket {...ticket} />
+          </motion.div>
         ))}
+      </motion.div>
+      <motion.div variants={item}>
         <TotalTickets />
-      </div>
+      </motion.div>
     </div>
   );
 }

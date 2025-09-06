@@ -84,7 +84,7 @@ const CardData: CardProps[] = [
     attendees: 400,
   },
   {
-    title: 'Key on Tour - Plaza de Toros Colonia',
+    title: 'Key on Tour - Plaza de Toros Colonia ',
     address: 'Colonia',
     date: '12/11/2025',
     imageUrl: '/assets/show1.jpg',
@@ -194,53 +194,88 @@ const HomePage = () => {
   }, [filters]);
 
   return (
-    <div className="flex flex-col w-full">
-      <CarrouselImage events={CardData} interval={5000} />
+    <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-pink-500/15 via-purple-900/30 to-black relative overflow-hidden">
+      {/* Enhanced retrowave background effects */}
+      <div className="fixed inset-0 bg-gradient-to-b from-pink-500/20 via-purple-900/40 to-black/80 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent pointer-events-none"></div>
 
-      <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
-        <div className="flex flex-col w-full max-w-[1400px] gap-12">
-          <div className="h-[72px]">
-            <SearchBar onFilterChange={handleFilterChange} />
-          </div>
+      {/* Retrowave grid background */}
+      <div className="fixed inset-0 opacity-20 pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 20, 147, 0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+          }}
+        ></div>
+      </div>
 
-          <div className="w-full">
-            <CardCarousel
-              cards={CardData}
-              autoPlayInterval={5000}
-              cardsToShow={4}
-            />
-          </div>
+      {/* Enhanced neon glow effects */}
+      <div className="fixed top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-400/30 blur-3xl rounded-full animate-pulse"></div>
+      <div className="fixed bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-cyan-400/25 via-pink-500/25 to-purple-500/25 blur-3xl rounded-full"></div>
+      <div className="fixed top-1/2 right-10 w-60 h-60 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-400/20 blur-2xl rounded-full"></div>
 
-          <div className="w-full items-center justify-center flex flex-col">
-            <h1 className="w-full text-3xl font-semibold text-white mb-8">
-              All Events{' '}
-              {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
-            </h1>
+      <div className="relative z-10">
+        <CarrouselImage events={CardData} interval={5000} />
 
-            <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8">
-              {filteredCards.length > 0 ? (
-                filteredCards.map((item, key) => (
-                  <Card
-                    key={key}
-                    title={item.title}
-                    addressIcon={item.addressIcon}
-                    dateIcon={item.dateIcon}
-                    address={item.address}
-                    date={item.date}
-                    imageUrl={item.imageUrl}
-                  />
-                ))
-              ) : (
-                <div className="text-gray-400 col-span-4 flex items-center justify-center h-full">
-                  No se encontraron eventos que coincidan con tu búsqueda
+        <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
+          <div className="flex flex-col w-full max-w-[1400px] gap-12">
+            <div className="h-[72px]">
+              <SearchBar onFilterChange={handleFilterChange} />
+            </div>
+
+            <div className="w-full">
+              <CardCarousel
+                cards={CardData}
+                autoPlayInterval={5000}
+                cardsToShow={4}
+              />
+            </div>
+
+            <div className="w-full items-center justify-center flex flex-col">
+              <h1 className="w-full text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text mb-8 relative">
+                All Events{' '}
+                {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
+                {/* Neon glow effect */}
+                <div className="absolute inset-0 text-pink-500 blur-sm opacity-40">
+                  All Events{' '}
+                  {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
                 </div>
-              )}
+              </h1>
+
+              <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8">
+                {filteredCards.length > 0 ? (
+                  filteredCards.map((item, key) => (
+                    <Card
+                      key={key}
+                      title={item.title}
+                      addressIcon={item.addressIcon}
+                      dateIcon={item.dateIcon}
+                      address={item.address}
+                      date={item.date}
+                      imageUrl={item.imageUrl}
+                    />
+                  ))
+                ) : (
+                  <div className="text-cyan-300 col-span-4 flex items-center justify-center h-full relative">
+                    <span className="relative z-10 text-lg font-medium">
+                      No se encontraron eventos que coincidan con tu búsqueda
+                    </span>
+                    <div className="absolute inset-0 text-pink-500/30 blur-sm">
+                      No se encontraron eventos que coincidan con tu búsqueda
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <JoinNow />
+        <JoinNow />
+      </div>
     </div>
   );
 };

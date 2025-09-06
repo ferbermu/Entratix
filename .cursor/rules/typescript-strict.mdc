@@ -1,0 +1,120 @@
+---
+description: Prohibición absoluta del tipo any - TypeScript estricto
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: true
+---
+
+# TypeScript Estricto - Cero `any`
+
+Nunca uses el tipo `any`. Siempre define tipos específicos para mejor seguridad y autocompletado.
+
+## Alternativas al tipo any
+
+**Para datos desconocidos:**
+
+```typescript
+// ❌ Prohibido
+const data: any = response.json();
+
+// ✅ Correcto
+const data: unknown = response.json();
+
+// Valida antes de usar
+if (isValidUser(data)) {
+  const user: User = data;
+}
+```
+
+**Para objetos genéricos:**
+
+```typescript
+// ❌ Prohibido
+const config: any = getConfig();
+
+// ✅ Correcto - Record
+const config: Record<string, unknown> = getConfig();
+
+// ✅ Mejor - Interface específica
+interface AppConfig {
+  apiUrl: string;
+  timeout: number;
+  features: FeatureFlags;
+}
+```
+
+**Para funciones genéricas:**
+
+```typescript
+// ❌ Prohibido
+function process(data: any): any {
+  return data.value;
+}
+
+// ✅ Correcto - Genéricos
+function process<T extends { value: unknown }>(data: T): T["value"] {
+  return data.value;
+}
+```
+
+## Validación de tipos
+
+Usa bibliotecas como Zod para validación en tiempo de ejecución:
+
+```typescript
+import { z } from "zod";
+
+const UserSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  email: z.string().email(),
+});
+
+type User = z.infer<typeof UserSchema>;
+
+function validateUser(data: unknown): User {
+  return UserSchema.parse(data);
+}
+```
+
+## Type guards para seguridad
+
+```typescript
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "id" in value &&
+    "name" in value &&
+    "email" in value
+  );
+}
+
+function processUserData(data: unknown) {
+  if (isUser(data)) {
+    // Ahora TypeScript sabe que data es User
+    console.log(data.name);
+  }
+}
+```
+
+## Reglas estrictas
+
+**NUNCA:**
+
+- Uses `any` en variables, parámetros o retornos
+- Hagas `as any` para saltarte el tipado
+- Uses `any[]` para arrays
+
+**SIEMPRE:**
+
+- Define interfaces específicas
+- Usa `unknown` para datos no validados
+- Implementa type guards
+- Valida datos externos con librerías
+
+**Beneficios:**
+
+- Autocompletado completo del IDE
+- Detección de errores en compilación
+- Código más mantenible y seguro
+- Mejor experiencia de desarrollo

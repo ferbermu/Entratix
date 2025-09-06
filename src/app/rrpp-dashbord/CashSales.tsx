@@ -3,6 +3,7 @@ import React from 'react';
 import { SalesReportModal, SalesRow } from './SalesReportModal';
 import SellTicketsModal from './SellTicketsModal';
 import { useExportCsv } from '@/hooks/useExportCsv';
+import { motion } from 'framer-motion';
 
 interface CashSalesProps {
   onSellTickets: () => void;
@@ -12,12 +13,7 @@ interface CashSalesProps {
 export const CashSales = ({ onViewSales }: CashSalesProps) => {
   const { exportToCsv } = useExportCsv();
 
-  const events = [
-    {
-      name: 'Underground Techno Night',
-      ticketsLeft: 32,
-    },
-  ];
+  const events = [{ name: 'Underground Techno Night', ticketsLeft: 32 }];
 
   const [isReportOpen, setIsReportOpen] = React.useState(false);
   const [isSellOpen, setIsSellOpen] = React.useState(false);
@@ -77,12 +73,20 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
   };
 
   return (
-    <div className="w-full max-[1200px]:px-4 flex flex-col max-w-[1400px] bg-[#3BAFBB]/10 p-6 rounded-2xl border border-[#3BAFBB40] text-white shadow-md">
+    <motion.div
+      className="w-full max-[1200px]:px-4 flex flex-col max-w-[1400px] bg-[#3BAFBB]/10 p-6 rounded-2xl border border-[#3BAFBB40] text-white shadow-md"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <h2 className="text-lg font-semibold mb-4">Cash Sales Events</h2>
       {events.map((event, index) => (
-        <div
+        <motion.div
           key={index}
           className="flex flex-col gap-2 bg-[#3BAFBB1A] justify-between rounded-xl p-4 border border-[#3BAFBB40]"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: index * 0.1 }}
         >
           <div className="flex justify-between gap-2 ">
             <h3 className="font-medium mr-12">{event.name}</h3>
@@ -92,26 +96,28 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
           </div>
           <div className="flex gap-2 items-start ">
             <div className="flex gap-2 max-[700px]:flex-col max-[700px]:items-start max-[700px]:w-full">
-              <button
+              <motion.button
                 onClick={() => setIsSellOpen(true)}
                 className="cursor-pointer bg-[#3BAFBB] max-[700px]:w-full hover:bg-[#2B9FA9] text-white px-3 py-1.5 text-sm rounded-md"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Sell Tickets
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 onClick={() => {
                   setIsReportOpen(true);
-                  if (onViewSales) {
-                    onViewSales();
-                  }
+                  onViewSales();
                 }}
                 className="cursor-pointer bg-[#3BAFBB1A] max-[700px]:w-full hover:bg-[#3BAFBB33] text-[#3BAFBB] px-3 py-1.5 text-sm rounded-md border border-[#3BAFBB40]"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 View Sales Report
-              </button>
+              </motion.button>
             </div>
           </div>
-        </div>
+        </motion.div>
       ))}
 
       <SalesReportModal
@@ -130,6 +136,6 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
         ticketsLeft={events[0].ticketsLeft}
         onComplete={() => setIsSellOpen(false)}
       />
-    </div>
+    </motion.div>
   );
 };
