@@ -66,10 +66,10 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
   return (
     <div
       className={`
-        w-full transition-all duration-500 ease-in-out 
+        w-full transition-all duration-500 ease-in-out rounded-lg 
         ${
           isSticky
-            ? 'fixed top-[88px] left-0 right-0 z-30 px-0 w-full bg-[#1C1A1A]'
+            ? 'fixed top-[88px] left-0 right-0 z-30 px-0 w-full bg-[#1C1A1A] '
             : 'bg-[#1C1A1A]'
         }
       `}
@@ -77,11 +77,11 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
       <div
         className={`
           flex items-center justify-between gap-4 rounded-lg p-4 
-          transition-all duration-500 ease-in-out
+          transition-all duration-500 ease-in-out 
           mx-auto max-[870px]:hidden relative
           ${
             isSticky
-              ? 'bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border-x-0 border-t-0 border-b border-pink-500/50 rounded-none w-full max-w-none px-12 shadow-[0_0_25px_rgba(255,20,147,0.3)] backdrop-blur-sm'
+              ? 'bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border-x-0 border-t-0 border-b border-pink-500/50 rounded-lg w-full max-w-none px-12 shadow-[0_0_25px_rgba(255,20,147,0.3)] backdrop-blur-sm'
               : 'bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border border-pink-500/50 max-w-[1400px] shadow-[0_0_25px_rgba(255,20,147,0.3)]'
           }
         `}
@@ -104,7 +104,7 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
           </div>
 
           {/* Input con mismo estilo que Calendar/Location */}
-          <div className="cursor-pointer flex items-center justify-between gap-2 px-4 py-2 rounded-md w-full bg-gradient-to-r from-black/80 via-[#1C1A1A]/90 to-black/80 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 focus-within:shadow-[0_0_15px_rgba(59,175,187,0.4)] transition-all duration-300 shadow-lg">
+          <div className="cursor-pointer flex items-center justify-between gap-2 px-4 py-2 rounded-lg w-full bg-gradient-to-r from-black/80 via-[#1C1A1A]/90 to-black/80 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 focus-within:shadow-[0_0_15px_rgba(59,175,187,0.4)] transition-all duration-300 shadow-lg">
             <input
               type="text"
               value={searchTerm}
@@ -125,7 +125,7 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
           </div>
         </div>
 
-        <div className="relative border-l-pink-500/40 border-l-2 flex items-center gap-2 justify-center pl-2 w-full z-[10000]">
+        <div className="relative border-l-pink-500/40 border-l-2 flex items-center gap-2 justify-center pl-2 w-full z-[10000] h-6">
           <CalendarDropdown
             width="w-full"
             date={date}
@@ -133,7 +133,7 @@ export const SearchBar = ({ onFilterChange }: SearchBarProps) => {
           />
         </div>
 
-        <div className="relative w-full z-[10000]">
+        <div className="relative border-l-pink-500/40 border-l-2 flex items-center gap-2 justify-center pl-2 w-full z-[10000] h-6">
           <LocationDropdown
             selectedValue={location}
             onValueChange={setLocation}

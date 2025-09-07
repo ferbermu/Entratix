@@ -77,8 +77,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
           className={`absolute z-[9999] mt-2 w-full max-h-60 overflow-y-scroll rounded-lg shadow-2xl border border-[#3BAFBB]/30 backdrop-blur-sm
           ${
             variant === 'default'
-              ? 'bg-gradient-to-b from-[#1C1A1A] via-black/95 to-[#1C1A1A]'
-              : 'bg-gradient-to-b from-[#1C1A1A] via-black/95 to-[#1C1A1A] mt-5'
+              ? 'bg-gradient-to-b from-[#1C1A1A]/70 via-black/70 to-[#1C1A1A]/70'
+              : 'bg-gradient-to-b from-[#1C1A1A]/70 via-black/70 to-[#1C1A1A]/70 mt-5'
           }`}
         >
           {options.map(option => (

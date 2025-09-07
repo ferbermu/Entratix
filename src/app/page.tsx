@@ -6,17 +6,17 @@ import { JoinNow } from './components/JoinNow';
 import { SearchBar } from './components/SearchBar';
 import { CardCarousel } from './components/CardCarousel';
 import { type DateRange } from 'react-day-picker';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LoadingSpinner } from './components/LoadingSpinner';
 
 const CardData: CardProps[] = [
   {
     title: 'ArtLab presents Eddy M & more',
     address: 'Montevideo',
     date: '15/06/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Music',
     time: '21:00',
+    imageUrl: '/assets/show1.jpg',
+    category: 'Music',
     location: 'Montevideo',
     description: 'Un show imperdible con Eddy M',
     price: '$50',
@@ -27,11 +27,9 @@ const CardData: CardProps[] = [
     title: 'ArtLab presents DJ Luna',
     address: 'Canelones',
     date: '20/07/2025',
-    imageUrl: '/assets/show2.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Electronic',
     time: '22:00',
+    imageUrl: '/assets/show2.jpg',
+    category: 'Electronic',
     location: 'Canelones',
     description: 'Una noche llena de beats y energía',
     price: '$45',
@@ -42,11 +40,9 @@ const CardData: CardProps[] = [
     title: 'Rock & Roll Night',
     address: 'Maldonado',
     date: '05/08/2025',
-    imageUrl: '/assets/show3.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Rock',
     time: '20:30',
+    imageUrl: '/assets/show3.jpg',
+    category: 'Rock',
     location: 'Maldonado',
     description: 'Los clásicos del rock en vivo',
     price: '$60',
@@ -57,11 +53,9 @@ const CardData: CardProps[] = [
     title: 'Jazz Evening',
     address: 'Rocha',
     date: '12/09/2025',
-    imageUrl: '/assets/show4.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Jazz',
     time: '19:00',
+    imageUrl: '/assets/show4.jpg',
+    category: 'Jazz',
     location: 'Rocha',
     description: 'Un ambiente relajado con jazz en vivo',
     price: '$40',
@@ -72,11 +66,9 @@ const CardData: CardProps[] = [
     title: 'Pop Festival',
     address: 'Paysandú',
     date: '25/10/2025',
-    imageUrl: '/assets/show5.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Pop',
     time: '18:00',
+    imageUrl: '/assets/show5.jpg',
+    category: 'Pop',
     location: 'Paysandú',
     description: 'Los hits del pop internacional',
     price: '$55',
@@ -87,11 +79,9 @@ const CardData: CardProps[] = [
     title: 'Key on Tour - Plaza de Toros Colonia ',
     address: 'Colonia',
     date: '12/11/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Music',
     time: '21:00',
+    imageUrl: '/assets/show1.jpg',
+    category: 'Music',
     location: 'Colonia',
     description: 'Una gira inolvidable con Key',
     price: '$70',
@@ -102,11 +92,9 @@ const CardData: CardProps[] = [
     title: 'Latin Night',
     address: 'Salto',
     date: '15/11/2025',
-    imageUrl: '/assets/show2.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Latin',
     time: '22:00',
+    imageUrl: '/assets/show2.jpg',
+    category: 'Latin',
     location: 'Salto',
     description: 'Salsa, bachata y más',
     price: '$50',
@@ -117,11 +105,9 @@ const CardData: CardProps[] = [
     title: 'Electronic Sunrise',
     address: 'Soriano',
     date: '20/12/2025',
-    imageUrl: '/assets/show3.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Electronic',
     time: '23:00',
+    imageUrl: '/assets/show3.jpg',
+    category: 'Electronic',
     location: 'Soriano',
     description: 'Música electrónica hasta el amanecer',
     price: '$60',
@@ -132,11 +118,9 @@ const CardData: CardProps[] = [
     title: 'Winter Beats',
     address: 'Rivera',
     date: '30/01/2026',
-    imageUrl: '/assets/show4.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-    category: 'Electronic',
     time: '21:30',
+    imageUrl: '/assets/show4.jpg',
+    category: 'Electronic',
     location: 'Rivera',
     description: 'Electrónica y buen ambiente',
     price: '$55',
@@ -152,6 +136,8 @@ const HomePage = () => {
     dateRange: undefined as DateRange | undefined,
     location: '',
   });
+  const [hasActiveFilters, setHasActiveFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFilterChange = useCallback(
     (newFilters: {
@@ -160,6 +146,21 @@ const HomePage = () => {
       location: string;
     }) => {
       setFilters({ ...newFilters, dateRange: newFilters.dateRange });
+
+      // Verificar si hay filtros activos
+      const hasFilters =
+        newFilters.searchTerm.trim() !== '' ||
+        !!newFilters.dateRange?.from ||
+        newFilters.location.trim() !== '';
+
+      setHasActiveFilters(hasFilters);
+
+      // Mostrar loading si hay filtros activos
+      if (hasFilters) {
+        setIsLoading(true);
+      } else {
+        setIsLoading(false);
+      }
     },
     []
   );
@@ -168,29 +169,45 @@ const HomePage = () => {
     const { searchTerm, dateRange, location } = filters;
     const lowerSearch = searchTerm.toLowerCase();
 
-    setFilteredCards(
-      CardData.filter(card => {
-        const searchMatch =
-          lowerSearch === '' ||
-          card.title?.toLowerCase().includes(lowerSearch) ||
-          card.address?.toLowerCase().includes(lowerSearch) ||
-          card.date?.toLowerCase().includes(lowerSearch);
-        const locationMatch = !location || card.address === location;
+    // Verificar si hay filtros activos
+    const hasFilters =
+      searchTerm.trim() !== '' || !!dateRange?.from || location.trim() !== '';
 
-        let dateMatch = true;
-        if (dateRange?.from && card.date) {
-          const [d, m, y] = card.date.split('/');
-          const cardDate = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
-          const fromDate = new Date(dateRange.from);
-          fromDate.setHours(0, 0, 0, 0);
-          const toDate = dateRange.to ? new Date(dateRange.to) : fromDate;
-          toDate.setHours(23, 59, 59, 999);
-          dateMatch = cardDate >= fromDate && cardDate <= toDate;
-        }
+    setHasActiveFilters(hasFilters);
 
-        return searchMatch && locationMatch && dateMatch;
-      })
-    );
+    // Simular delay de búsqueda para mostrar el loading
+    const searchDelay = setTimeout(() => {
+      setFilteredCards(
+        CardData.filter(card => {
+          const searchMatch =
+            lowerSearch === '' ||
+            card.title?.toLowerCase().includes(lowerSearch) ||
+            card.address?.toLowerCase().includes(lowerSearch) ||
+            card.date?.toLowerCase().includes(lowerSearch);
+          const locationMatch = !location || card.address === location;
+
+          let dateMatch = true;
+          if (dateRange?.from && card.date) {
+            const [d, m, y] = card.date.split('/');
+            const cardDate = new Date(
+              parseInt(y),
+              parseInt(m) - 1,
+              parseInt(d)
+            );
+            const fromDate = new Date(dateRange.from);
+            fromDate.setHours(0, 0, 0, 0);
+            const toDate = dateRange.to ? new Date(dateRange.to) : fromDate;
+            toDate.setHours(23, 59, 59, 999);
+            dateMatch = cardDate >= fromDate && cardDate <= toDate;
+          }
+
+          return searchMatch && locationMatch && dateMatch;
+        })
+      );
+      setIsLoading(false);
+    }, 2000); // 2 segundos de delay para mostrar el loading
+
+    return () => clearTimeout(searchDelay);
   }, [filters]);
 
   return (
@@ -214,9 +231,9 @@ const HomePage = () => {
       </div>
 
       {/* Enhanced neon glow effects */}
-      <div className="fixed top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-400/30 blur-3xl rounded-full animate-pulse"></div>
-      <div className="fixed bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-cyan-400/25 via-pink-500/25 to-purple-500/25 blur-3xl rounded-full"></div>
-      <div className="fixed top-1/2 right-10 w-60 h-60 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-400/20 blur-2xl rounded-full"></div>
+      <div className="fixed top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-400/30 blur-3xl rounded-full animate-pulse "></div>
+      <div className="fixed bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-cyan-400/25 via-pink-500/25 to-purple-500/25 blur-3xl rounded-full z-0"></div>
+      <div className="fixed top-1/2 right-10 w-60 h-60 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-400/20 blur-2xl rounded-full z-0"></div>
 
       <div className="relative z-10">
         <CarrouselImage events={CardData} interval={5000} />
@@ -227,15 +244,37 @@ const HomePage = () => {
               <SearchBar onFilterChange={handleFilterChange} />
             </div>
 
-            <div className="w-full">
-              <CardCarousel
-                cards={CardData}
-                autoPlayInterval={5000}
-                cardsToShow={4}
-              />
-            </div>
+            <AnimatePresence mode="wait">
+              {!hasActiveFilters && (
+                <motion.div
+                  key="cardcarousel"
+                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  transition={{
+                    duration: 0.25,
+                    ease: 'easeInOut',
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 25,
+                  }}
+                  className="w-full"
+                >
+                  <CardCarousel
+                    cards={CardData}
+                    autoPlayInterval={5000}
+                    cardsToShow={4}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            <div className="w-full items-center justify-center flex flex-col">
+            <motion.div
+              className="w-full items-center justify-center flex flex-col relative z-20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: hasActiveFilters ? 0.2 : 0 }}
+            >
               <h1 className="w-full text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text mb-8 relative">
                 All Events{' '}
                 {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
@@ -246,31 +285,83 @@ const HomePage = () => {
                 </div>
               </h1>
 
-              <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8">
-                {filteredCards.length > 0 ? (
-                  filteredCards.map((item, key) => (
-                    <Card
-                      key={key}
-                      title={item.title}
-                      addressIcon={item.addressIcon}
-                      dateIcon={item.dateIcon}
-                      address={item.address}
-                      date={item.date}
-                      imageUrl={item.imageUrl}
-                    />
-                  ))
-                ) : (
-                  <div className="text-cyan-300 col-span-4 flex items-center justify-center h-full relative">
-                    <span className="relative z-10 text-lg font-medium">
-                      No se encontraron eventos que coincidan con tu búsqueda
-                    </span>
-                    <div className="absolute inset-0 text-pink-500/30 blur-sm">
-                      No se encontraron eventos que coincidan con tu búsqueda
-                    </div>
-                  </div>
-                )}
+              <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8 relative z-20">
+                <AnimatePresence mode="wait">
+                  {isLoading ? (
+                    <motion.div
+                      key="loading"
+                      className="col-span-4 flex items-center justify-center relative z-30"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <LoadingSpinner />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key={`filtered-${filters.searchTerm}-${
+                        filters.location
+                      }-${filters.dateRange?.from?.getTime() || 'no-date'}`}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -30 }}
+                      transition={{
+                        duration: 0.3,
+                        ease: 'easeOut',
+                        type: 'spring',
+                        stiffness: 150,
+                        damping: 20,
+                      }}
+                      className="contents"
+                    >
+                      {filteredCards.length > 0 ? (
+                        filteredCards.map((item, key) => (
+                          <motion.div
+                            key={`${item.title}-${key}`}
+                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{
+                              duration: 0.4,
+                              ease: 'easeOut',
+                              delay: key * 0.05,
+                              type: 'spring',
+                              stiffness: 150,
+                              damping: 20,
+                            }}
+                          >
+                            <Card
+                              title={item.title}
+                              address={item.address}
+                              date={item.date}
+                              time={item.time}
+                              imageUrl={item.imageUrl}
+                            />
+                          </motion.div>
+                        ))
+                      ) : (
+                        <motion.div
+                          key="no-results"
+                          className="text-cyan-300 col-span-4 flex items-center justify-center h-full relative"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: 0.1 }}
+                        >
+                          <span className="relative z-10 text-lg font-medium">
+                            No se encontraron eventos que coincidan con tu
+                            búsqueda
+                          </span>
+                          <div className="absolute inset-0 text-pink-500/30 blur-sm">
+                            No se encontraron eventos que coincidan con tu
+                            búsqueda
+                          </div>
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 

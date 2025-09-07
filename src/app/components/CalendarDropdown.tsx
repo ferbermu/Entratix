@@ -68,7 +68,7 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
       <div
         ref={triggerRef}
         onClick={() => setIsOpen(prev => !prev)}
-        className="flex items-center flex-1 min-w-0 bg-gradient-to-r from-black/80 via-[#1C1A1A]/90 to-black/80 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 hover:shadow-[0_0_15px_rgba(59,175,187,0.4)] rounded-md px-4 py-2 cursor-pointer transition-all duration-300 shadow-lg"
+        className="flex items-center flex-1 min-w-0 bg-gradient-to-r from-black/70 via-[#1C1A1A]/70 to-black/70 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 hover:shadow-[0_0_15px_rgba(59,175,187,0.4)] rounded-md px-4 py-2 cursor-pointer transition-all duration-300 shadow-lg"
       >
         {/* Texto */}
         <p
@@ -101,13 +101,13 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className={`bg-gradient-to-b from-[#1C1A1A] via-black/95 to-[#1C1A1A] ${width} ${locationClass} absolute top-full mt-2 z-50 shadow-2xl border border-[#3BAFBB]/30 rounded-lg backdrop-blur-sm`}
+          className={`bg-gradient-to-b from-[#1C1A1A]/35 via-black/45 to-[#1C1A1A]/35 ${width} ${locationClass} absolute top-full mt-2 z-50 shadow-2xl border border-[#3BAFBB]/30 rounded-lg backdrop-blur-sm`}
         >
           <Calendar
             mode="range"
             selected={date}
             onSelect={onDateChange}
-            className="rounded-md border w-full bg-gradient-to-b from-[#1C1A1A]/95 via-black/90 to-[#1C1A1A]/95 text-[#3BAFBB] border-[#3BAFBB] shadow-[0_0_25px_rgba(59,175,187,0.3)] backdrop-blur-sm"
+            className="rounded-md border w-full bg-gradient-to-b from-[#1C1A1A]/30 via-black/40 to-[#1C1A1A]/30 text-[#3BAFBB] border-[#3BAFBB] shadow-[0_0_25px_rgba(59,175,187,0.3)] backdrop-blur-sm"
             locale={es}
             showOutsideDays={false}
           />

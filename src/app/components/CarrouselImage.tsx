@@ -102,11 +102,11 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
               </span>
               <h2 className="text-5xl font-bold leading-tight text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
                 {currentEvent.title}
-                {/* Multiple neon glow layers */}
-                <div className="absolute inset-0 text-pink-400 blur-sm opacity-50">
+                {/* Subtle neon glow for better readability */}
+                <div className="absolute inset-0 text-pink-400 blur-[1px] opacity-30">
                   {currentEvent.title}
                 </div>
-                <div className="absolute inset-0 text-cyan-400 blur-md opacity-30">
+                <div className="absolute inset-0 text-cyan-400 blur-[2px] opacity-20">
                   {currentEvent.title}
                 </div>
               </h2>
@@ -178,7 +178,8 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
 
       <button
         onClick={prevSlide}
-        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-black/60 hover:from-pink-500/50 hover:via-purple-500/50 hover:to-cyan-400/50 p-3 rounded-full text-white transition-all duration-300 border border-pink-500/50 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] backdrop-blur-sm"
+        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-black/60 hover:from-pink-500/50 hover:via-purple-500/50 hover:to-cyan-400/50 p-3 rounded-full text-white transition-all duration-300 border border-pink-500/50 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] backdrop-blur-sm z-20"
+        type="button"
       >
         <CaretLeft
           size={28}
@@ -187,7 +188,8 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
       </button>
       <button
         onClick={nextSlide}
-        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-black/60 via-purple-500/30 to-cyan-400/30 hover:from-cyan-400/50 hover:via-purple-500/50 hover:to-pink-500/50 p-3 rounded-full text-white transition-all duration-300 border border-cyan-400/50 hover:border-pink-500 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] backdrop-blur-sm"
+        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-black/60 via-purple-500/30 to-cyan-400/30 hover:from-cyan-400/50 hover:via-purple-500/50 hover:to-pink-500/50 p-3 rounded-full text-white transition-all duration-300 border border-cyan-400/50 hover:border-pink-500 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] backdrop-blur-sm z-20"
+        type="button"
       >
         <CaretRight
           size={28}
