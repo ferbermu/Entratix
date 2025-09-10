@@ -106,7 +106,7 @@ export const MobileSearch = ({
           </div>
 
           <div className="p-4 flex flex-col gap-4 flex-1">
-            <div className="flex items-center gap-3 p-4 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300">
               <Image
                 src="/assets/icons/search_bar/search.svg"
                 alt="search"
@@ -124,21 +124,21 @@ export const MobileSearch = ({
             </div>
 
             {/* Calendar Dropdown - Estructura idéntica al input de search */}
-            <div className="flex items-center gap-3 p-4 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300 relative">
               <Image
                 src="/assets/icons/search_bar/calendar_month.svg"
                 alt="calendar"
                 width={20}
                 height={20}
-                className="drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]"
+                className="drop-shadow-[0_0_8px_rgba(255,20,147,0.6)] flex-shrink-0"
               />
               <CalendarDropdown
                 date={selectedDate}
                 onDateChange={setSelectedDate}
                 width="w-full"
-                location="center"
-                containerClassName="w-full"
-                dropdownClassName="flex items-center justify-between w-full bg-transparent cursor-pointer px-0 py-0 rounded-none border-none shadow-none"
+                location="left"
+                containerClassName="relative w-full"
+                dropdownClassName="flex items-center justify-between w-full bg-transparent cursor-pointer px-0 py-0 rounded-none border-none shadow-none hover:shadow-none"
                 iconClassName="hidden"
                 textClassName={`flex-1 bg-transparent outline-none font-medium text-md transition-colors ${
                   selectedDate?.from ? 'text-white' : 'text-cyan-300/70'
@@ -147,23 +147,23 @@ export const MobileSearch = ({
             </div>
 
             {/* Location Dropdown - Estructura idéntica al input de search */}
-            <div className="flex items-center gap-3 p-4 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300 relative">
               <Image
                 src="/assets/icons/search_bar/location.svg"
                 alt="location"
                 width={20}
                 height={20}
-                className="drop-shadow-[0_0_8px_rgba(128,0,255,0.6)]"
+                className="drop-shadow-[0_0_8px_rgba(128,0,255,0.6)] flex-shrink-0"
               />
               <LocationDropdown
                 selectedValue={selectedLocation}
                 onValueChange={setSelectedLocation}
                 width="w-full"
-                containerClassName="w-full"
-                dropdownClassName="flex items-center justify-between w-full bg-transparent cursor-pointer px-0 py-0 rounded-none border-none shadow-none"
+                containerClassName="relative w-full"
+                dropdownClassName="flex items-center justify-between w-full bg-transparent cursor-pointer px-0 py-0 rounded-none border-none shadow-none hover:shadow-none"
                 iconClassName="hidden"
-                textClassName={`text-white hover:text-cyan-300 transition-all duration-300 ${
-                  !selectedLocation ? 'text-cyan-300/70' : ''
+                textClassName={`flex-1 bg-transparent outline-none font-medium text-md transition-colors ${
+                  selectedLocation ? 'text-white' : 'text-cyan-300/70'
                 }`}
               />
             </div>

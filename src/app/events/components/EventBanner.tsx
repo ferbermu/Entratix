@@ -16,10 +16,13 @@ const imageURLsFromDataBase: string[] = [
  */
 export const EventBanner: React.FC = () => {
   return (
-    <div className="w-full h-full max-[1280px]:h-[400px]">
-      <Carousel className="h-full" interval={5000}>
+    <div className="w-full h-full max-[1280px]:h-[400px] relative">
+      <Carousel
+        className="h-full rounded-lg border-2 border-pink-500/30 shadow-2xl shadow-pink-500/20 hover:shadow-[0_0_50px_rgba(255,20,147,0.4)] transition-all duration-300 overflow-hidden"
+        interval={5000}
+      >
         {imageURLsFromDataBase.map((url, idx) => (
-          <div key={idx} className="relative w-full h-full ">
+          <div key={idx} className="relative w-full h-full">
             <Image
               src={url}
               alt={`Event banner image ${idx + 1}`}

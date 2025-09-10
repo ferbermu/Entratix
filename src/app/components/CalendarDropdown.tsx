@@ -65,19 +65,21 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
         containerClassName || `relative h-full flex items-center gap-3 ${width}`
       }
     >
-      {/* Ícono a la izquierda (afuera del input) */}
-      <div className="relative">
-        <Image
-          src="/assets/icons/search_bar/calendar_month.svg"
-          alt="calendar"
-          width={20}
-          height={20}
-          className={
-            iconClassName ||
-            'drop-shadow-[0_0_8px_rgba(59,175,187,0.6)] filter brightness-125'
-          }
-        />
-      </div>
+      {/* Ícono a la izquierda (afuera del input) - Solo si no está oculto */}
+      {iconClassName !== 'hidden' && (
+        <div className="relative">
+          <Image
+            src="/assets/icons/search_bar/calendar_month.svg"
+            alt="calendar"
+            width={20}
+            height={20}
+            className={
+              iconClassName ||
+              'drop-shadow-[0_0_8px_rgba(59,175,187,0.6)] filter brightness-125'
+            }
+          />
+        </div>
+      )}
 
       {/* Caja estilo LocationDropdown */}
       <div
@@ -124,12 +126,21 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className={`bg-gradient-to-b from-[#1C1A1A]/35 via-black/45 to-[#1C1A1A]/35 ${width} ${locationClass} absolute top-full mt-2 z-50 shadow-2xl border border-[#3BAFBB]/30 rounded-lg backdrop-blur-sm`}
+          className={`bg-gradient-to-b from-[#1C1A1A]/35 via-black/45 to-[#1C1A1A]/35 ${width} ${locationClass} absolute top-full mt-4 z-[9999] shadow-2xl border border-[#3BAFBB]/30 rounded-lg backdrop-blur-sm`}
         >
           <Calendar
             mode="range"
             selected={date}
-            onSelect={onDateChange}
+            onSelect={selectedDate => {
+              onDateChange(selectedDate);
+              // Cerrar dropdown después de seleccionar fecha
+              if (selectedDate?.from && selectedDate?.to) {
+                setIsOpen(false);
+              } else if (selectedDate?.from && !selectedDate?.to) {
+                // Si solo se seleccionó una fecha, mantener abierto para seleccionar el rango
+                // El dropdown se cerrará cuando se complete el rango
+              }
+            }}
             className="rounded-md border w-full bg-gradient-to-b from-[#1C1A1A]/30 via-black/40 to-[#1C1A1A]/30 text-[#3BAFBB] border-[#3BAFBB] shadow-[0_0_25px_rgba(59,175,187,0.3)] backdrop-blur-sm"
             locale={es}
             showOutsideDays={false}
