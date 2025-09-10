@@ -2,12 +2,13 @@
 
 export const LoadingSpinner = () => {
   return (
-    <div className="flex items-center justify-center min-h-[400px] w-full">
+    <div className="flex items-center justify-center min-h-[500px] w-full">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 800 450"
         role="img"
         aria-label="Loading… synthwave"
+        className="w-[600px] h-[400px] max-w-[90vw] max-h-[60vh]"
       >
         <defs>
           {/* Gradients */}
@@ -104,11 +105,7 @@ export const LoadingSpinner = () => {
           fontSize="18"
           fill="#b7b1ff"
           textAnchor="middle"
-        >
-          <text x="400" y="420" opacity=".9">
-            Cargando…
-          </text>
-        </g>
+        ></g>
       </svg>
     </div>
   );
