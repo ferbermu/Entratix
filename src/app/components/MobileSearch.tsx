@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X } from '@phosphor-icons/react';
+import { LocationDropdown } from './LocationDropdown';
+import { CalendarDropdown } from './CalendarDropdown';
+import { type DateRange } from 'react-day-picker';
 
 interface MobileSearchProps {
   isOpen: boolean;
@@ -16,8 +19,14 @@ export const MobileSearch = ({
   onSearch,
 }: MobileSearchProps) => {
   const [searchEvent, setSearchEvent] = useState('');
-  const [searchDate, setSearchDate] = useState('');
-  const [searchLocation, setSearchLocation] = useState('');
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>();
+  const [selectedLocation, setSelectedLocation] = useState('');
+
+  const resetSearch = () => {
+    setSearchEvent('');
+    setSelectedDate(undefined);
+    setSelectedLocation('');
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,8 +39,20 @@ export const MobileSearch = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      resetSearch();
+    }
+  }, [isOpen]);
+
   const handleSearch = () => {
-    const searchTerms = [searchEvent, searchDate, searchLocation]
+    const dateString = selectedDate?.from
+      ? selectedDate.to
+        ? `${selectedDate.from.toLocaleDateString()} - ${selectedDate.to.toLocaleDateString()}`
+        : selectedDate.from.toLocaleDateString()
+      : '';
+
+    const searchTerms = [searchEvent, dateString, selectedLocation]
       .filter(Boolean)
       .join(' ');
     onSearch(searchTerms);
@@ -102,6 +123,7 @@ export const MobileSearch = ({
               />
             </div>
 
+            {/* Calendar Dropdown - Estructura idéntica al input de search */}
             <div className="flex items-center gap-3 p-4 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300">
               <Image
                 src="/assets/icons/search_bar/calendar_month.svg"
@@ -110,15 +132,21 @@ export const MobileSearch = ({
                 height={20}
                 className="drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]"
               />
-              <input
-                type="text"
-                value={searchDate}
-                onChange={e => setSearchDate(e.target.value)}
-                placeholder="Date"
-                className="w-full bg-transparent text-white outline-none placeholder:text-cyan-300/70 text-md focus:placeholder:text-pink-400/50 transition-colors"
+              <CalendarDropdown
+                date={selectedDate}
+                onDateChange={setSelectedDate}
+                width="w-full"
+                location="center"
+                containerClassName="w-full"
+                dropdownClassName="flex items-center justify-between w-full bg-transparent cursor-pointer px-0 py-0 rounded-none border-none shadow-none"
+                iconClassName="hidden"
+                textClassName={`flex-1 bg-transparent outline-none font-medium text-md transition-colors ${
+                  selectedDate?.from ? 'text-white' : 'text-cyan-300/70'
+                }`}
               />
             </div>
 
+            {/* Location Dropdown - Estructura idéntica al input de search */}
             <div className="flex items-center gap-3 p-4 rounded-lg border border-cyan-400/50 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-400/15 transition-all duration-300">
               <Image
                 src="/assets/icons/search_bar/location.svg"
@@ -127,12 +155,16 @@ export const MobileSearch = ({
                 height={20}
                 className="drop-shadow-[0_0_8px_rgba(128,0,255,0.6)]"
               />
-              <input
-                type="text"
-                value={searchLocation}
-                onChange={e => setSearchLocation(e.target.value)}
-                placeholder="Location"
-                className="w-full bg-transparent text-white outline-none placeholder:text-cyan-300/70 text-md focus:placeholder:text-pink-400/50 transition-colors"
+              <LocationDropdown
+                selectedValue={selectedLocation}
+                onValueChange={setSelectedLocation}
+                width="w-full"
+                containerClassName="w-full"
+                dropdownClassName="flex items-center justify-between w-full bg-transparent cursor-pointer px-0 py-0 rounded-none border-none shadow-none"
+                iconClassName="hidden"
+                textClassName={`text-white hover:text-cyan-300 transition-all duration-300 ${
+                  !selectedLocation ? 'text-cyan-300/70' : ''
+                }`}
               />
             </div>
 

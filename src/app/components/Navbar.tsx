@@ -26,7 +26,6 @@ export const Navbar = () => {
   const {
     isMobileNavOpen,
     isMobileSearchOpen,
-    isMobile,
     toggleMobileNav,
     toggleMobileSearch,
     closeMobileNav,

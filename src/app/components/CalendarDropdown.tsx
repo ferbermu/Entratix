@@ -11,6 +11,10 @@ interface CalendarDropdownProps {
   onDateChange: (date: DateRange | undefined) => void;
   width?: string;
   location?: 'right' | 'left' | 'center';
+  containerClassName?: string; // Para personalizar el contenedor completo
+  dropdownClassName?: string; // Para personalizar el dropdown interno
+  iconClassName?: string; // Para personalizar el ícono
+  textClassName?: string; // Para personalizar el texto
 }
 
 export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
@@ -18,6 +22,10 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
   onDateChange,
   width = 'w-full',
   location = 'left',
+  containerClassName,
+  dropdownClassName,
+  iconClassName,
+  textClassName,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -52,15 +60,22 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
     : 'Date';
 
   return (
-    <div className={`relative h-full flex items-center gap-3 ${width}`}>
+    <div
+      className={
+        containerClassName || `relative h-full flex items-center gap-3 ${width}`
+      }
+    >
       {/* Ícono a la izquierda (afuera del input) */}
       <div className="relative">
         <Image
           src="/assets/icons/search_bar/calendar_month.svg"
           alt="calendar"
-          width={16}
-          height={16}
-          className="drop-shadow-[0_0_8px_rgba(59,175,187,0.6)] filter brightness-125"
+          width={20}
+          height={20}
+          className={
+            iconClassName ||
+            'drop-shadow-[0_0_8px_rgba(59,175,187,0.6)] filter brightness-125'
+          }
         />
       </div>
 
@@ -68,33 +83,41 @@ export const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
       <div
         ref={triggerRef}
         onClick={() => setIsOpen(prev => !prev)}
-        className="flex items-center flex-1 min-w-0 bg-gradient-to-r from-black/70 via-[#1C1A1A]/70 to-black/70 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 hover:shadow-[0_0_15px_rgba(59,175,187,0.4)] rounded-md px-4 py-2 cursor-pointer transition-all duration-300 shadow-lg"
+        className={
+          dropdownClassName ||
+          'flex items-center flex-1 min-w-0 bg-gradient-to-r from-black/70 via-[#1C1A1A]/70 to-black/70 border border-[#3BAFBB66] hover:border-[#3BAFBB] focus-within:border-cyan-400 hover:shadow-[0_0_15px_rgba(59,175,187,0.4)] rounded-md px-4 py-2 cursor-pointer transition-all duration-300 shadow-lg'
+        }
       >
         {/* Texto */}
         <p
-          className={`flex-1 truncate font-medium drop-shadow-sm ${
-            date?.from ? 'text-[#3BAFBB]' : 'text-[#3BAFBB]/80'
-          }`}
+          className={
+            textClassName ||
+            `flex-1 truncate font-medium drop-shadow-sm ${
+              date?.from ? 'text-[#3BAFBB]' : 'text-[#3BAFBB]/80'
+            }`
+          }
         >
           {displayText}
         </p>
 
-        {/* Botón X o Caret */}
-        {date?.from ? (
-          <X
-            size={20}
-            className="text-[#3BAFBB] cursor-pointer hover:text-cyan-300 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(59,175,187,0.8)] hover:scale-110"
-            onClick={e => {
-              e.stopPropagation();
-              onDateChange(undefined);
-            }}
-          />
-        ) : (
-          <CaretDown
-            className="text-[#3BAFBB] drop-shadow-[0_0_6px_rgba(59,175,187,0.5)] transition-all duration-300"
-            size={20}
-          />
-        )}
+        {/* Botón X o Caret - Siempre alineado a la derecha */}
+        <div className="flex-shrink-0">
+          {date?.from ? (
+            <X
+              size={20}
+              className="text-white cursor-pointer hover:text-cyan-300 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(0,255,255,0.8)] hover:scale-110"
+              onClick={e => {
+                e.stopPropagation();
+                onDateChange(undefined);
+              }}
+            />
+          ) : (
+            <CaretDown
+              className="text-cyan-300/70 drop-shadow-[0_0_6px_rgba(0,255,255,0.5)] transition-all duration-300"
+              size={20}
+            />
+          )}
+        </div>
       </div>
 
       {/* Dropdown con calendario */}
