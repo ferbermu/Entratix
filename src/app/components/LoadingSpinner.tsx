@@ -100,7 +100,7 @@ export const LoadingSpinner = () => {
         {/* Grid - HIDDEN */}
 
         <g
-          fontFamily="ui-sans-serif,system-ui"
+          fontFamily="var(--font-roboto-condensed), system-ui, sans-serif"
           fontSize="18"
           fill="#b7b1ff"
           textAnchor="middle"

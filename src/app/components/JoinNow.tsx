@@ -7,7 +7,7 @@ export const JoinNow = () => {
 
       <div className="items-center justify-center relative z-10">
         <div className="flex flex-col items-center gap-12 py-12 px-4 text-white">
-          <div className="text-[42px] font-bold text-center text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
+          <div className="text-[42px] font-condensed font-bold text-center text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
             Join Us as a Partner
             {/* Neon glow effect */}
             <div className="absolute inset-0 text-pink-400 blur-sm opacity-40">

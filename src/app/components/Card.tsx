@@ -30,9 +30,11 @@ export const Card = ({
   return (
     <div
       className={`
-        group relative w-[340px] h-[543px] rounded-2xl overflow-hidden bg-transparent hover:bg-gradient-to-b hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 cursor-pointer transition-all duration-300 hover:shadow-[0_0_25px_rgba(255,20,147,0.4)] flex flex-col
+        group relative w-[340px] h-[543px] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-[0_0_25px_rgba(255,20,147,0.4)] flex flex-col
         ${
-          !isCarousel ? 'border-2 border-pink-500/40 hover:border-cyan-400' : ''
+          isCarousel
+            ? 'bg-transparent hover:bg-gradient-to-b hover:from-pink-500/10 hover:via-purple-500/10 hover:to-cyan-400/10'
+            : 'bg-gradient-to-b from-purple-900/30 via-black/40 to-black/50 hover:from-pink-500/25 hover:via-purple-500/25 hover:to-cyan-400/25 backdrop-blur-sm border-2 border-pink-500/40 hover:border-cyan-400'
         }
       `}
     >
@@ -47,7 +49,7 @@ export const Card = ({
       </div>
 
       <div className="p-6 text-white flex flex-col flex-1 relative z-10">
-        <h3 className="text-2xl line-clamp-2 font-bold text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text group-hover:from-pink-200 group-hover:via-purple-200 group-hover:to-cyan-200 transition-all duration-300 pb-4">
+        <h3 className="text-2xl font-condensed line-clamp-2 font-bold text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text group-hover:from-pink-200 group-hover:via-purple-200 group-hover:to-cyan-200 transition-all duration-300 pb-4">
           {title}
         </h3>
 

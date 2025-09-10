@@ -5,9 +5,9 @@ import { Navbutton } from './Navbutton';
 import { MobileNavButton } from './MobileNavButton';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
+import { useMobileMenu } from '../hooks/useMobileMenu';
 import { MobileSearch } from './MobileSearch';
 import { useAuthRedux } from '../login/hooks/useAuthRedux';
 import {
@@ -23,8 +23,15 @@ import cn from 'classnames';
 
 export const Navbar = () => {
   const isScrolled = useScroll({ threshold: 700 });
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const {
+    isMobileNavOpen,
+    isMobileSearchOpen,
+    isMobile,
+    toggleMobileNav,
+    toggleMobileSearch,
+    closeMobileNav,
+    closeMobileSearch,
+  } = useMobileMenu();
   const pathname = usePathname();
   const { user, isAuthenticated, logout, isLoading } = useAuthRedux();
 
@@ -46,18 +53,6 @@ export const Navbar = () => {
 
   const handleSignup = () => {
     console.log('Signup clicked');
-  };
-
-  const toggleMobileNav = () => {
-    setIsMobileNavOpen(prev => !prev);
-    // Cerrar búsqueda si está abierta
-    if (isMobileSearchOpen) setIsMobileSearchOpen(false);
-  };
-
-  const toggleMobileSearch = () => {
-    setIsMobileSearchOpen(prev => !prev);
-    // Cerrar nav si está abierto
-    if (isMobileNavOpen) setIsMobileNavOpen(false);
   };
 
   const iconChange = (icon: string, isSearch?: boolean) => {
@@ -226,7 +221,7 @@ export const Navbar = () => {
             </div>
           )}
         </div>
-        <div className="flex gap-2 items-center min-[870px]:hidden">
+        <div className="flex gap-2 items-center min-[870px]:hidden relative z-[1000]">
           {isLoading ? (
             <div className="flex items-center space-x-2 text-white">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -245,16 +240,11 @@ export const Navbar = () => {
           )}
         </div>
       </nav>
-      {isMobileNavOpen && window.innerWidth < 870 && (
-        <MobileNav
-          isOpen={isMobileNavOpen}
-          onClose={() => setIsMobileNavOpen(false)}
-        />
-      )}
+      <MobileNav isOpen={isMobileNavOpen} onClose={closeMobileNav} />
 
       <MobileSearch
         isOpen={isMobileSearchOpen}
-        onClose={() => setIsMobileSearchOpen(false)}
+        onClose={closeMobileSearch}
         onSearch={term => {
           window.dispatchEvent(new CustomEvent('search', { detail: term }));
         }}

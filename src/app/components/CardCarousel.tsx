@@ -67,7 +67,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
   return (
     <div className="relative w-full flex flex-col items-center">
       <div className="flex justify-between items-center mb-6 w-full max-w-[1400px]">
-        <h2 className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text relative">
+        <h2 className="text-2xl font-condensed font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text relative">
           Featured Events
           {/* Neon glow effect */}
           <div className="absolute inset-0 text-pink-500 blur-sm opacity-40">
@@ -77,7 +77,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
         <div className="flex gap-2">
           <button
             onClick={prevSlide}
-            className="cursor-pointer p-2 rounded-lg border-2 border-pink-500/50 bg-gradient-to-r from-black/80 via-purple-900/30 to-black/80 hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:border-cyan-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] hover:scale-105"
+            className="cursor-pointer p-2 rounded-lg border-2 border-pink-500/60 bg-gradient-to-r from-black/30 via-purple-900/15 to-black/30 hover:from-pink-500/30 hover:via-purple-500/30 hover:to-cyan-400/30 hover:border-cyan-400/80 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] hover:scale-105 opacity-60 hover:opacity-95"
             aria-label="Previous slide"
           >
             <Image
@@ -90,7 +90,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
           </button>
           <button
             onClick={nextSlide}
-            className="cursor-pointer p-2 rounded-lg border-2 border-pink-500/50 bg-gradient-to-r from-black/80 via-purple-900/30 to-black/80 hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:border-cyan-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] hover:scale-105"
+            className="cursor-pointer p-2 rounded-lg border-2 border-pink-500/60 bg-gradient-to-r from-black/30 via-purple-900/15 to-black/30 hover:from-pink-500/30 hover:via-purple-500/30 hover:to-cyan-400/30 hover:border-cyan-400/80 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] hover:scale-105 opacity-60 hover:opacity-95"
             aria-label="Next slide"
           >
             <Image
@@ -118,7 +118,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
           {cards.map((item, key) => (
             <div
               key={key}
-              className="bg-gradient-to-b from-purple-900/20 via-black/80 to-black/90 hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 flex-shrink-0 rounded-2xl border-2 border-pink-500/40 hover:border-cyan-400 transition-all duration-300 overflow-hidden hover:shadow-[0_0_25px_rgba(255,20,147,0.4)] relative"
+              className="bg-gradient-to-b from-purple-900/30 via-black/40 to-black/50 hover:from-pink-500/25 hover:via-purple-500/25 hover:to-cyan-400/25 flex-shrink-0 rounded-2xl border-2 border-pink-500/40 hover:border-cyan-400 transition-all duration-300 overflow-hidden hover:shadow-[0_0_25px_rgba(255,20,147,0.4)] relative backdrop-blur-sm"
               style={{
                 width: `${CARD_WIDTH}px`,
               }}

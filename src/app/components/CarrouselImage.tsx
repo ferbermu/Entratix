@@ -100,7 +100,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
                 />{' '}
                 {currentEvent.category || 'Experience'}
               </span>
-              <h2 className="text-5xl font-bold leading-tight text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
+              <h2 className="text-5xl font-condensed font-bold leading-tight text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
                 {currentEvent.title}
                 {/* Subtle neon glow for better readability */}
                 <div className="absolute inset-0 text-pink-400 blur-[1px] opacity-30">

@@ -6,8 +6,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-roboto-condensed);
   --font-mono: var(--font-geist-mono);
+  --font-condensed: var(--font-roboto-condensed);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -208,5 +209,39 @@
     background: #1e1e1e;
     border-radius: 9999px; /* 🔥 redondea el track */
     margin: 4px; /* opcional: deja margen arriba/abajo para que no tape las esquinas */
+  }
+
+  /* Aplicar Roboto Condensed a toda la aplicación */
+  * {
+    font-family: var(--font-roboto-condensed), system-ui, -apple-system,
+      sans-serif;
+  }
+
+  /* FORCE opacity protection for background effects - CÍRCULO SUPERIOR IZQUIERDO */
+  #top-left-circle-container,
+  #top-left-circle-container > div {
+    opacity: 1 !important;
+    will-change: auto !important;
+    animation-fill-mode: both !important;
+  }
+
+  /* Proteger animate-pulse de interferencias externas */
+  #top-left-circle-container .animate-pulse {
+    opacity: 1 !important;
+  }
+
+  /* Override Framer Motion opacity changes on background elements during filtering */
+  @keyframes protect-pulse {
+    0%,
+    100% {
+      opacity: 1 !important;
+    }
+    50% {
+      opacity: 0.5 !important;
+    }
+  }
+
+  #top-left-circle-container .animate-pulse {
+    animation: protect-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
   }
 }
