@@ -31,52 +31,68 @@ export default function CreateEventPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/20 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-pink-500/15 via-purple-900/30 to-black relative overflow-hidden">
+      {/* Enhanced retrowave background effects - Fixed opacity */}
+      <div className="fixed inset-0 bg-gradient-to-b from-pink-500/20 via-purple-900/40 to-black/80 pointer-events-none opacity-100 z-0"></div>
+      <div className="fixed inset-0 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent pointer-events-none opacity-100 z-0"></div>
+
+      {/* Retrowave grid background - Fixed opacity */}
+      <div className="fixed inset-0 opacity-20 pointer-events-none z-0">
+        <div
+          className="absolute inset-0 opacity-100"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 20, 147, 0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+          }}
+        ></div>
+      </div>
+
+      {/* Enhanced neon glow effects - Fixed opacity with stacking context isolation */}
+      <div
+        className="fixed top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-400/30 blur-3xl rounded-full z-0"
+        style={{ opacity: 1, isolation: 'isolate', willChange: 'auto' }}
+      ></div>
+      <div
+        className="fixed bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-cyan-400/25 via-pink-500/25 to-purple-500/25 blur-3xl rounded-full z-0"
+        style={{ opacity: 1, isolation: 'isolate', willChange: 'auto' }}
+      ></div>
+      <div
+        className="fixed top-1/2 right-10 w-60 h-60 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-400/20 blur-2xl rounded-full z-0"
+        style={{
+          opacity: 1,
+          isolation: 'isolate',
+          willChange: 'auto',
+          transform: 'translateZ(0)',
+        }}
+      ></div>
+
       <motion.div
-        className="flex flex-col min-h-screen px-6 max-w-6xl mx-auto relative"
+        className="flex flex-col min-h-screen px-6 max-w-6xl mx-auto relative z-10"
         variants={container}
         initial="hidden"
         animate="show"
       >
-        {/* Retrowave grid background effect */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent"></div>
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(255, 20, 147, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
-              `,
-              backgroundSize: '50px 50px',
-            }}
-          ></div>
-        </div>
-
         <motion.div
           variants={item}
           className="flex flex-col items-center justify-center py-30 gap-4 relative z-10"
         >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl relative">
+          <h1 className="text-5xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text relative">
             Create New Event
-            {/* Multiple neon glow layers */}
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent blur-sm opacity-70">
-              Create New Event
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent blur-md opacity-40">
+            {/* Neon glow effect */}
+            <div className="absolute inset-0 text-pink-500 blur-sm opacity-40">
               Create New Event
             </div>
           </h1>
-          <p className="text-cyan-300 text-xl font-light tracking-wide relative">
+          <div className="text-cyan-300 text-xl font-light tracking-wide relative">
             Bring your vision to life and create unforgettable experiences
-            {/* Text glow effect */}
-            <div className="absolute inset-0 text-cyan-300 blur-sm opacity-60">
+            {/* Subtle glow effect for description */}
+            <div className="absolute inset-0 text-purple-500/30 blur-sm">
               Bring your vision to life and create unforgettable experiences
             </div>
-          </p>
-          {/* Enhanced neon glow effects */}
-          <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-96 h-32 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-400/30 blur-3xl rounded-full animate-pulse"></div>
-          <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 w-80 h-24 bg-gradient-to-r from-pink-400/20 via-purple-400/20 to-cyan-300/20 blur-2xl rounded-full"></div>
+          </div>
         </motion.div>
 
         <motion.div variants={item}>
@@ -107,18 +123,26 @@ export default function CreateEventPage() {
         <motion.div
           variants={item}
           className="flex items-center justify-center w-full py-10 relative z-10"
+          whileHover={{
+            scale: 1.02,
+            y: -4,
+            transition: {
+              duration: 0.3,
+              type: 'spring',
+              stiffness: 200,
+            },
+          }}
         >
-          <button className="cursor-pointer flex gap-2 items-center text-xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 text-white font-bold px-16 py-5 rounded-2xl transition-all duration-300 transform hover:scale-110 relative overflow-hidden group border border-pink-500/50 hover:border-cyan-400/80">
-            {/* Multiple glow layers */}
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-600/30 via-purple-600/30 to-cyan-500/30 blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-            <div className="absolute -inset-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 blur-2xl group-hover:blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-            <div className="absolute -inset-4 bg-gradient-to-r from-pink-400/10 via-purple-400/10 to-cyan-300/10 blur-3xl group-hover:blur-[40px] opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-
-            {/* Animated border glow */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 opacity-0 group-hover:opacity-20 blur-sm transition-all duration-300"></div>
-
-            <FloppyDisk size={32} className="relative z-10 drop-shadow-lg" />
-            <span className="relative z-10 drop-shadow-lg">Create Event</span>
+          <button className="cursor-pointer flex gap-2 items-center text-xl bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 text-white font-bold px-16 py-5 rounded-2xl transition-all duration-300 backdrop-blur-sm border border-pink-500/20 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 hover:border-cyan-400 relative overflow-hidden">
+            <FloppyDisk
+              size={32}
+              className="relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]"
+            />
+            <span className="relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]">
+              Create Event
+            </span>
+            {/* Button glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
           </button>
         </motion.div>
       </motion.div>

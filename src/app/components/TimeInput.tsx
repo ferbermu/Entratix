@@ -122,11 +122,14 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   };
 
   return (
-    <div className=" flex gap-4 w-full max-[700px]:flex-col max-[700px]:gap-3">
+    <div className="flex gap-4 w-full max-[700px]:flex-col max-[700px]:gap-3 max-[700px]:mb-4 h-12 max-[700px]:h-auto">
       {/* Start Time */}
-      <div className="border border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full focus-within:border-2">
-        <Clock className="text-[#3BAFBB] ml-2" size={16} />
-        <span className="text-gray-300 text-sm mr-2 max-[700px]:text-xs w-20 max-[700px]:w-16 shrink-0 truncate">
+      <div className="border border-pink-500/30 focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full bg-black/20 backdrop-blur-sm transition-all duration-300 h-full max-[700px]:h-12">
+        <Clock
+          className="text-cyan-400 ml-2 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+          size={16}
+        />
+        <span className="text-cyan-300 text-sm mr-2 max-[700px]:text-xs w-20 max-[700px]:w-16 shrink-0 truncate">
           Start:
         </span>
 
@@ -139,12 +142,12 @@ export const TimeInput: React.FC<TimeInputProps> = ({
           onChange={e =>
             handleHourChange(e, setStartHour, 'start-minute-input')
           }
-          className="border-none outline-none w-8 max-[700px]:w-10 text-gray-300 text-center bg-transparent no-spinner"
+          className="border-none outline-none w-8 max-[700px]:w-10 text-cyan-300 text-center bg-transparent no-spinner placeholder-gray-400"
           placeholder="HH"
           maxLength={2}
           onKeyDown={e => handleKeyDown(e, undefined, 'start-minute-input')}
         />
-        <span className="text-gray-300">:</span>
+        <span className="text-cyan-300">:</span>
         <input
           id="start-minute-input"
           type="text"
@@ -152,20 +155,23 @@ export const TimeInput: React.FC<TimeInputProps> = ({
           pattern="[0-9]*"
           value={startMinute}
           onChange={e => handleMinuteChange(e, setStartMinute)}
-          className="border-none outline-none w-8 max-[700px]:w-10 text-gray-300 text-center bg-transparent no-spinner"
+          className="border-none outline-none w-8 max-[700px]:w-10 text-cyan-300 text-center bg-transparent no-spinner placeholder-gray-400"
           placeholder="MM"
           maxLength={2}
           onKeyDown={e => handleKeyDown(e, 'start-hour-input')}
         />
-        <span className="ml-2 text-gray-300 font-semibold text-sm max-[700px]:text-xs w-8 text-center shrink-0">
+        <span className="ml-2 text-cyan-300 font-semibold text-sm max-[700px]:text-xs w-8 text-center shrink-0">
           {getAmPm(startHour)}
         </span>
       </div>
 
       {/* End Time */}
-      <div className="border-1 border-[#3BAFBB] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full focus-within:border-2">
-        <Clock className="text-[#3BAFBB] ml-2" size={16} />
-        <span className="text-gray-300 text-sm mr-2 max-[700px]:text-xs w-20 max-[700px]:w-16 shrink-0 truncate">
+      <div className="border border-pink-500/30 focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] flex py-2 px-4 rounded-lg gap-1 items-center w-1/2 max-[700px]:w-full bg-black/20 backdrop-blur-sm transition-all duration-300 h-full max-[700px]:h-12">
+        <Clock
+          className="text-cyan-400 ml-2 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+          size={16}
+        />
+        <span className="text-cyan-300 text-sm mr-2 max-[700px]:text-xs w-20 max-[700px]:w-16 shrink-0 truncate">
           End (optional):
         </span>
 
@@ -176,12 +182,12 @@ export const TimeInput: React.FC<TimeInputProps> = ({
           pattern="[0-9]*"
           value={endHour}
           onChange={e => handleHourChange(e, setEndHour, 'end-minute-input')}
-          className="border-none outline-none w-8 max-[700px]:w-10 text-gray-300 text-center bg-transparent no-spinner"
+          className="border-none outline-none w-8 max-[700px]:w-10 text-cyan-300 text-center bg-transparent no-spinner placeholder-gray-400"
           placeholder="HH"
           maxLength={2}
           onKeyDown={e => handleKeyDown(e, undefined, 'end-minute-input')}
         />
-        <span className="text-gray-300">:</span>
+        <span className="text-cyan-300">:</span>
         <input
           id="end-minute-input"
           type="text"
@@ -189,12 +195,12 @@ export const TimeInput: React.FC<TimeInputProps> = ({
           pattern="[0-9]*"
           value={endMinute}
           onChange={e => handleMinuteChange(e, setEndMinute)}
-          className="border-none outline-none w-8 max-[700px]:w-10 text-gray-300 text-center bg-transparent no-spinner"
+          className="border-none outline-none w-8 max-[700px]:w-10 text-cyan-300 text-center bg-transparent no-spinner placeholder-gray-400"
           placeholder="MM"
           maxLength={2}
           onKeyDown={e => handleKeyDown(e, 'end-hour-input')}
         />
-        <span className="ml-2 text-gray-300 font-semibold text-sm max-[700px]:text-xs w-8 text-center shrink-0">
+        <span className="ml-2 text-cyan-300 font-semibold text-sm max-[700px]:text-xs w-8 text-center shrink-0">
           {endHour !== '' ? getAmPm(endHour) : ''}
         </span>
       </div>

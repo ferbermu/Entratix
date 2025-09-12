@@ -71,23 +71,22 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
 
   return (
     <div className="flex justify-center">
-      <form className="bg-[#3BAFBB1A] border border-[#3BAFBB] rounded-xl w-full max-w-[1400px] p-8 space-y-10 relative overflow-hidden shadow-2xl">
-        {/* Neon glow effect for form */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#3BAFBB]/10 via-cyan-400/5 to-[#3BAFBB]/10 blur-xl"></div>
-        <div className="absolute inset-0 rounded-xl border border-[#3BAFBB]/30 shadow-[0_0_20px_rgba(59,175,187,0.3)]"></div>
+      <form className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-xl w-full max-w-[1400px] p-8 space-y-10 relative overflow-hidden backdrop-blur-sm">
+        {/* Background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-transparent to-cyan-400/5 pointer-events-none"></div>
         <div className="relative z-10">
           {/* Header */}
-          <div className="flex items-center gap-4 pb-2 border-b border-[#3BAFBB]/20">
+          <div className="flex items-center gap-4 pb-2 border-b border-pink-500/30">
             <MusicNotesPlus
-              className="text-[#3BAFBB] drop-shadow-[0_0_10px_rgba(59,175,187,0.8)] filter brightness-125"
+              className="text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]"
               size={36}
             />
-            <p className="text-gray-300 text-2xl font-semibold relative">
+            <div className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-2xl font-semibold relative">
               Event Details
-              <div className="absolute inset-0 text-[#3BAFBB] blur-sm opacity-40">
+              <div className="absolute inset-0 text-pink-500 blur-sm opacity-30">
                 Event Details
               </div>
-            </p>
+            </div>
           </div>
 
           {/* Event Title */}
@@ -109,20 +108,22 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
 
           {/* Description */}
-          <InputField
-            label="Description"
-            required
-            placeholder="Describe your event..."
-            textarea
-          />
+          <div className="mb-8">
+            <InputField
+              label="Description"
+              required
+              placeholder="Describe your event..."
+              textarea
+            />
+          </div>
 
           {/* Date & Time */}
-          <div className="flex flex-col gap-6 md:flex-row md:gap-8">
-            <div className="flex-1 flex flex-col gap-1">
-              <label className="text-gray-300 text-md font-medium drop-shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="flex flex-col gap-1">
+              <label className="text-cyan-300 text-md font-medium drop-shadow-sm">
                 Date *
               </label>
-              <div className="border border-[#3BAFBB]/60 focus-within:border-2 focus-within:border-[#3BAFBB] focus-within:shadow-[0_0_15px_rgba(59,175,187,0.4)] py-1 px-4 rounded-lg bg-black/20 transition-all duration-300">
+              <div className="border border-pink-500/30 focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] py-1 px-4 rounded-lg bg-black/20 backdrop-blur-sm transition-all duration-300 relative z-50 h-12 flex items-center">
                 <CalendarDropdownSimple
                   width="w-full"
                   location="right"
@@ -133,40 +134,51 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-1">
-              <label className="text-gray-300 text-md font-medium drop-shadow-sm">
+            <div className="flex flex-col gap-1">
+              <label className="text-cyan-300 text-md font-medium drop-shadow-sm">
                 Time Range *
               </label>
-              <TimeInput
-                startHour={startHour}
-                startMinute={startMinute}
-                endHour={endHour}
-                endMinute={endMinute}
-                setStartHour={setStartHour}
-                setStartMinute={setStartMinute}
-                setEndHour={setEndHour}
-                setEndMinute={setEndMinute}
-                getAmPm={getAmPm}
-              />
+              <div className="w-full">
+                <TimeInput
+                  startHour={startHour}
+                  startMinute={startMinute}
+                  endHour={endHour}
+                  endMinute={endMinute}
+                  setStartHour={setStartHour}
+                  setStartMinute={setStartMinute}
+                  setEndHour={setEndHour}
+                  setEndMinute={setEndMinute}
+                  getAmPm={getAmPm}
+                />
+              </div>
             </div>
           </div>
 
           {/* Address & Location */}
-          <div className="flex flex-col gap-6 md:flex-row md:gap-8">
-            <div className="flex-1 flex flex-col gap-1">
-              <InputFieldIcon
-                label="Address"
-                required
-                placeholder="Enter address"
-                icon={<MapPin size={18} weight="bold" />}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="flex flex-col gap-1">
+              <label className="text-cyan-300 text-md font-medium drop-shadow-sm">
+                Address *
+              </label>
+              <div className="border border-pink-500/30 focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] px-4 rounded-lg bg-black/20 backdrop-blur-sm transition-all duration-300 h-12 flex items-center">
+                <MapPin
+                  size={18}
+                  weight="bold"
+                  className="text-cyan-400 mr-3 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+                />
+                <input
+                  type="text"
+                  placeholder="Enter address"
+                  className="flex-1 bg-transparent text-cyan-300 placeholder-gray-400 focus:outline-none"
+                />
+              </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-1">
-              <label className="text-gray-300 text-md font-medium drop-shadow-sm">
+            <div className="flex flex-col gap-1">
+              <label className="text-cyan-300 text-md font-medium drop-shadow-sm">
                 Location *
               </label>
-              <div className="border border-[#3BAFBB] px-4 rounded-lg w-full flex items-center focus-within:border-2 focus-within:shadow-[0_0_15px_rgba(59,175,187,0.4)] bg-black/20 transition-all duration-300">
+              <div className="border border-pink-500/30 px-4 rounded-lg w-full flex items-center focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] bg-black/20 backdrop-blur-sm transition-all duration-300 relative z-50 h-12">
                 <Dropdown
                   selectedValue={location}
                   onValueChange={setLocation}
@@ -198,13 +210,13 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
 
           {/* Event Images */}
-          <div className="border-t border-[#3BAFBB]/50 pt-8 space-y-4">
-            <p className="text-gray-300 text-xl font-semibold mb-4 relative">
+          <div className="pt-8 space-y-4">
+            <div className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-xl font-semibold mb-4 relative">
               Event Images
-              <div className="absolute inset-0 text-[#3BAFBB] blur-sm opacity-30">
+              <div className="absolute inset-0 text-pink-500 blur-sm opacity-30">
                 Event Images
               </div>
-            </p>
+            </div>
             {eventImages.map((img, index) => (
               <div
                 key={index}
@@ -220,8 +232,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                   />
                 </div>
                 <div className="max-[700px]:px-20 max-[700px]:w-full max-[700px]:flex-col gap-2 px-3 py-2 rounded-lg cursor-pointer flex">
-                  <label className="bg-[#3BAFBB] hover:bg-[#2f8f99] text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,175,187,0.6)] hover:scale-105 border border-[#3BAFBB]/50">
-                    <FolderSimple size={18} weight="bold" />
+                  <label className="bg-gradient-to-r from-cyan-400/60 to-cyan-500/60 hover:from-cyan-400/80 hover:to-cyan-500/80 text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:scale-105 border border-cyan-400/50 backdrop-blur-sm">
+                    <FolderSimple
+                      size={18}
+                      weight="bold"
+                      className="drop-shadow-[0_0_4px_rgba(255,255,255,0.3)]"
+                    />
                     <input
                       type="file"
                       accept="image/*"
@@ -235,10 +251,14 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
-                    className="bg-[#3baebb32] hover:bg-[#3baebb32]/20 text-white px-3 py-2 cursor-pointer rounded-lg flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(59,175,187,0.4)] border border-[#3BAFBB]/30"
+                    className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 text-cyan-300 px-3 py-2 cursor-pointer rounded-lg flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)] border border-pink-500/30 backdrop-blur-sm"
                     aria-label={`Remove image ${index + 1}`}
                   >
-                    <Trash size={18} weight="bold" />
+                    <Trash
+                      size={18}
+                      weight="bold"
+                      className="drop-shadow-[0_0_4px_rgba(6,182,212,0.2)]"
+                    />
                   </button>
                 </div>
               </div>
@@ -247,26 +267,36 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
             <button
               type="button"
               onClick={handleAddImage}
-              className="flex items-center cursor-pointer gap-2 text-[#3BAFBB] mt-2 hover:text-cyan-300 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(59,175,187,0.8)] font-medium"
+              className="flex items-center cursor-pointer gap-2 text-cyan-400 mt-2 hover:text-pink-400 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.6)] font-medium"
             >
-              <Plus size={18} weight="bold" /> Add Image
+              <Plus
+                size={18}
+                weight="bold"
+                className="drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              />{' '}
+              Add Image
             </button>
 
             {/* Main & Featured Event */}
-            <div className="space-y-4 mt-6 border-t border-[#3BAFBB]/30 pt-6">
+            <div className="space-y-4 mt-6 border-t border-pink-500/30 pt-6">
               <label
-                className="flex items-center gap-3 text-gray-300 cursor-pointer select-none hover:text-cyan-300 transition-all duration-300"
+                className="flex items-center gap-3 text-cyan-300 cursor-pointer select-none hover:text-pink-400 transition-all duration-300"
                 onClick={() => setIsMainEvent(!isMainEvent)}
               >
                 <div
-                  className={`h-5 w-5 flex items-center justify-center border rounded border-[#3BAFBB] bg-[#3BAFBB1A] transition-all duration-200 hover:shadow-[0_0_10px_rgba(59,175,187,0.4)] ${
+                  className={`h-5 w-5 flex items-center justify-center border rounded border-pink-500/40 bg-pink-500/10 backdrop-blur-sm transition-all duration-200 hover:shadow-[0_0_10px_rgba(236,72,153,0.4)] ${
                     isMainEvent
-                      ? 'bg-[#3BAFBB80] shadow-[0_0_8px_rgba(59,175,187,0.6)]'
+                      ? 'bg-gradient-to-r from-pink-500/60 to-cyan-400/60 shadow-[0_0_8px_rgba(236,72,153,0.6)]'
                       : ''
                   }`}
                 >
                   {isMainEvent && (
-                    <Check size={14} weight="bold" color="white" />
+                    <Check
+                      size={14}
+                      weight="bold"
+                      color="white"
+                      className="drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]"
+                    />
                   )}
                 </div>
                 <input
@@ -293,13 +323,15 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 </div>
               )}
 
-              <label className="flex items-center gap-3 text-gray-300 cursor-pointer hover:text-cyan-300 transition-all duration-300">
+              <label className="flex items-center gap-3 text-cyan-300 cursor-pointer hover:text-pink-400 transition-all duration-300">
                 <input
                   type="checkbox"
                   checked={isFeatured}
                   onChange={() => setIsFeatured(!isFeatured)}
-                  className={`appearance-none h-5 w-5 cursor-pointer border border-[#3BAFBB] bg-[#3BAFBB1A] checked:bg-[#3BAFBB80] transition-all duration-200 hover:shadow-[0_0_10px_rgba(59,175,187,0.4)] ${
-                    isFeatured ? 'shadow-[0_0_8px_rgba(59,175,187,0.6)]' : ''
+                  className={`appearance-none h-5 w-5 cursor-pointer border border-pink-500/40 bg-pink-500/10 backdrop-blur-sm transition-all duration-200 hover:shadow-[0_0_10px_rgba(236,72,153,0.4)] ${
+                    isFeatured
+                      ? 'bg-gradient-to-r from-pink-500/60 to-cyan-400/60 shadow-[0_0_8px_rgba(236,72,153,0.6)]'
+                      : ''
                   }`}
                   style={{
                     backgroundImage: isFeatured
