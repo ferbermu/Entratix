@@ -70,18 +70,18 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[95%] max-w-[880px] bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden">
+      <div className="relative w-[95%] max-w-[880px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden">
         {/* Header */}
-        <div className="p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A] flex items-start justify-between">
+        <div className="p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 flex items-start justify-between">
           <div className="flex flex-col">
             <h3 className="text-2xl font-bold text-white">Sell Tickets</h3>
             <p className="text-sm text-gray-300">{eventName}</p>
-            <p className="text-xs text-[#3BAFBB] mt-1">
+            <p className="text-xs text-cyan-400 mt-1">
               {ticketsLeft} tickets remaining
             </p>
           </div>
           <button
-            className="cursor-pointer p-2 rounded-md bg-[#3BAFBB1A] text-[#A3A3A3] hover:text-white border border-[#3BAFBB40]"
+            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 hover:text-white border border-pink-500/30"
             onClick={onClose}
             aria-label="Close"
           >
@@ -94,7 +94,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
           {/* Customer Information */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-[#3BAFBB]">
+              <span className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]">
                 <User size={18} />
               </span>
               <h4 className="text-white font-semibold">Customer Information</h4>
@@ -106,7 +106,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
                   placeholder="Enter customer's full name"
-                  className="w-full bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
+                  className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
               <div className="relative">
@@ -115,33 +115,33 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   value={idNumber}
                   onChange={e => setIdNumber(e.target.value)}
                   placeholder="Enter CI or ID number"
-                  className="w-full bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
+                  className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
               <div className="relative">
                 <Phone
                   size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3BAFBB]"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
                 />
                 <input
                   type="tel"
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   placeholder="+1234567890"
-                  className="w-full pl-9 bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
+                  className="w-full pl-9 bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
               <div className="relative">
                 <EnvelopeSimple
                   size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3BAFBB]"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
                 />
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="customer@email.com"
-                  className="w-full pl-9 bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
+                  className="w-full pl-9 bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
             </div>
@@ -150,7 +150,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
           {/* Ticket Selection */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-[#3BAFBB]">
+              <span className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]">
                 <TicketIcon size={18} />
               </span>
               <h4 className="text-white font-semibold">Ticket Selection</h4>
@@ -176,7 +176,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   onChange={e =>
                     setQuantity(Math.max(1, Number(e.target.value) || 1))
                   }
-                  className="w-full bg-transparent border border-[#3BAFBB] rounded-md text-white placeholder:text-gray-400 px-4 py-3"
+                  className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                   placeholder="Quantity"
                 />
               </div>
@@ -185,18 +185,19 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-5 border-t border-[#3BAFBB40] bg-[#1F1E1E] flex gap-4 justify-end">
+        <div className="p-5 border-t border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 flex gap-4 justify-end">
           <button
-            className="cursor-pointer bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] px-6 py-2 rounded-md border border-[#3BAFBB40]"
+            className="cursor-pointer bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 px-6 py-2 rounded-md border border-pink-500/30"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="cursor-pointer bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white px-6 py-2 rounded-md"
+            className="cursor-pointer bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 text-white px-6 py-2 rounded-md border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
             onClick={handleComplete}
           >
-            Complete Sale - ${total}
+            <span className="relative z-10">Complete Sale - ${total}</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
           </button>
         </div>
       </div>

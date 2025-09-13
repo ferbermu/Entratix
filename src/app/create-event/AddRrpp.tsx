@@ -24,14 +24,13 @@ export const AddRrpp = () => {
 
   return (
     <motion.div
-      className="bg-[#3BAFBB1A] max-w-[1400px] rounded-xl p-8 mx-auto mt-8 border border-[#3BAFBB] relative overflow-hidden shadow-2xl"
+      className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 max-w-[1400px] rounded-xl p-8 mx-auto mt-8 backdrop-blur-sm relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Neon glow effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#3BAFBB]/10 via-cyan-400/5 to-[#3BAFBB]/10 blur-xl"></div>
-      <div className="absolute inset-0 rounded-xl border border-[#3BAFBB]/30 shadow-[0_0_20px_rgba(59,175,187,0.3)]"></div>
+      {/* Background gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-transparent to-cyan-400/5 pointer-events-none"></div>
       <div className="relative z-10">
         <motion.div
           className="flex items-center justify-between mb-8"
@@ -41,12 +40,13 @@ export const AddRrpp = () => {
         >
           <div className="flex items-center gap-2">
             <User
-              className="text-[#3BAFBB] drop-shadow-[0_0_10px_rgba(59,175,187,0.8)] filter brightness-125"
+              className="text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]"
               size={24}
             />
-            <span className="text-gray-300 text-xl font-bold relative">
+            <span className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-xl font-bold relative">
               RRPP
-              <div className="absolute inset-0 text-[#3BAFBB] blur-sm opacity-40">
+              {/* Neon glow effect */}
+              <div className="absolute inset-0 text-pink-500 blur-sm opacity-30">
                 RRPP
               </div>
             </span>
@@ -54,16 +54,23 @@ export const AddRrpp = () => {
           <motion.button
             onClick={handleAddEmail}
             disabled={!isValidEmail(rrppEmail)}
-            className={`cursor-pointer flex items-center gap-2 text-white font-semibold px-5 py-2 rounded-lg transition-all duration-300 ${
+            className={`cursor-pointer flex items-center gap-2 text-white font-semibold px-5 py-2 rounded-lg transition-all duration-300 backdrop-blur-sm ${
               isValidEmail(rrppEmail)
-                ? 'bg-[#3BAFBB] hover:bg-[#2A8C99] hover:shadow-[0_0_20px_rgba(59,175,187,0.6)] hover:scale-105 border border-[#3BAFBB]/50'
-                : 'bg-gray-400 cursor-not-allowed border border-gray-600'
+                ? 'bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 hover:border-cyan-400 border border-pink-500/20 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] relative overflow-hidden'
+                : 'bg-gray-500/20 cursor-not-allowed border border-gray-500/30'
             }`}
-            whileHover={isValidEmail(rrppEmail) ? { scale: 1.05 } : {}}
-            whileTap={isValidEmail(rrppEmail) ? { scale: 0.95 } : {}}
+            whileHover={isValidEmail(rrppEmail) ? { scale: 1.02 } : {}}
+            whileTap={isValidEmail(rrppEmail) ? { scale: 0.98 } : {}}
           >
-            <Plus size={18} />
-            Add RRPP
+            <Plus
+              size={18}
+              className="drop-shadow-[0_0_4px_rgba(255,255,255,0.3)]"
+            />
+            <span className="relative z-10">Add RRPP</span>
+            {/* Button glow effect */}
+            {isValidEmail(rrppEmail) && (
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
+            )}
           </motion.button>
         </motion.div>
 
@@ -74,7 +81,7 @@ export const AddRrpp = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <label className="text-gray-300 text-sm mb-1 font-medium drop-shadow-sm">
+            <label className="text-cyan-300 text-sm mb-1 font-medium drop-shadow-sm">
               RRPP Email
             </label>
             <input
@@ -82,7 +89,7 @@ export const AddRrpp = () => {
               value={rrppEmail}
               onChange={e => setRrppEmail(e.target.value)}
               placeholder="Enter RRPP email"
-              className="text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(59,175,187,0.4)] bg-black/20 transition-all duration-300"
+              className="text-cyan-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] bg-black/20 backdrop-blur-sm transition-all duration-300"
             />
           </motion.div>
 
@@ -107,15 +114,18 @@ export const AddRrpp = () => {
                       type="text"
                       readOnly
                       value={email}
-                      className="flex-1 text-gray-300 rounded-lg px-4 py-2 border focus:outline-none border-[#3BAFBB] bg-gradient-to-r from-[#3BAFBB]/10 via-cyan-400/5 to-[#3BAFBB]/10 cursor-default shadow-inner"
+                      className="flex-1 text-cyan-300 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none bg-gradient-to-r from-pink-500/10 via-purple-500/5 to-cyan-400/10 cursor-default backdrop-blur-sm"
                     />
                     <motion.button
                       onClick={() => handleRemoveEmail(i)}
-                      className="cursor-pointer bg-[#3baebb32] hover:bg-[#3baebb32]/20 px-3 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-[0_0_10px_rgba(59,175,187,0.4)] border border-[#3BAFBB]/30 hover:scale-105"
-                      whileHover={{ scale: 1.1 }}
+                      className="cursor-pointer bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 px-3 py-2 rounded-lg text-cyan-300 backdrop-blur-sm border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]"
+                      whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <Minus size={16} />
+                      <Minus
+                        size={16}
+                        className="drop-shadow-[0_0_4px_rgba(6,182,212,0.2)]"
+                      />
                     </motion.button>
                   </motion.div>
                 ))}

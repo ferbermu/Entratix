@@ -74,7 +74,7 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
 
   return (
     <motion.div
-      className="w-full max-[1200px]:px-4 flex flex-col max-w-[1400px] bg-[#3BAFBB]/10 p-6 rounded-2xl border border-[#3BAFBB40] text-white shadow-md"
+      className="w-full max-[1200px]:px-4 flex flex-col max-w-[1400px] bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 p-6 rounded-2xl border border-pink-500/30 text-white shadow-md backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -83,7 +83,7 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
       {events.map((event, index) => (
         <motion.div
           key={index}
-          className="flex flex-col gap-2 bg-[#3BAFBB1A] justify-between rounded-xl p-4 border border-[#3BAFBB40]"
+          className="flex flex-col gap-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 justify-between rounded-xl p-4 border border-pink-500/30 backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -98,18 +98,19 @@ export const CashSales = ({ onViewSales }: CashSalesProps) => {
             <div className="flex gap-2 max-[700px]:flex-col max-[700px]:items-start max-[700px]:w-full">
               <motion.button
                 onClick={() => setIsSellOpen(true)}
-                className="cursor-pointer bg-[#3BAFBB] max-[700px]:w-full hover:bg-[#2B9FA9] text-white px-3 py-1.5 text-sm rounded-md"
+                className="cursor-pointer bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white px-3 py-1.5 text-sm rounded-md backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden max-[700px]:w-full"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Sell Tickets
+                <span className="relative z-10">Sell Tickets</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
               </motion.button>
               <motion.button
                 onClick={() => {
                   setIsReportOpen(true);
                   onViewSales();
                 }}
-                className="cursor-pointer bg-[#3BAFBB1A] max-[700px]:w-full hover:bg-[#3BAFBB33] text-[#3BAFBB] px-3 py-1.5 text-sm rounded-md border border-[#3BAFBB40]"
+                className="cursor-pointer bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 text-cyan-300 px-3 py-1.5 text-sm rounded-md border border-pink-500/30 backdrop-blur-sm max-[700px]:w-full"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

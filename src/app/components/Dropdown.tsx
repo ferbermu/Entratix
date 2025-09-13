@@ -44,14 +44,19 @@ export const Dropdown: React.FC<DropdownProps> = ({
       {variant === 'default' ? (
         <div
           className="flex items-center justify-between cursor-pointer 
-                     text-[#3BAFBB] 
+                     text-cyan-300 
                      rounded-md px-4 py-2 transition-colors"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="truncate text-md">
             {selectedValue || placeholder}
           </span>
-          {customIcon ?? <CaretDown className="text-[#3BAFBB]" size={20} />}
+          {customIcon ?? (
+            <CaretDown
+              className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              size={20}
+            />
+          )}
         </div>
       ) : (
         <div
@@ -65,30 +70,35 @@ export const Dropdown: React.FC<DropdownProps> = ({
             readOnly
             tabIndex={0}
             onFocus={() => setIsOpen(true)}
-            className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer min-w-0"
+            className="placeholder:text-gray-400 text-cyan-300 w-full outline-none bg-transparent cursor-pointer min-w-0"
           />
-          {customIcon ?? <CaretDown className="text-[#3BAFBB]" size={30} />}
+          {customIcon ?? (
+            <CaretDown
+              className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              size={30}
+            />
+          )}
         </div>
       )}
 
       {/* Options */}
       {isOpen && (
         <div
-          className={`absolute z-[99999] mt-2 w-full max-h-60 overflow-y-scroll rounded-lg shadow-2xl border border-[#3BAFBB]/30 backdrop-blur-sm
+          className={`absolute z-[99999] mt-2 w-full max-h-60 overflow-y-scroll rounded-lg shadow-2xl border border-pink-500/30 backdrop-blur-sm
           ${
             variant === 'default'
-              ? 'bg-gradient-to-b from-[#1C1A1A]/70 via-black/70 to-[#1C1A1A]/70'
-              : 'bg-gradient-to-b from-[#1C1A1A]/70 via-black/70 to-[#1C1A1A]/70 mt-5'
+              ? 'bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10'
+              : 'bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 mt-5'
           }`}
         >
           {options.map(option => (
             <div
               key={option}
-              className={`cursor-pointer transition-all duration-300 hover:shadow-[0_0_10px_rgba(59,175,187,0.3)]
+              className={`cursor-pointer transition-all duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]
               ${
                 variant === 'default'
-                  ? 'px-3 py-2 text-sm text-cyan-200 hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:text-cyan-100'
-                  : 'p-2 text-[#3BAFBB] hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:text-cyan-300'
+                  ? 'px-3 py-2 text-sm text-cyan-300 hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:text-cyan-100'
+                  : 'p-2 text-cyan-300 hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20 hover:text-cyan-100'
               }`}
               onClick={() => {
                 onValueChange(option);

@@ -64,29 +64,33 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
       <div
         ref={triggerRef}
         onClick={() => setIsCalendarOpen(prev => !prev)}
-        className="cursor-pointer border-l-[#3BAFBB33] flex items-center gap-3 pl-2 w-full justify-between"
+        className="cursor-pointer flex items-center gap-3 w-full justify-between"
       >
         <Image
           src="/assets/icons/search_bar/calendar_month.svg"
           alt="calendar"
           width={16}
           height={16}
+          className="drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
         />
         <input
           type="text"
           placeholder={placeholder}
           value={selectedDate ? format(selectedDate, 'dd/MM/yyyy') : ''}
           readOnly
-          className="placeholder:text-[#3BAFBB] text-[#3BAFBB] w-full outline-none bg-transparent cursor-pointer focus-none ring-none no-global-ring"
+          className="placeholder:text-gray-400 text-cyan-300 w-full outline-none bg-transparent cursor-pointer focus-none ring-none no-global-ring"
         />
-        <CaretDown className="text-[#3BAFBB]" size={32} />
+        <CaretDown
+          className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+          size={32}
+        />
       </div>
 
       {/* Dropdown */}
       {isCalendarOpen && (
         <div
           ref={calendarRef}
-          className={`bg-[#1C1A1A] ${width} ${locationClass} absolute top-full mt-2 ml-1.5 z-50 transform transition-all duration-200 ease-in-out opacity-100 scale-100 shadow-lg`}
+          className={`bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 backdrop-blur-sm ${width} ${locationClass} absolute top-full mt-2 ml-1.5 z-50 transform transition-all duration-200 ease-in-out opacity-100 scale-100 shadow-lg rounded-xl`}
         >
           <Calendar
             mode="single"
@@ -95,7 +99,7 @@ export const CalendarDropdownSimple: React.FC<CalendarDropdownSimpleProps> = ({
             month={month}
             onMonthChange={setMonth}
             captionLayout="dropdown"
-            className="rounded-md border w-full bg-[#3BAFBB1A] text-[#3BAFBB] border-[#3BAFBB] shadow-xl"
+            className="rounded-md border w-full bg-transparent text-cyan-300 border-pink-500/30 shadow-xl"
             locale={es}
             showOutsideDays={false}
           />

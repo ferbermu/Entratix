@@ -8,7 +8,7 @@ export default function RrppManual() {
     {
       title: 'Link Sales',
       content: (
-        <ol className="list-decimal list-inside text-sm text-gray-300 space-y-1">
+        <ol className="list-decimal list-inside text-sm text-cyan-300 space-y-1">
           <li>
             Copy your personalized event link from the Active Links section
           </li>
@@ -23,7 +23,7 @@ export default function RrppManual() {
     {
       title: 'Cash Sales',
       content: (
-        <ol className="list-decimal list-inside text-sm text-gray-300 space-y-1">
+        <ol className="list-decimal list-inside text-sm text-cyan-300 space-y-1">
           <li>Go to Cash Sales section for events where its enabled</li>
           <li>Click Sell Tickets for the desired event</li>
           <li>Fill in buyer information name, email, phone</li>
@@ -35,7 +35,7 @@ export default function RrppManual() {
     {
       title: 'Best Practices',
       content: (
-        <ul className="list-disc list-inside text-sm text-gray-300 space-y-1">
+        <ul className="list-disc list-inside text-sm text-cyan-300 space-y-1">
           <li>Build relationships with your customers for repeat sales</li>
           <li>Use the analytics to understand your audience better</li>
           <li>Create targeted campaigns based on customer preferences</li>
@@ -48,7 +48,7 @@ export default function RrppManual() {
 
   return (
     <motion.div
-      className="w-full max-w-[1000px] mx-auto flex flex-col gap-6 text-white bg-[#3BAFBB]/10 p-6 rounded-lg shadow-lg"
+      className="w-full max-w-[1000px] mx-auto flex flex-col gap-6 text-white bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 p-6 rounded-lg shadow-lg border border-pink-500/30 backdrop-blur-sm"
       initial="hidden"
       animate="visible"
       variants={{
@@ -67,13 +67,17 @@ export default function RrppManual() {
           visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
         }}
       >
-        <BookOpen className="text-[#3BAFBB]" size={30} /> RRPP Manual
+        <BookOpen
+          className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+          size={30}
+        />{' '}
+        RRPP Manual
       </motion.h1>
 
       {sections.map((section, idx) => (
         <motion.div
           key={idx}
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB40] rounded-xl p-5"
+          className="bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-cyan-400/10 border border-pink-500/30 rounded-xl p-5 backdrop-blur-sm"
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },

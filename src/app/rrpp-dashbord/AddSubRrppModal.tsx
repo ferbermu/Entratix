@@ -81,17 +81,17 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={handleCancel} />
 
-      <div className="relative w-[95%] max-w-[600px] bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden">
+      <div className="relative w-[95%] max-w-[600px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
+        <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
           <div>
             <h3 className="text-2xl font-bold text-white">Add Sub RRPP</h3>
-            <p className="text-sm text-[#A3A3A3]">
+            <p className="text-sm text-cyan-300">
               Assign a new Sub RRPP to events
             </p>
           </div>
           <button
-            className="cursor-pointer p-2 rounded-md bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40]"
+            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 border border-pink-500/30"
             onClick={handleCancel}
             aria-label="Close"
           >
@@ -103,7 +103,10 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
           {/* Email Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Envelope size={20} className="text-[#3BAFBB]" />
+              <Envelope
+                size={20}
+                className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              />
               <h4 className="text-lg font-semibold text-white">
                 Email Address
               </h4>
@@ -112,12 +115,12 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
             <div className="relative">
               <Envelope
                 size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3]"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
               />
               <input
                 type="email"
                 placeholder="email@example.com"
-                className="w-full bg-[#1C1C2E]/10 border border-[#3BAFBB40] rounded-md text-sm text-white placeholder:text-[#A3A3A3] px-10 py-3"
+                className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-10 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
@@ -143,7 +146,10 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
           {/* Event Assignment Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Calendar size={20} className="text-[#3BAFBB]" />
+              <Calendar
+                size={20}
+                className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              />
               <h4 className="text-lg font-semibold text-white">
                 Event Assignment
               </h4>
@@ -154,22 +160,22 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
             <div className="relative">
               <MagnifyingGlass
                 size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3]"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
               />
               <input
                 placeholder="Search events by name or date..."
-                className="w-full bg-[#1C1C2E]/10 border border-[#3BAFBB40] rounded-md text-sm text-white placeholder:text-[#A3A3A3] px-9 py-2"
+                className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
               />
             </div>
 
             {/* Events List */}
-            <div className="max-h-[200px] overflow-y-auto border border-[#3BAFBB40] rounded-md">
+            <div className="max-h-[200px] overflow-y-auto border border-pink-500/30 rounded-md bg-gray-800">
               {filteredEvents.map(event => (
                 <div
                   key={event.id}
-                  className="flex items-center justify-between p-3 border-b border-[#3BAFBB20] last:border-b-0 hover:bg-[#3BAFBB0A]"
+                  className="flex items-center justify-between p-3 border-b border-pink-500/20 last:border-b-0 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-600"
                 >
                   <div className="flex items-center gap-3">
                     <input
@@ -182,7 +188,7 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
                       <p className="text-sm font-medium text-white">
                         {event.name}
                       </p>
-                      <p className="text-xs text-[#A3A3A3]">{event.date}</p>
+                      <p className="text-xs text-cyan-300">{event.date}</p>
                     </div>
                   </div>
                   <span className="inline-flex items-center gap-2 px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
@@ -192,7 +198,7 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
                 </div>
               ))}
               {filteredEvents.length === 0 && (
-                <div className="p-4 text-center text-[#A3A3A3] text-sm">
+                <div className="p-4 text-center text-cyan-300 text-sm">
                   No events found
                 </div>
               )}
@@ -201,19 +207,20 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
         </div>
 
         {/* Footer Buttons */}
-        <div className="flex items-center justify-end gap-3 p-5 border-t border-[#3BAFBB40] bg-[#3BAFBB1A]">
+        <div className="flex items-center justify-end gap-3 p-5 border-t border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
           <button
-            className="px-6 py-2 text-sm font-medium text-gray-300 bg-[#1C1A1A] border border-[#3BAFBB40] rounded-md hover:bg-[#3BAFBB1A] transition-colors"
+            className="px-6 py-2 text-sm font-medium text-cyan-300 bg-gradient-to-r from-gray-700 to-gray-600 border border-pink-500/30 rounded-md hover:from-gray-600 hover:to-gray-500 transition-colors"
             onClick={handleCancel}
           >
             Cancel
           </button>
           <button
-            className="px-6 py-2 text-sm font-medium text-white bg-[#3BAFBB] border border-[#3BAFBB] rounded-md hover:bg-[#2B9FA9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 border border-pink-500/20 hover:border-cyan-400 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
             onClick={handleSubmit}
             disabled={!email.trim() || selectedEvents.length === 0}
           >
-            Add Sub RRPP
+            <span className="relative z-10">Add Sub RRPP</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
           </button>
         </div>
       </div>

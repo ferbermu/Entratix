@@ -155,7 +155,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           </div>
 
           {/* Address & Location */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-8">
             <div className="flex flex-col gap-1">
               <label className="text-cyan-300 text-md font-medium drop-shadow-sm">
                 Address *
@@ -232,7 +232,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                   />
                 </div>
                 <div className="max-[700px]:px-20 max-[700px]:w-full max-[700px]:flex-col gap-2 px-3 py-2 rounded-lg cursor-pointer flex">
-                  <label className="bg-gradient-to-r from-cyan-400/60 to-cyan-500/60 hover:from-cyan-400/80 hover:to-cyan-500/80 text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:scale-105 border border-cyan-400/50 backdrop-blur-sm">
+                  <label className="bg-gradient-to-r from-cyan-400/60 to-cyan-500/60 hover:from-cyan-400/80 hover:to-cyan-500/80 text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:scale-105 border border-pink-500/30 backdrop-blur-sm">
                     <FolderSimple
                       size={18}
                       weight="bold"

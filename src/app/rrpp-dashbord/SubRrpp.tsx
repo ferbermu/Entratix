@@ -133,10 +133,15 @@ export const SubRrpp = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md flex items-center gap-2 max-[700px]:w-full max-[700px]:justify-center"
+          className="bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white px-4 py-2 text-sm rounded-md flex items-center gap-2 max-[700px]:w-full max-[700px]:justify-center backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
           onClick={() => setIsAddSubRrppModalOpen(true)}
         >
-          <UserPlus size={16} /> Add Sub RRPP
+          <UserPlus
+            size={16}
+            className="drop-shadow-[0_0_4px_rgba(255,255,255,0.3)]"
+          />
+          <span className="relative z-10">Add Sub RRPP</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
         </motion.button>
       </div>
 
@@ -147,13 +152,17 @@ export const SubRrpp = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1, duration: 0.4 }}
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB]/60 rounded-xl p-4 md:p-6 shadow-md grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-6 gap-y-4 max-[700px]:p-4 hover:shadow-xl transition-shadow duration-300"
+          className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-xl p-4 md:p-6 shadow-md grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-6 gap-y-4 max-[700px]:p-4 hover:shadow-xl transition-shadow duration-300 backdrop-blur-sm relative overflow-hidden"
         >
           <div className="flex flex-col gap-1 flex-1 col-[1] row-[1]">
             <h2 className="text-lg font-semibold text-white">{rrpp.name}</h2>
-            <div className="flex flex-col gap-2 text-sm text-[#A3A3A3] mt-1">
+            <div className="flex flex-col gap-2 text-sm text-cyan-300 mt-1">
               <div className="flex items-center gap-2">
-                <EnvelopeSimple size={16} /> {rrpp.email}
+                <EnvelopeSimple
+                  size={16}
+                  className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+                />{' '}
+                {rrpp.email}
               </div>
               <div className="flex items-center gap-2">{rrpp.phone}</div>
               <div className="flex items-center gap-2">
@@ -164,8 +173,8 @@ export const SubRrpp = () => {
 
           <div className="flex flex-col items-end h-full justify-between col-[2] row-[1]">
             <div className="flex flex-col items-end">
-              <p className="text-sm text-[#A3A3A3] mb-1">Total Sales</p>
-              <p className="text-2xl font-bold text-[#3BAFBB]">
+              <p className="text-sm text-cyan-300 mb-1">Total Sales</p>
+              <p className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
                 {rrpp.totalSales}
               </p>
             </div>
@@ -173,7 +182,7 @@ export const SubRrpp = () => {
 
           <div className="col-[1] row-[2] flex items-center">
             <motion.span
-              className="bg-[#3BAFBB1A] text-[#3BAFBB] text-xs font-medium px-3 py-1 rounded-full border border-[#3BAFBB40]"
+              className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 text-cyan-300 text-xs font-medium px-3 py-1 rounded-full border border-pink-500/30 backdrop-blur-sm"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
             >
@@ -185,10 +194,11 @@ export const SubRrpp = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-[#3BAFBB] hover:bg-[#2B9FA9] cursor-pointer text-white px-4 py-2 text-sm rounded-md"
+              className="bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white px-4 py-2 text-sm rounded-md backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
               onClick={() => handleViewSalesReport(rrpp.name)}
             >
-              View Sales Report
+              <span className="relative z-10">View Sales Report</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
             </motion.button>
           </div>
         </motion.div>

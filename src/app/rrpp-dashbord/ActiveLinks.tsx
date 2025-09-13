@@ -154,7 +154,7 @@ export const ActiveLinks: React.FC = () => {
   const getStatusClasses = (status: string) => {
     switch (status) {
       case 'active':
-        return 'bg-[#3BAFBB1A] text-[#3BAFBB] border-[#3BAFBB40]';
+        return 'bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 text-cyan-300 border-pink-500/30 backdrop-blur-sm';
       case 'finished':
         return 'bg-white/10 text-white border-white/20';
       case 'suspended':
@@ -173,7 +173,7 @@ export const ActiveLinks: React.FC = () => {
   return (
     <div className="flex flex-col w-full px-20 max-[700px]:px-0 max-[1200px]:px-10 gap-6">
       {/* Tabs */}
-      <div className="flex gap-3 mb-1 p-1 bg-[#3BAFBB]/10 rounded-lg max-[700px]:grid max-[700px]:grid-cols-2 max-[700px]:gap-2">
+      <div className="flex gap-3 mb-1 p-1 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 rounded-lg max-[700px]:grid max-[700px]:grid-cols-2 max-[700px]:gap-2 backdrop-blur-sm border border-pink-500/20">
         {(['all', 'active', 'finished', 'suspended'] as FilterKey[]).map(
           tab => (
             <motion.button
@@ -181,13 +181,18 @@ export const ActiveLinks: React.FC = () => {
               onClick={() => setFilter(tab)}
               className={`px-4 py-1.5 text-md rounded-lg cursor-pointer transition-colors duration-150 max-[700px]:w-full max-[700px]:py-2 ${
                 filter === tab
-                  ? 'bg-[#3BAFBB] text-white border-[#3BAFBB]'
-                  : 'text-[#A3A3A3] hover:bg-[#3BAFBB33]'
+                  ? 'bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 text-white border border-pink-500/20 hover:border-cyan-400 backdrop-blur-sm relative overflow-hidden'
+                  : 'text-cyan-300 hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-cyan-400/20'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              <span className={filter === tab ? 'relative z-10' : ''}>
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </span>
+              {filter === tab && (
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
+              )}
             </motion.button>
           )
         )}
@@ -197,7 +202,7 @@ export const ActiveLinks: React.FC = () => {
       {filteredEvents.map((event, i) => (
         <motion.div
           key={i}
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB40] rounded-xl p-6 shadow-md relative"
+          className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-xl p-6 shadow-md relative backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: i * 0.1 }}
@@ -206,8 +211,11 @@ export const ActiveLinks: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-xl font-semibold text-white">{event.name}</h2>
-              <div className="flex items-center text-sm text-[#A3A3A3] mt-1 gap-2">
-                <Calendar size={16} />
+              <div className="flex items-center text-sm text-cyan-300 mt-1 gap-2">
+                <Calendar
+                  size={16}
+                  className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+                />
                 <span>{event.date}</span>
                 <span>{event.time}</span>
               </div>
@@ -243,35 +251,44 @@ export const ActiveLinks: React.FC = () => {
             <input
               readOnly
               value={event.link}
-              className="bg-[#1C1C2E]/10 text-sm text-white px-4 py-2 rounded-md w-full border border-[#3BAFBB40]"
+              className="bg-black/20 text-sm text-cyan-300 px-4 py-2 rounded-md w-full border border-pink-500/30 backdrop-blur-sm"
             />
             <motion.button
               onClick={() => handleCopy(event.link)}
               className={`px-4 py-2 text-sm rounded-lg shrink-0 transition-colors duration-200 cursor-pointer ${
                 copiedLink === event.link
                   ? 'bg-green-500 text-white'
-                  : 'bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white'
+                  : 'bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {copiedLink === event.link ? 'Copied' : 'Copy'}
+              <span
+                className={copiedLink === event.link ? '' : 'relative z-10'}
+              >
+                {copiedLink === event.link ? 'Copied' : 'Copy'}
+              </span>
+              {copiedLink !== event.link && (
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
+              )}
             </motion.button>
           </div>
 
           {/* Action Buttons */}
           <div className="flex gap-2 mt-4 max-[1200px]:justify-between max-[340px]:flex-col">
             <motion.button
-              className="cursor-pointer flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white text-sm font-medium px-4 py-2 rounded-md"
+              className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white text-sm font-medium px-4 py-2 rounded-md backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
               onClick={() => openReportForEvent(event.name)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Eye size={16} /> View Details
+              <Eye size={16} className="relative z-10" />
+              <span className="relative z-10">View Details</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
             </motion.button>
             <motion.button
               onClick={exportPdf}
-              className="cursor-pointer flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] text-sm font-medium px-4 py-2 rounded-md border border-[#3BAFBB40]"
+              className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 text-cyan-300 text-sm font-medium px-4 py-2 rounded-md border border-pink-500/30 backdrop-blur-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -302,11 +319,11 @@ const MetricCard = ({
   highlight?: string;
 }) => (
   <motion.div
-    className="bg-[#3BAFBB1A] p-3 rounded-lg border border-[#3BAFBB40] text-center"
+    className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 p-3 rounded-lg border border-pink-500/30 text-center backdrop-blur-sm"
     whileHover={{ scale: 1.03 }}
     transition={{ duration: 0.2 }}
   >
-    <p className="text-xs text-[#A3A3A3]">{label}</p>
+    <p className="text-xs text-cyan-300">{label}</p>
     <p className={`text-lg font-semibold ${highlight}`}>{value}</p>
   </motion.div>
 );

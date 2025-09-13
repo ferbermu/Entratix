@@ -103,33 +103,28 @@ const container: Variants = {
   },
 };
 
-// Variants para cada tarjeta con animación mejorada
+// Variants para cada tarjeta con animación suave
 const item: Variants = {
   hidden: {
     opacity: 0,
-    y: 60,
-    scale: 0.9,
-    rotateX: -15,
+    y: 30,
+    scale: 0.95,
   },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    rotateX: 0,
     transition: {
-      duration: 0.7,
-      ease: [0.25, 0.4, 0.25, 1],
-      type: 'spring',
-      stiffness: 200,
-      damping: 20,
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
   exit: {
     opacity: 0,
-    y: -30,
-    scale: 0.9,
+    y: -15,
+    scale: 0.95,
     transition: {
-      duration: 0.3,
+      duration: 0.2,
       ease: 'easeInOut',
     },
   },
@@ -213,12 +208,11 @@ export default function MyTicketsPage() {
                 key={`${selectedStatus}-${ticket.title}-${idx}`} // Key única por filtro
                 variants={item}
                 whileHover={{
-                  y: -8,
-                  scale: 1.02,
+                  y: -4,
+                  scale: 1.01,
                   transition: {
-                    duration: 0.3,
-                    type: 'spring',
-                    stiffness: 300,
+                    duration: 0.2,
+                    ease: 'easeOut',
                   },
                 }}
                 whileTap={{ scale: 0.98 }}
@@ -232,12 +226,11 @@ export default function MyTicketsPage() {
         <motion.div
           variants={item}
           whileHover={{
-            scale: 1.01,
-            y: -4,
+            scale: 1.005,
+            y: -2,
             transition: {
-              duration: 0.3,
-              type: 'spring',
-              stiffness: 200,
+              duration: 0.2,
+              ease: 'easeOut',
             },
           }}
           initial="hidden"

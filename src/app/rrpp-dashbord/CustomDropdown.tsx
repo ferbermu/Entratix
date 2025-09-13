@@ -42,7 +42,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     >
       <button
         type="button"
-        className="w-full h-11 cursor-pointer flex items-center justify-between gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40] px-3 py-2 text-sm rounded-md truncate"
+        className="w-full h-11 cursor-pointer flex items-center justify-between gap-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 text-cyan-300 border border-pink-500/30 px-3 py-2 text-sm rounded-md truncate backdrop-blur-sm"
         onClick={() => setOpen(!open)}
       >
         <span className="truncate">{selected || placeholder}</span>
@@ -50,11 +50,11 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-1 bg-[#1C1A1A] border border-[#3BAFBB40] rounded-md shadow-lg z-20 w-full">
+        <div className="absolute top-full left-0 mt-1 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-pink-500/30 rounded-md shadow-lg z-20 w-full">
           {options.map(option => (
             <button
               key={option}
-              className="w-full text-left px-3 py-2 text-sm text-white hover:bg-[#3BAFBB1A] first:rounded-t-md last:rounded-b-md truncate"
+              className="w-full text-left px-3 py-2 text-sm text-cyan-300 hover:bg-gradient-to-r hover:from-pink-500/40 hover:via-purple-500/40 hover:to-cyan-400/40 first:rounded-t-md last:rounded-b-md truncate"
               onClick={() => {
                 onSelect(option);
                 setOpen(false);

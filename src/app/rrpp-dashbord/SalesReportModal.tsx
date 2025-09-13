@@ -50,15 +50,15 @@ export const SalesReportModal: React.FC<SalesReportModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[95%] max-w-[1150px] bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden backdrop-blur-sm">
+      <div className="relative w-[95%] max-w-[1150px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden">
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
+        <div className="flex items-start justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
           <div>
             <h3 className="text-xl font-semibold text-white">{eventName}</h3>
-            <p className="text-xs text-[#A3A3A3]">Cash Sales Summary</p>
+            <p className="text-xs text-cyan-300">Cash Sales Summary</p>
           </div>
           <button
-            className="cursor-pointer p-2 rounded-md bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40]"
+            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 border border-pink-500/30"
             onClick={onClose}
             aria-label="Close"
           >
@@ -68,27 +68,36 @@ export const SalesReportModal: React.FC<SalesReportModalProps> = ({
 
         {/* Top metrics */}
         <div className="grid grid-cols-3 gap-4 p-5 max-[900px]:grid-cols-1">
-          <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-xl p-4">
-            <p className="text-xs text-[#A3A3A3]">Total Revenue</p>
+          <div className="bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-cyan-400/20 border border-pink-500/30 rounded-xl p-4">
+            <p className="text-xs text-cyan-300">Total Revenue</p>
             <div className="flex items-center gap-2 mt-1">
               <p className="text-2xl font-bold text-white">${totals.revenue}</p>
-              <CurrencyDollar size={18} className="text-[#3BAFBB]" />
+              <CurrencyDollar
+                size={18}
+                className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              />
             </div>
           </div>
-          <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-xl p-4">
-            <p className="text-xs text-[#A3A3A3]">Total Tickets</p>
+          <div className="bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-cyan-400/20 border border-pink-500/30 rounded-xl p-4">
+            <p className="text-xs text-cyan-300">Total Tickets</p>
             <div className="flex items-center gap-2 mt-1">
               <p className="text-2xl font-bold text-white">{totals.tickets}</p>
-              <ChartLineUp size={18} className="text-[#3BAFBB]" />
+              <ChartLineUp
+                size={18}
+                className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              />
             </div>
           </div>
-          <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-xl p-4">
-            <p className="text-xs text-[#A3A3A3]">Total Customers</p>
+          <div className="bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-cyan-400/20 border border-pink-500/30 rounded-xl p-4">
+            <p className="text-xs text-cyan-300">Total Customers</p>
             <div className="flex items-center gap-2 mt-1">
               <p className="text-2xl font-bold text-white">
                 {totals.customers}
               </p>
-              <Users size={18} className="text-[#3BAFBB]" />
+              <Users
+                size={18}
+                className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              />
             </div>
           </div>
         </div>
@@ -98,63 +107,90 @@ export const SalesReportModal: React.FC<SalesReportModalProps> = ({
           <div className="flex-1 relative">
             <MagnifyingGlass
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
             />
             <input
               placeholder="Search by name, email, purchase ID, or CI..."
-              className="w-full bg-[#1C1C2E]/10 border border-[#3BAFBB40] rounded-md text-sm text-white placeholder:text-[#A3A3A3] px-9 py-2"
+              className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
             />
           </div>
-          <button className="cursor-pointer flex items-center gap-2 bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40] px-3 py-2 text-sm rounded-md">
+          <button className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 border border-pink-500/30 px-3 py-2 text-sm rounded-md">
             <FunnelSimple size={16} /> All Ticket Types
           </button>
           <button
-            className="cursor-pointer flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white px-3 py-2 text-sm rounded-md"
+            className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 text-white px-3 py-2 text-sm rounded-md border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
             onClick={onExportCsv}
           >
-            <DownloadSimple size={16} /> Export CSV
+            <DownloadSimple size={16} className="relative z-10" />
+            <span className="relative z-10">Export CSV</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
           </button>
         </div>
 
         {/* Table */}
         <div className="px-5 pb-5">
-          <div className="overflow-auto max-h-[420px] rounded-lg border border-[#3BAFBB40]">
+          <div className="overflow-auto max-h-[420px] rounded-lg border border-pink-500/30 bg-gray-800">
             <table className="min-w-full text-sm text-gray-200">
-              <thead className="bg-[#3BAFBB1A] text-left sticky top-0 z-10">
+              <thead className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-left sticky top-0 z-10">
                 <tr>
-                  <th className="px-4 py-3">Purchase ID</th>
-                  <th className="px-4 py-3">Customer Name</th>
-                  <th className="px-4 py-3">CI</th>
-                  <th className="px-4 py-3">Phone</th>
-                  <th className="px-4 py-3">Email</th>
-                  <th className="px-4 py-3">Ticket Type</th>
-                  <th className="px-4 py-3">Quantity</th>
-                  <th className="px-4 py-3">Unit Price</th>
-                  <th className="px-4 py-3">Total</th>
-                  <th className="px-4 py-3">Sale Date</th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Purchase ID
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Customer Name
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">CI</th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Phone
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Email
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Ticket Type
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Quantity
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Unit Price
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Total
+                  </th>
+                  <th className="px-4 py-3 text-cyan-300 font-semibold">
+                    Sale Date
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map(row => (
-                  <tr key={row.id} className="odd:bg-white/[0.02]">
-                    <td className="px-4 py-3 text-[#3BAFBB] font-medium">
+                  <tr
+                    key={row.id}
+                    className="odd:bg-gray-700 even:bg-gray-800 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-600 border-b border-pink-500/20"
+                  >
+                    <td className="px-4 py-3 text-cyan-400 font-medium">
                       {row.id}
                     </td>
-                    <td className="px-4 py-3">{row.customer}</td>
-                    <td className="px-4 py-3">{row.ci}</td>
-                    <td className="px-4 py-3">{row.phone}</td>
-                    <td className="px-4 py-3">{row.email}</td>
+                    <td className="px-4 py-3 text-white font-medium">
+                      {row.customer}
+                    </td>
+                    <td className="px-4 py-3 text-cyan-300">{row.ci}</td>
+                    <td className="px-4 py-3 text-cyan-300">{row.phone}</td>
+                    <td className="px-4 py-3 text-cyan-300">{row.email}</td>
                     <td className="px-4 py-3">
-                      <span className="px-2 py-0.5 text-xs rounded-full border border-[#3BAFBB40] bg-[#3BAFBB1A] text-[#3BAFBB]">
+                      <span className="px-2 py-0.5 text-xs rounded-full border border-pink-500/30 bg-gradient-to-r from-gray-600 to-gray-500 text-cyan-300">
                         {row.type}
                       </span>
                     </td>
-                    <td className="px-4 py-3">{row.qty}</td>
-                    <td className="px-4 py-3">${row.unit}</td>
-                    <td className="px-4 py-3 text-[#3BAFBB] font-semibold">
+                    <td className="px-4 py-3 text-white font-medium">
+                      {row.qty}
+                    </td>
+                    <td className="px-4 py-3 text-cyan-300">${row.unit}</td>
+                    <td className="px-4 py-3 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold">
                       ${row.total}
                     </td>
-                    <td className="px-4 py-3">{row.date}</td>
+                    <td className="px-4 py-3 text-cyan-300">{row.date}</td>
                   </tr>
                 ))}
               </tbody>
@@ -164,12 +200,16 @@ export const SalesReportModal: React.FC<SalesReportModalProps> = ({
           {/* Footer Totals */}
           <div className="flex items-center justify-end gap-10 text-sm text-gray-300 mt-4">
             <div className="text-center">
-              <p className="text-xs text-[#A3A3A3]">Total Tickets Sold</p>
-              <p className="text-[#3BAFBB] font-semibold">{totals.tickets}</p>
+              <p className="text-xs text-cyan-300">Total Tickets Sold</p>
+              <p className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold">
+                {totals.tickets}
+              </p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-[#A3A3A3]">Total Revenue</p>
-              <p className="text-[#3BAFBB] font-semibold">${totals.revenue}</p>
+              <p className="text-xs text-cyan-300">Total Revenue</p>
+              <p className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold">
+                ${totals.revenue}
+              </p>
             </div>
           </div>
         </div>

@@ -27,13 +27,13 @@ export const InputFieldIcon: React.FC<InputFieldIconProps> = ({
 }) => {
   return (
     <div className={`flex flex-col w-full ${className}`}>
-      <label className="text-gray-300 text-md mb-2">
+      <label className="text-cyan-300 text-md mb-2 font-medium drop-shadow-sm">
         {label} {required && '*'}
       </label>
 
-      <div className="border border-[#3BAFBB] focus-within:border-2 flex px-4 rounded-lg gap-2 ">
-        <div className="flex gap-2 w-full  py-2 items-center">
-          <span className="text-[#3BAFBB] w-4 h-4 flex-shrink-0 flex items-start ">
+      <div className="border border-pink-500/30 focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] bg-black/20 backdrop-blur-sm transition-all duration-300 flex px-4 rounded-lg gap-2">
+        <div className="flex gap-2 w-full py-2 items-center">
+          <span className="text-cyan-400 w-4 h-4 flex-shrink-0 flex items-start drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]">
             {icon}
           </span>
 
@@ -42,7 +42,7 @@ export const InputFieldIcon: React.FC<InputFieldIconProps> = ({
               value={value}
               onChange={e => onChange?.(e.target.value)}
               placeholder={placeholder}
-              className="border-none placeholder:text-sm outline-none w-full text-gray-300 bg-transparent placeholder:text-[#3BAFBB] resize-none min-h-[180px] "
+              className="border-none placeholder:text-sm outline-none w-full text-cyan-300 bg-transparent placeholder:text-gray-400 resize-none min-h-[180px]"
             />
           ) : (
             <input
@@ -50,7 +50,7 @@ export const InputFieldIcon: React.FC<InputFieldIconProps> = ({
               value={value}
               onChange={e => onChange?.(e.target.value)}
               placeholder={placeholder}
-              className="border-none placeholder:text-sm outline-none w-full text-gray-300 bg-transparent placeholder:text-[#3BAFBB] "
+              className="border-none placeholder:text-sm outline-none w-full text-cyan-300 bg-transparent placeholder:text-gray-400"
             />
           )}
         </div>

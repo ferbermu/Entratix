@@ -27,40 +27,46 @@ export default function Analytics() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Sales Flow Analysis */}
         <motion.div
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB40] rounded-2xl p-5 shadow-lg"
+          className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-2xl p-5 shadow-lg backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <ChartLineUp className="text-[#3BAFBB]" size={20} /> Sales Flow
-            Analysis
+            <ChartLineUp
+              className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              size={20}
+            />{' '}
+            Sales Flow Analysis
           </h2>
-          <div className="h-48 bg-[#1C1C2E]/10 rounded-xl border border-[#3BAFBB40] flex items-center justify-center text-[#A3A3A3]">
+          <div className="h-48 bg-black/20 rounded-xl border border-pink-500/30 flex items-center justify-center text-cyan-300 backdrop-blur-sm">
             Sales flow chart visualization
           </div>
         </motion.div>
 
         {/* Customer Demographics */}
         <motion.div
-          className="bg-[#3BAFBB]/10 border border-[#3BAFBB40] rounded-2xl p-5 shadow-lg"
+          className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-2xl p-5 shadow-lg backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <UsersThree className="text-[#3BAFBB]" size={20} /> Customer
-            Demographics
+            <UsersThree
+              className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+              size={20}
+            />{' '}
+            Customer Demographics
           </h2>
           {demographics.map(({ label, percent }, idx) => (
             <div key={idx} className="mb-3">
-              <div className="flex justify-between text-sm text-[#A3A3A3]">
+              <div className="flex justify-between text-sm text-cyan-300">
                 <span>{label}</span>
                 <span>{percent}%</span>
               </div>
               <div className="w-full h-2 bg-white/10 rounded-full mt-1 overflow-hidden">
                 <motion.div
-                  className="h-2 rounded-full bg-[#3BAFBB]"
+                  className="h-2 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400"
                   initial={{ width: 0 }}
                   animate={{ width: `${percent}%` }}
                   transition={{ duration: 1.2, delay: idx * 0.2 }}
@@ -73,13 +79,17 @@ export default function Analytics() {
 
       {/* Customer Database */}
       <motion.div
-        className="bg-[#3BAFBB]/10 border border-[#3BAFBB40] rounded-2xl p-5 shadow-lg"
+        className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-2xl p-5 shadow-lg backdrop-blur-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <Database className="text-[#3BAFBB]" size={20} /> Customer Database
+          <Database
+            className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
+            size={20}
+          />{' '}
+          Customer Database
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
           <CustomDropdown
@@ -111,17 +121,19 @@ export default function Analytics() {
           ].map((btn, idx) => (
             <motion.button
               key={idx}
-              className="flex items-center gap-2 border border-[#3BAFBB] py-2 px-4 rounded-lg bg-transparent text-gray-300 hover:bg-[#3BAFBB1A]"
+              className="flex items-center gap-2 border border-pink-500/30 py-2 px-4 rounded-lg bg-gradient-to-r from-pink-500/10 to-purple-500/10 text-cyan-300 hover:from-pink-500/20 hover:to-purple-500/20 backdrop-blur-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-[#3BAFBB]">{btn.icon}</span>
+              <span className="text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]">
+                {btn.icon}
+              </span>
               <span className="text-sm">{btn.label}</span>
             </motion.button>
           ))}
         </div>
-        <p className="text-[#A3A3A3] text-sm mt-6">
+        <p className="text-cyan-300 text-sm mt-6">
           Customer database with filtering and campaign tools will be displayed
           here
         </p>

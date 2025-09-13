@@ -113,8 +113,10 @@ export default function RrppDashboardPage() {
         variants={item}
         className="flex flex-col items-center gap-6 w-full max-w-[1200px] mx-auto"
       >
-        <h1 className="text-5xl font-bold text-[#3BAFBB]">RRPP Dashboard</h1>
-        <p className="text-xl text-gray-300 mb-4 text-center">
+        <h1 className="text-5xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
+          RRPP Dashboard
+        </h1>
+        <p className="text-xl text-cyan-300 mb-4 text-center">
           Manage your events, sales, and team from one place
         </p>
 
@@ -125,15 +127,30 @@ export default function RrppDashboardPage() {
               onClick={() => setActiveTab(tab.key)}
               className={`py-3 px-4 rounded-xl text-md cursor-pointer flex items-center justify-center gap-2 ${
                 activeTab === tab.key
-                  ? tab.activeClass
-                  : 'bg-[#2C2C3F] text-gray-300'
+                  ? 'bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 text-white backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden'
+                  : 'bg-gradient-to-r from-pink-500/10 to-purple-500/10 text-cyan-300 border border-pink-500/30 backdrop-blur-sm hover:from-pink-500/20 hover:to-purple-500/20'
               }`}
-              whileTap={{ scale: 0.95 }}
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              {tab.Icon && <tab.Icon size={18} weight="bold" />}
-              {tab.label}
+              {tab.Icon && (
+                <tab.Icon
+                  size={18}
+                  weight="bold"
+                  className={
+                    activeTab === tab.key
+                      ? 'drop-shadow-[0_0_4px_rgba(255,255,255,0.3)]'
+                      : 'drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]'
+                  }
+                />
+              )}
+              <span className={activeTab === tab.key ? 'relative z-10' : ''}>
+                {tab.label}
+              </span>
+              {activeTab === tab.key && (
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
+              )}
             </motion.button>
           ))}
         </div>

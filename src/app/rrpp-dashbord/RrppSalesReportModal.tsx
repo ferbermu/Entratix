@@ -147,15 +147,15 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center max-[1200px]:items-start max-[1200px]:p-4">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[98%] max-w-[1280px] bg-[#1C1A1A] rounded-2xl shadow-2xl border border-[#3BAFBB40] overflow-hidden max-[1200px]:max-h-[90vh] max-[1200px]:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="relative w-[98%] max-w-[1280px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden max-[1200px]:max-h-[90vh] max-[1200px]:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-[#3BAFBB40] bg-[#3BAFBB1A]">
+        <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
           <div>
             <h3 className="text-2xl font-bold text-white">{rrppName}</h3>
-            <p className="text-sm text-[#A3A3A3]">Sales Report</p>
+            <p className="text-sm text-cyan-300">Sales Report</p>
           </div>
           <button
-            className="cursor-pointer p-2 rounded-md bg-[#3BAFBB1A] hover:bg-[#3BAFBB33] text-[#3BAFBB] border border-[#3BAFBB40]"
+            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 border border-pink-500/30"
             onClick={onClose}
             aria-label="Close"
           >
@@ -165,14 +165,14 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
 
         {/* Summary Statistics / Badges */}
         <div className="grid grid-cols-2 gap-4 p-5">
-          <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-xl p-4">
-            <p className="text-xs text-[#A3A3A3]">Total Revenue</p>
+          <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-pink-500/30 rounded-xl p-4">
+            <p className="text-xs text-cyan-300">Total Revenue</p>
             <p className="text-2xl font-bold text-white">
               ${filteredTotals.revenue}
             </p>
           </div>
-          <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-xl p-4">
-            <p className="text-xs text-[#A3A3A3]">Total Sales</p>
+          <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-pink-500/30 rounded-xl p-4">
+            <p className="text-xs text-cyan-300">Total Sales</p>
             <p className="text-2xl font-bold text-white">
               {filteredTotals.sales}
             </p>
@@ -184,11 +184,11 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
           <div className="col-span-1 relative">
             <MagnifyingGlass
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
             />
             <input
               placeholder="Search by name, email, ticket ID, or event..."
-              className="w-full bg-[#1C1C2E]/10 border border-[#3BAFBB40] rounded-md text-sm text-white placeholder:text-[#A3A3A3] px-9 py-2"
+              className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />
@@ -231,18 +231,20 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
           </div>
 
           <button
-            className="col-span-1 cursor-pointer flex items-center gap-2 bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white px-3 py-2 text-sm rounded-md justify-center"
+            className="col-span-1 cursor-pointer flex items-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 text-white px-3 py-2 text-sm rounded-md justify-center border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
             onClick={onExportCsv}
           >
-            <DownloadSimple size={16} /> Export CSV
+            <DownloadSimple size={16} className="relative z-10" />
+            <span className="relative z-10">Export CSV</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
           </button>
         </div>
 
         {/* Table */}
         <div className="px-5 pb-5">
-          <div className="overflow-auto max-h-[420px] rounded-lg border border-[#3BAFBB40]">
+          <div className="overflow-auto max-h-[420px] rounded-lg border border-pink-500/30 bg-gray-800">
             <table className="min-w-full text-sm text-gray-200">
-              <thead className="bg-[#3BAFBB1A] text-left sticky top-0 z-10">
+              <thead className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-left sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-3 flex items-center gap-2">
                     <Calendar size={16} />
@@ -260,19 +262,24 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
               </thead>
               <tbody>
                 {filteredRows.map((row, index) => (
-                  <tr key={index} className="odd:bg-white/[0.02]">
+                  <tr
+                    key={index}
+                    className="odd:bg-gray-700 even:bg-gray-800 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-600"
+                  >
                     <td className="px-4 py-3">{row.event}</td>
-                    <td className="px-4 py-3 text-[#3BAFBB] font-medium">
+                    <td className="px-4 py-3 text-cyan-400 font-medium">
                       {row.ticketId}
                     </td>
                     <td className="px-4 py-3">{row.fullName}</td>
                     <td className="px-4 py-3">{row.email}</td>
                     <td className="px-4 py-3">
-                      <span className="text-nowrap px-2 py-0.5 text-xs rounded-full border border-[#3BAFBB40] bg-[#3BAFBB1A] text-[#3BAFBB]">
+                      <span className="text-nowrap px-2 py-0.5 text-xs rounded-full border border-pink-500/30 bg-gradient-to-r from-gray-600 to-gray-500 text-cyan-300">
                         {row.ticketType}
                       </span>
                     </td>
-                    <td className="px-4 py-3">${row.value}</td>
+                    <td className="px-4 py-3 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
+                      ${row.value}
+                    </td>
                     <td className="px-4 py-3">{row.paymentMethod}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
@@ -292,15 +299,15 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
           {/* Footer */}
           <div className="flex items-center justify-between text-sm text-gray-300 mt-4">
             <div>
-              <p className="text-[#A3A3A3]">
+              <p className="text-cyan-300">
                 Showing {filteredTotals.sales} sales
               </p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-[#A3A3A3]">
+              <p className="text-xs text-cyan-300">
                 Total Revenue from Filtered Results
               </p>
-              <p className="text-[#3BAFBB] font-semibold">
+              <p className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold">
                 ${filteredTotals.revenue}
               </p>
             </div>

@@ -159,8 +159,8 @@ export const CreateArtist = () => {
                   disabled={artist.socialLinks.length >= 3}
                   className={`cursor-pointer flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-lg transition-all duration-300 ${
                     artist.socialLinks.length >= 3
-                      ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed backdrop-blur-sm border border-gray-500/30'
-                      : 'bg-gradient-to-r from-cyan-400/60 to-cyan-500/60 hover:from-cyan-400/80 hover:to-cyan-500/80 text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] backdrop-blur-sm border border-cyan-400/50'
+                      ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed backdrop-blur-sm border border-pink-500/30'
+                      : 'bg-gradient-to-r from-cyan-400/60 to-cyan-500/60 hover:from-cyan-400/80 hover:to-cyan-500/80 text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] backdrop-blur-sm border border-pink-500/30'
                   }`}
                 >
                   <Plus
