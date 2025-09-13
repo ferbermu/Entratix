@@ -70,9 +70,9 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[95%] max-w-[880px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden">
+      <div className="relative w-[95%] max-w-[880px] bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden backdrop-blur-sm">
         {/* Header */}
-        <div className="p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 flex items-start justify-between">
+        <div className="p-5 border-b border-pink-500/30 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 flex items-start justify-between">
           <div className="flex flex-col">
             <h3 className="text-2xl font-bold text-white">Sell Tickets</h3>
             <p className="text-sm text-gray-300">{eventName}</p>
@@ -81,7 +81,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
             </p>
           </div>
           <button
-            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 hover:text-white border border-pink-500/30"
+            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-pink-500/30 to-purple-500/30 hover:from-pink-500/40 hover:to-purple-500/40 text-cyan-300 hover:text-white border border-pink-500/30 backdrop-blur-sm"
             onClick={onClose}
             aria-label="Close"
           >
@@ -106,7 +106,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
                   placeholder="Enter customer's full name"
-                  className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                  className="w-full bg-black/30 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
               <div className="relative">
@@ -115,7 +115,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   value={idNumber}
                   onChange={e => setIdNumber(e.target.value)}
                   placeholder="Enter CI or ID number"
-                  className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                  className="w-full bg-black/30 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
               <div className="relative">
@@ -128,7 +128,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   placeholder="+1234567890"
-                  className="w-full pl-9 bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                  className="w-full pl-9 bg-black/20 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
               <div className="relative">
@@ -141,7 +141,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="customer@email.com"
-                  className="w-full pl-9 bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                  className="w-full pl-9 bg-black/20 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 />
               </div>
             </div>
@@ -176,7 +176,7 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
                   onChange={e =>
                     setQuantity(Math.max(1, Number(e.target.value) || 1))
                   }
-                  className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                  className="w-full bg-black/30 border border-pink-500/30 rounded-md text-cyan-300 placeholder:text-gray-400 px-4 py-3 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                   placeholder="Quantity"
                 />
               </div>
@@ -185,15 +185,15 @@ export const SellTicketsModal: React.FC<SellTicketsModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-5 border-t border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 flex gap-4 justify-end">
+        <div className="p-5 border-t border-pink-500/30 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 flex gap-4 justify-end">
           <button
-            className="cursor-pointer bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 px-6 py-2 rounded-md border border-pink-500/30"
+            className="cursor-pointer bg-gradient-to-r from-pink-500/30 to-purple-500/30 hover:from-pink-500/40 hover:to-purple-500/40 text-cyan-300 px-6 py-2 rounded-md border border-pink-500/30 backdrop-blur-sm"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="cursor-pointer bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 text-white px-6 py-2 rounded-md border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
+            className="cursor-pointer bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white px-6 py-2 rounded-md backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
             onClick={handleComplete}
           >
             <span className="relative z-10">Complete Sale - ${total}</span>

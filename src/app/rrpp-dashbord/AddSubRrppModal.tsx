@@ -81,9 +81,9 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={handleCancel} />
 
-      <div className="relative w-[95%] max-w-[600px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden">
+      <div className="relative w-[95%] max-w-[600px] bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden backdrop-blur-sm">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
+        <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20">
           <div>
             <h3 className="text-2xl font-bold text-white">Add Sub RRPP</h3>
             <p className="text-sm text-cyan-300">
@@ -91,7 +91,7 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
             </p>
           </div>
           <button
-            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 border border-pink-500/30"
+            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-pink-500/30 to-purple-500/30 hover:from-pink-500/40 hover:to-purple-500/40 text-cyan-300 border border-pink-500/30 backdrop-blur-sm"
             onClick={handleCancel}
             aria-label="Close"
           >
@@ -120,7 +120,7 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
               <input
                 type="email"
                 placeholder="email@example.com"
-                className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-10 py-3 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                className="w-full bg-black/30 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-10 py-3 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
@@ -164,18 +164,18 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
               />
               <input
                 placeholder="Search events by name or date..."
-                className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                className="w-full bg-black/30 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
               />
             </div>
 
             {/* Events List */}
-            <div className="max-h-[200px] overflow-y-auto border border-pink-500/30 rounded-md bg-gray-800">
+            <div className="max-h-[200px] overflow-y-auto border border-pink-500/30 rounded-md bg-black/20 backdrop-blur-sm">
               {filteredEvents.map(event => (
                 <div
                   key={event.id}
-                  className="flex items-center justify-between p-3 border-b border-pink-500/20 last:border-b-0 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-600"
+                  className="flex items-center justify-between p-3 border-b border-pink-500/20 last:border-b-0 hover:bg-gradient-to-r hover:from-pink-500/10 hover:via-purple-500/10 hover:to-cyan-400/10"
                 >
                   <div className="flex items-center gap-3">
                     <input
@@ -207,15 +207,15 @@ export const AddSubRrppModal: React.FC<AddSubRrppModalProps> = ({
         </div>
 
         {/* Footer Buttons */}
-        <div className="flex items-center justify-end gap-3 p-5 border-t border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
+        <div className="flex items-center justify-end gap-3 p-5 border-t border-pink-500/30 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10">
           <button
-            className="px-6 py-2 text-sm font-medium text-cyan-300 bg-gradient-to-r from-gray-700 to-gray-600 border border-pink-500/30 rounded-md hover:from-gray-600 hover:to-gray-500 transition-colors"
+            className="px-6 py-2 text-sm font-medium text-cyan-300 bg-gradient-to-r from-pink-500/30 to-purple-500/30 border border-pink-500/30 rounded-md hover:from-pink-500/40 hover:to-purple-500/40 backdrop-blur-sm transition-colors"
             onClick={handleCancel}
           >
             Cancel
           </button>
           <button
-            className="px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 border border-pink-500/20 hover:border-cyan-400 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+            className="px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 border border-pink-500/20 hover:border-cyan-400 rounded-md backdrop-blur-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
             onClick={handleSubmit}
             disabled={!email.trim() || selectedEvents.length === 0}
           >

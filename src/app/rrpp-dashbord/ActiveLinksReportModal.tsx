@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import {
-  X,
   MagnifyingGlass,
   DownloadSimple,
   CreditCard,
@@ -65,7 +64,7 @@ const StatusPill = ({ status }: { status: ActiveLinksRow['status'] }) => {
 };
 
 const TicketPill = ({ type }: { type: ActiveLinksRow['ticketType'] }) => (
-  <span className="inline-flex px-3 py-1 rounded-full text-xs bg-gradient-to-r from-gray-600 to-gray-500 text-cyan-300 border border-pink-500/30">
+  <span className="inline-flex px-3 py-1 rounded-full text-xs bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-cyan-300 border border-pink-500/30 backdrop-blur-sm">
     {type}
   </span>
 );
@@ -180,14 +179,14 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
           />
 
           <motion.div
-            className="relative max-w-full h-[66vh] max-[700px]:h-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 flex flex-col overflow-hidden"
+            className="relative max-w-full h-[66vh] max-[700px]:h-full bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 rounded-2xl shadow-2xl border border-pink-500/30 flex flex-col overflow-hidden backdrop-blur-sm"
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
+            <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20">
               <div>
                 <h3 className="text-2xl font-bold text-white">{eventName}</h3>
                 <p className="text-sm text-cyan-300">
@@ -206,13 +205,13 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
                   />
                   <input
                     placeholder="Search by name or email..."
-                    className="w-full bg-gray-800 border border-pink-500/30 rounded-lg text-sm text-cyan-300 placeholder:text-gray-400 pl-9 pr-3 h-11 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+                    className="w-full bg-black/30 border border-pink-500/30 rounded-lg text-sm text-cyan-300 placeholder:text-gray-400 pl-9 pr-3 h-11 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                   />
                 </div>
                 <button
-                  className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 text-white px-4 h-11 text-sm rounded-md border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
+                  className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 text-white px-4 h-11 text-sm rounded-md backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
                   onClick={handleExportCsv}
                 >
                   <DownloadSimple size={18} className="relative z-10" />
@@ -249,13 +248,13 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
 
             {/* Badges */}
             <div className="flex items-center gap-4 px-5 py-3 flex-shrink-0 flex-wrap">
-              <div className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-cyan-300 px-4 py-2 rounded-md text-sm border border-pink-500/30">
+              <div className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 text-cyan-300 px-4 py-2 rounded-md text-sm border border-pink-500/30 backdrop-blur-sm">
                 Total Customers:{' '}
                 <span className="text-white font-semibold">
                   {totals.customers}
                 </span>
               </div>
-              <div className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-cyan-300 px-4 py-2 rounded-md text-sm border border-pink-500/30">
+              <div className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 text-cyan-300 px-4 py-2 rounded-md text-sm border border-pink-500/30 backdrop-blur-sm">
                 Total Revenue:{' '}
                 <span className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold">
                   ${totals.revenue}
@@ -265,9 +264,9 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
 
             {/* Table */}
             <div className="px-5 pb-5 flex-1 overflow-auto">
-              <div className="overflow-auto max-h-[460px] max-[700px]:h-full rounded-lg border border-pink-500/30 bg-gray-800">
+              <div className="overflow-auto max-h-[460px] max-[700px]:h-full rounded-lg border border-pink-500/30 bg-black/20 backdrop-blur-sm">
                 <table className="min-w-full text-sm text-gray-200">
-                  <thead className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-left sticky top-0 z-10">
+                  <thead className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 text-left sticky top-0 z-10">
                     <tr>
                       <th className="px-4 py-3">Full Name</th>
                       <th className="px-4 py-3">Email</th>
@@ -283,7 +282,7 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
                     {filteredRows.map((r, i) => (
                       <tr
                         key={i}
-                        className="border-b border-pink-500/30 odd:bg-gray-700 even:bg-gray-800 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-600"
+                        className="border-b border-pink-500/30 odd:bg-white/[0.05] even:bg-white/[0.02] hover:bg-gradient-to-r hover:from-pink-500/10 hover:via-purple-500/10 hover:to-cyan-400/10"
                       >
                         <td className="px-4 py-2">{r.fullName}</td>
                         <td className="px-4 py-2">{r.email}</td>
@@ -307,13 +306,6 @@ export const ActiveLinksReportModal: React.FC<ActiveLinksReportModalProps> = ({
             </div>
 
             {/* Close Button */}
-            <button
-              onClick={onClose}
-              className=" top-4 right-4 p-2 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white border border-pink-500/20 hover:border-cyan-400 relative overflow-hidden"
-            >
-              <X size={20} className="relative z-10" />
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
-            </button>
           </motion.div>
         </motion.div>
       )}

@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
-  X,
   MagnifyingGlass,
   DownloadSimple,
   Calendar,
@@ -147,31 +146,24 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center max-[1200px]:items-start max-[1200px]:p-4">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="relative w-[98%] max-w-[1280px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden max-[1200px]:max-h-[90vh] max-[1200px]:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="relative w-[98%] max-w-[1280px] bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 rounded-2xl shadow-2xl border border-pink-500/30 overflow-hidden backdrop-blur-sm max-[1200px]:max-h-[90vh] max-[1200px]:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
+        <div className="flex items-center justify-between p-5 border-b border-pink-500/30 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20">
           <div>
             <h3 className="text-2xl font-bold text-white">{rrppName}</h3>
             <p className="text-sm text-cyan-300">Sales Report</p>
           </div>
-          <button
-            className="cursor-pointer p-2 rounded-md bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-cyan-300 border border-pink-500/30"
-            onClick={onClose}
-            aria-label="Close"
-          >
-            <X size={18} />
-          </button>
         </div>
 
         {/* Summary Statistics / Badges */}
         <div className="grid grid-cols-2 gap-4 p-5">
-          <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-pink-500/30 rounded-xl p-4">
+          <div className="bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-cyan-400/20 border border-pink-500/30 rounded-xl p-4 backdrop-blur-sm">
             <p className="text-xs text-cyan-300">Total Revenue</p>
             <p className="text-2xl font-bold text-white">
               ${filteredTotals.revenue}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-pink-500/30 rounded-xl p-4">
+          <div className="bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-cyan-400/20 border border-pink-500/30 rounded-xl p-4 backdrop-blur-sm">
             <p className="text-xs text-cyan-300">Total Sales</p>
             <p className="text-2xl font-bold text-white">
               {filteredTotals.sales}
@@ -188,7 +180,7 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
             />
             <input
               placeholder="Search by name, email, ticket ID, or event..."
-              className="w-full bg-gray-800 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
+              className="w-full bg-black/30 border border-pink-500/30 rounded-md text-sm text-cyan-300 placeholder:text-gray-400 px-9 py-2 backdrop-blur-sm focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />
@@ -242,9 +234,9 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
 
         {/* Table */}
         <div className="px-5 pb-5">
-          <div className="overflow-auto max-h-[420px] rounded-lg border border-pink-500/30 bg-gray-800">
+          <div className="overflow-auto max-h-[420px] rounded-lg border border-pink-500/30 bg-black/20 backdrop-blur-sm">
             <table className="min-w-full text-sm text-gray-200">
-              <thead className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-left sticky top-0 z-10">
+              <thead className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 text-left sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-3 flex items-center gap-2">
                     <Calendar size={16} />
@@ -264,7 +256,7 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
                 {filteredRows.map((row, index) => (
                   <tr
                     key={index}
-                    className="odd:bg-gray-700 even:bg-gray-800 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-600"
+                    className="odd:bg-white/[0.05] even:bg-white/[0.02] hover:bg-gradient-to-r hover:from-pink-500/10 hover:via-purple-500/10 hover:to-cyan-400/10 border-b border-pink-500/20"
                   >
                     <td className="px-4 py-3">{row.event}</td>
                     <td className="px-4 py-3 text-cyan-400 font-medium">
@@ -273,7 +265,7 @@ export const RrppSalesReportModal: React.FC<RrppSalesReportModalProps> = ({
                     <td className="px-4 py-3">{row.fullName}</td>
                     <td className="px-4 py-3">{row.email}</td>
                     <td className="px-4 py-3">
-                      <span className="text-nowrap px-2 py-0.5 text-xs rounded-full border border-pink-500/30 bg-gradient-to-r from-gray-600 to-gray-500 text-cyan-300">
+                      <span className="text-nowrap px-2 py-0.5 text-xs rounded-full border border-pink-500/30 bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-cyan-300 backdrop-blur-sm">
                         {row.ticketType}
                       </span>
                     </td>
