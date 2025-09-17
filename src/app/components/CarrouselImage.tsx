@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { CardProps } from './Card';
 import {
   Calendar,
@@ -24,6 +24,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
 }) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const clearExistingTimeout = () => {
@@ -47,11 +48,37 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
     [index, goToSlide]
   );
 
-  useEffect(() => {
+  // Funciones para manejo de swipe en móviles
+  const handleDragStart = () => {
+    setIsDragging(true);
     clearExistingTimeout();
-    timeoutRef.current = setTimeout(() => nextSlide(), interval);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  const handlePanEnd = (event: unknown, info: PanInfo) => {
+    const threshold = 50;
+    const velocity = info.velocity.x;
+    const offset = info.offset.x;
+
+    if (Math.abs(offset) > threshold || Math.abs(velocity) > 500) {
+      if (offset > 0 || velocity > 0) {
+        prevSlide();
+      } else {
+        nextSlide();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!isDragging) {
+      clearExistingTimeout();
+      timeoutRef.current = setTimeout(() => nextSlide(), interval);
+    }
     return () => clearExistingTimeout();
-  }, [nextSlide, interval]);
+  }, [nextSlide, interval, isDragging]);
 
   const variants = {
     enter: (direction: number) => ({
@@ -83,6 +110,12 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
           initial="enter"
           animate="center"
           exit="exit"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onPanEnd={handlePanEnd}
         >
           <Image
             src={currentEvent.imageUrl}
@@ -92,7 +125,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent flex items-center">
-            <div className="max-w-2xl px-24 text-white space-y-6 relative z-10">
+            <div className="max-w-2xl px-24 max-[700px]:px-8 text-white space-y-6 relative z-10">
               <span className="uppercase text-sm tracking-wider text-cyan-300 flex items-center gap-2 font-semibold drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]">
                 <MusicNote
                   size={18}
@@ -100,7 +133,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
                 />{' '}
                 {currentEvent.category || 'Experience'}
               </span>
-              <h2 className="text-5xl font-condensed font-bold leading-tight text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
+              <h2 className="text-5xl max-[700px]:text-3xl font-condensed font-bold leading-tight text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text relative">
                 {currentEvent.title}
                 {/* Subtle neon glow for better readability */}
                 <div className="absolute inset-0 text-pink-400 blur-[1px] opacity-30">
@@ -150,11 +183,11 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
                   {currentEvent.description}
                 </p>
               )}
-              <div className="flex items-center gap-6">
-                <button className="cursor-pointer bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,20,147,0.6)] border border-pink-500/50 hover:border-cyan-400">
+              <div className="flex items-center gap-6 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-4">
+                <button className="cursor-pointer bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,20,147,0.6)] border border-pink-500/50 hover:border-cyan-400 max-[700px]:w-full max-[700px]:text-center">
                   Get Tickets from {currentEvent.price || '$35'}
                 </button>
-                <div className="flex items-center gap-4 text-sm text-cyan-200">
+                <div className="flex items-center gap-4 text-sm text-cyan-200 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-3 max-[700px]:w-full">
                   <span className="flex items-center gap-1 font-medium">
                     <MusicNote
                       size={16}
@@ -178,7 +211,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
 
       <button
         onClick={prevSlide}
-        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-black/60 hover:from-pink-500/50 hover:via-purple-500/50 hover:to-cyan-400/50 p-3 rounded-full text-white transition-all duration-300 border border-pink-500/50 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] backdrop-blur-sm z-20"
+        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-black/60 hover:from-pink-500/50 hover:via-purple-500/50 hover:to-cyan-400/50 p-3 rounded-full text-white transition-all duration-300 border border-pink-500/50 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] backdrop-blur-sm z-20 max-[700px]:hidden"
         type="button"
       >
         <CaretLeft
@@ -188,7 +221,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
       </button>
       <button
         onClick={nextSlide}
-        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-black/60 via-purple-500/30 to-cyan-400/30 hover:from-cyan-400/50 hover:via-purple-500/50 hover:to-pink-500/50 p-3 rounded-full text-white transition-all duration-300 border border-cyan-400/50 hover:border-pink-500 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] backdrop-blur-sm z-20"
+        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-black/60 via-purple-500/30 to-cyan-400/30 hover:from-cyan-400/50 hover:via-purple-500/50 hover:to-pink-500/50 p-3 rounded-full text-white transition-all duration-300 border border-cyan-400/50 hover:border-pink-500 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] backdrop-blur-sm z-20 max-[700px]:hidden"
         type="button"
       >
         <CaretRight

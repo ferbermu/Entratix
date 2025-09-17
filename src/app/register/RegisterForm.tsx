@@ -93,21 +93,27 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
   // 🔴 clases dinámicas de border
   const inputClass = (field: keyof typeof errors) =>
-    `w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border ${
-      errors[field] ? 'border-red-500' : 'border-[#3BAFBB]'
-    } text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 ${
-      errors[field] ? 'focus:ring-red-500' : 'focus:ring-[#3BAFBB]'
-    } autofill-fix`;
+    `w-full pl-10 pr-4 py-3 rounded-lg bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border ${
+      errors[field] ? 'border-red-500' : 'border-pink-500/30'
+    } text-white placeholder-cyan-300 focus:outline-none focus:ring-2 ${
+      errors[field] ? 'focus:ring-red-500' : 'focus:ring-pink-500/50'
+    } autofill-fix backdrop-blur-sm focus:shadow-lg focus:shadow-pink-500/10`;
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 my-30">
-      <div className="rounded-xl shadow-lg w-full max-w-2xl p-8 bg-[#3BAFBB1A]/40 border border-[#3BAFBB]">
+      <div className="rounded-xl shadow-lg w-full max-w-2xl p-8 bg-black/20 border border-pink-500/30 backdrop-blur-sm shadow-pink-500/10">
         <div className="flex flex-col items-center mb-8">
-          <div className="bg-[#3BAFBB] rounded-full p-3 mb-4">
+          <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 rounded-full p-3 mb-4 shadow-lg shadow-pink-500/25">
             <MusicNotes size={32} weight="fill" className="text-white" />
           </div>
-          <h1 className="text-white text-3xl font-bold mb-2">Join Entratix</h1>
-          <p className="text-gray-300 text-lg text-center">
+          <h1 className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-3xl font-bold mb-2 relative">
+            Join Entratix
+            {/* Neon glow effect */}
+            <div className="absolute inset-0 text-pink-500 blur-sm opacity-40">
+              Join Entratix
+            </div>
+          </h1>
+          <p className="text-cyan-300 text-lg text-center">
             Create your account and discover amazing events
           </p>
         </div>
@@ -116,13 +122,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           {/* Nombre y Apellido */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <div className="flex flex-col">
-              <label className="text-gray-300 text-sm font-medium mb-2">
+              <label className="text-cyan-300 text-sm font-medium mb-2">
                 First Name *
               </label>
               <div className="relative">
                 <User
                   size={20}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3BAFBB]"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text"
                 />
                 <input
                   type="text"
@@ -140,13 +146,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </div>
 
             <div className="flex flex-col">
-              <label className="text-gray-300 text-sm font-medium mb-2">
+              <label className="text-cyan-300 text-sm font-medium mb-2">
                 Last Name *
               </label>
               <div className="relative">
                 <User
                   size={20}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3BAFBB]"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text"
                 />
                 <input
                   type="text"
@@ -166,13 +172,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
           {/* Email */}
           <div className="flex flex-col">
-            <label className="text-gray-300 text-sm font-medium mb-2">
+            <label className="text-cyan-300 text-sm font-medium mb-2">
               Email Address *
             </label>
             <div className="relative">
               <EnvelopeSimple
                 size={20}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3BAFBB]"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text"
               />
               <input
                 type="email"
@@ -190,13 +196,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           {/* Teléfono y fecha */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6 ">
             <div className="flex flex-col">
-              <label className="text-gray-300 text-sm font-medium mb-2">
+              <label className="text-cyan-300 text-sm font-medium mb-2">
                 Phone Number *
               </label>
               <div className="relative">
                 <Phone
                   size={20}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3BAFBB]"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text"
                 />
                 <input
                   type="tel"
@@ -213,12 +219,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               )}
             </div>
             <div className="flex flex-col">
-              <label className="text-gray-300 text-sm font-medium mb-2">
+              <label className="text-cyan-300 text-sm font-medium mb-2">
                 Date of Birth *
               </label>
               <div
-                className={`border rounded-lg pr-2 pl-1 py-2 ${
-                  errors.birthDate ? 'border-red-500' : 'border-[#3BAFBB]'
+                className={`border rounded-lg pr-2 pl-1 py-2 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 backdrop-blur-sm ${
+                  errors.birthDate ? 'border-red-500' : 'border-pink-500/30'
                 }`}
               >
                 <CalendarDropdownSimple
@@ -268,15 +274,21 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               type="checkbox"
               checked={agreeTerms}
               onChange={e => setAgreeTerms(e.target.checked)}
-              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB]"
+              className="cursor-pointer h-5 w-5 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text bg-transparent border-pink-500/50 rounded focus:ring-pink-500/50"
             />
-            <label className="text-gray-300 text-sm">
+            <label className="text-cyan-300 text-sm">
               I agree to the{' '}
-              <a href="#" className="text-[#3BAFBB] hover:underline">
+              <a
+                href="#"
+                className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text hover:underline"
+              >
                 Terms of Service
               </a>{' '}
               and{' '}
-              <a href="#" className="text-[#3BAFBB] hover:underline">
+              <a
+                href="#"
+                className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text hover:underline"
+              >
                 Privacy Policy
               </a>
             </label>
@@ -286,12 +298,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             type="submit"
             disabled={!isFormValid}
             className={`cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out ${
-              isFormValid ? '' : 'opacity-50 cursor-not-allowed'
+              isFormValid
+                ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 shadow-lg shadow-pink-500/25'
+                : 'opacity-50 cursor-not-allowed bg-gray-600'
             }`}
-            style={{
-              backgroundColor: '#3BAFBB',
-              boxShadow: '0 4px 15px rgba(59, 175, 187, 0.4)',
-            }}
           >
             Create Account
           </button>

@@ -37,7 +37,7 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
   return (
     <div className="flex flex-col gap-6">
       {/* Tabla de Tickets Disponibles */}
-      <div className="w-full bg-gradient-to-br from-gray-900/60 via-black/50 to-gray-800/60 backdrop-blur-md max-[700px]:bg-gradient-to-br max-[700px]:from-gray-900/55 max-[700px]:via-black/45 max-[700px]:to-gray-800/55 rounded-lg overflow-hidden divide-y divide-gray-600/40 border border-gray-600/40 shadow-2xl">
+      <div className="w-full bg-gradient-to-r from-gray-900 via-black to-gray-800 overflow-hidden divide-y divide-cyan-400/40 shadow-2xl transition-all duration-300">
         <div className="grid grid-cols-3 max-[700px]:grid-cols-2 text-pink-500 text-lg font-condensed">
           <div className="pl-4 p-4 font-normal text-start drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]">
             Ticket
@@ -52,7 +52,7 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
           </div>
         </div>
 
-        <div className="flex flex-col max-[700px]:gap-2.5 max-[700px]:py-4 divide-y divide-pink-500/30">
+        <div className="flex flex-col max-[700px]:gap-2.5 max-[700px]:py-4 divide-y divide-gray-600/40">
           {ticketOptions.map(opt => (
             <EventTicketOptions
               key={opt.id}
@@ -69,7 +69,7 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
 
       {/* Tickets Seleccionados */}
       {selectedTickets.length > 0 && (
-        <div className="w-full bg-gradient-to-br from-gray-900/65 via-black/55 to-gray-800/65 backdrop-blur-md rounded-lg overflow-hidden divide-y divide-gray-600/40 border border-gray-600/40 shadow-2xl">
+        <div className="w-full bg-gradient-to-r from-gray-900 via-black to-gray-800 overflow-hidden divide-y divide-cyan-400/40 shadow-2xl transition-all duration-300">
           <div className="grid grid-cols-4 text-purple-500 text-lg font-condensed">
             <div className="pl-4 p-4 font-normal text-start drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
               Ticket
@@ -147,7 +147,7 @@ export const EventTicketOptions = ({
   };
 
   return (
-    <div className="grid grid-cols-3 max-[700px]:grid-cols-2 text-2xl text-white max-[700px]:border max-[700px]:bg-gradient-to-r max-[700px]:from-gray-900/60 max-[700px]:via-black/50 max-[700px]:to-gray-800/60 max-[700px]:backdrop-blur-md max-[700px]:border-gray-600/40 max-[700px]:rounded-lg max-[700px]:shadow-lg">
+    <div className="grid grid-cols-3 max-[700px]:grid-cols-2 text-2xl text-white bg-gradient-to-r from-gray-900 via-black to-gray-800 max-[700px]:shadow-lg transition-all duration-300">
       <div className="p-4 text-start">{ticketType}</div>
       <div className="p-4 text-center max-[700px]:text-end max-[700px]:w-full">
         ${price}

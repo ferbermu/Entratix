@@ -31,7 +31,7 @@ export const SettingsContent = () => {
     <div className="space-y-6">
       {/* Notification Preferences Card */}
       <motion.div
-        className="bg-[#1C1A1A] border border-[#3BAFBB40] rounded-xl p-6"
+        className="bg-black/20 border border-pink-500/30 rounded-xl p-6 backdrop-blur-sm shadow-lg shadow-pink-500/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -42,9 +42,12 @@ export const SettingsContent = () => {
             animate={{ scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <Bell size={24} className="text-[#3BAFBB]" />
+            <Bell
+              size={24}
+              className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text"
+            />
           </motion.div>
-          <h3 className="text-xl font-semibold text-white">
+          <h3 className="text-xl font-semibold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
             Notification Preferences
           </h3>
         </div>
@@ -76,13 +79,13 @@ export const SettingsContent = () => {
             >
               <div>
                 <p className="text-white font-medium">{item.label}</p>
-                <p className="text-gray-400 text-sm">{item.description}</p>
+                <p className="text-cyan-300 text-sm">{item.description}</p>
               </div>
               <motion.button
                 onClick={() => handleToggle(item.key)}
                 className={`cursor-pointer relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                   settings[item.key as keyof typeof settings]
-                    ? 'bg-[#3BAFBB]'
+                    ? 'bg-gradient-to-r from-pink-500 to-purple-500'
                     : 'bg-gray-600'
                 }`}
                 layout
@@ -103,7 +106,7 @@ export const SettingsContent = () => {
 
       {/* Privacy & Security Card */}
       <motion.div
-        className="bg-[#1C1A1A] border border-[#3BAFBB40] rounded-xl p-6"
+        className="bg-black/20 border border-pink-500/30 rounded-xl p-6 backdrop-blur-sm shadow-lg shadow-pink-500/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -114,9 +117,12 @@ export const SettingsContent = () => {
             animate={{ scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <Shield size={24} className="text-[#3BAFBB]" />
+            <Shield
+              size={24}
+              className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text"
+            />
           </motion.div>
-          <h3 className="text-xl font-semibold text-white">
+          <h3 className="text-xl font-semibold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
             Privacy & Security
           </h3>
         </div>
@@ -131,7 +137,7 @@ export const SettingsContent = () => {
           >
             <div>
               <p className="text-white font-medium">Profile Visibility</p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-cyan-300 text-sm">
                 Make your profile visible to other users
               </p>
             </div>
@@ -139,7 +145,7 @@ export const SettingsContent = () => {
               <motion.select
                 value={settings.profileVisibility}
                 onChange={e => handleVisibilityChange(e.target.value)}
-                className="appearance-none cursor-pointer bg-[#1C2530] border border-[#3BAFBB40] rounded-lg px-4 py-2 pr-10 text-white focus:outline-none focus:border-[#3BAFBB]"
+                className="appearance-none cursor-pointer bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border border-pink-500/30 rounded-lg px-4 py-2 pr-10 text-white focus:outline-none focus:border-pink-500/50 focus:shadow-lg focus:shadow-pink-500/10 backdrop-blur-sm"
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -150,7 +156,7 @@ export const SettingsContent = () => {
               </motion.select>
               <CaretDown
                 size={16}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text pointer-events-none"
               />
             </div>
           </motion.div>
@@ -164,14 +170,16 @@ export const SettingsContent = () => {
           >
             <div>
               <p className="text-white font-medium">Data Sharing</p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-cyan-300 text-sm">
                 Allow anonymous analytics to improve our service
               </p>
             </div>
             <motion.button
               onClick={() => handleToggle('dataSharing')}
               className={`cursor-pointer relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                settings.dataSharing ? 'bg-[#3BAFBB]' : 'bg-gray-600'
+                settings.dataSharing
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-500'
+                  : 'bg-gray-600'
               }`}
               layout
               transition={{ type: 'spring', stiffness: 500, damping: 30 }}

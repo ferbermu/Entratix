@@ -47,7 +47,7 @@ export const ProfileContent = () => {
     <div className="space-y-6">
       {/* Profile Summary Card */}
       <motion.div
-        className="bg-[#1C1A1A] border border-[#3BAFBB40] rounded-xl p-6"
+        className="bg-black/20 border border-pink-500/30 rounded-xl p-6 backdrop-blur-sm shadow-lg shadow-pink-500/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -55,7 +55,7 @@ export const ProfileContent = () => {
         <div className="flex flex-col items-start justify-between">
           <div className="flex items-center gap-4">
             <motion.div
-              className="w-20 h-20 bg-[#3BAFBB] rounded-full flex items-center justify-center"
+              className="w-20 h-20 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 rounded-full flex items-center justify-center shadow-lg shadow-pink-500/25"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
@@ -85,13 +85,13 @@ export const ProfileContent = () => {
             ].map((stat, i) => (
               <motion.div
                 key={i}
-                className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-lg p-4 text-center"
+                className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border border-pink-500/30 rounded-lg p-4 text-center backdrop-blur-sm shadow-lg shadow-pink-500/5"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.1 }}
                 whileHover={{ scale: 1.03 }}
               >
-                <div className="flex justify-center mb-2 text-[#3BAFBB]">
+                <div className="flex justify-center mb-2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
                   {stat.icon}
                 </div>
                 <div className="text-2xl font-bold text-white">
@@ -106,7 +106,7 @@ export const ProfileContent = () => {
 
       {/* Personal Information Card */}
       <motion.div
-        className="bg-[#1C1A1A] border border-[#3BAFBB40] rounded-xl p-6"
+        className="bg-black/20 border border-pink-500/30 rounded-xl p-6 backdrop-blur-sm shadow-lg shadow-pink-500/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -120,7 +120,7 @@ export const ProfileContent = () => {
               {hasChanges && (
                 <motion.button
                   onClick={handleSave}
-                  className="bg-[#19c37d] hover:bg-[#16a367] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-pink-500/25"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -134,8 +134,8 @@ export const ProfileContent = () => {
               onClick={isEditing ? handleCancel : () => setIsEditing(true)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isEditing
-                  ? 'bg-[#3BAFBB]/30 hover:bg-[#3BAFBB]/40 text-white cursor-pointer'
-                  : 'bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white cursor-pointer'
+                  ? 'bg-gradient-to-r from-pink-500/30 to-purple-500/30 hover:from-pink-500/40 hover:to-purple-500/40 text-white cursor-pointer border border-pink-500/30'
+                  : 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white cursor-pointer shadow-lg shadow-pink-500/25'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -167,11 +167,11 @@ export const ProfileContent = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.1 }}
             >
-              <label className="block text-sm font-medium text-gray-400 mb-2">
+              <label className="block text-sm font-medium text-cyan-300 mb-2">
                 {input.label}
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text">
                   {input.icon}
                 </span>
                 <input
@@ -179,7 +179,7 @@ export const ProfileContent = () => {
                   value={formData[input.field as keyof typeof formData]}
                   onChange={e => handleInputChange(input.field, e.target.value)}
                   disabled={input.disabled ?? !isEditing}
-                  className="w-full bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border border-pink-500/30 rounded-lg pl-10 pr-4 py-3 text-white placeholder-cyan-300 disabled:opacity-50 backdrop-blur-sm focus:border-pink-500/50 focus:shadow-lg focus:shadow-pink-500/10"
                 />
               </div>
             </motion.div>

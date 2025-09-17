@@ -32,8 +32,8 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
   onChange,
   showToggle = true,
   className = '',
-  placeholderClassName = 'placeholder-[#3BAFBB]',
-  iconColor = 'text-[#3BAFBB]',
+  placeholderClassName = 'placeholder-cyan-300',
+  iconColor = 'text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text',
   disabled = false,
 
   required = true,
@@ -97,17 +97,17 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
 
   const showError = touched && error !== '';
 
-  const inputClasses = `w-full pl-10 pr-10 py-3 rounded-lg bg-transparent border
+  const inputClasses = `w-full pl-10 pr-10 py-3 rounded-lg bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 border
     ${
       showError
         ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-        : 'border-[#3BAFBB] focus:ring-[#3BAFBB] focus:border-[#3BAFBB]'
+        : 'border-pink-500/30 focus:ring-pink-500/50 focus:border-pink-500/50'
     }
-    text-white ${placeholderClassName} focus:outline-none autofill-fix disabled:opacity-50`;
+    text-white ${placeholderClassName} focus:outline-none autofill-fix disabled:opacity-50 backdrop-blur-sm focus:shadow-lg focus:shadow-pink-500/10`;
 
   return (
     <div className={`flex flex-col ${className}`}>
-      <label htmlFor={id} className="text-gray-300 text-sm font-medium mb-2">
+      <label htmlFor={id} className="text-cyan-300 text-sm font-medium mb-2">
         {label}
       </label>
       <div className="relative">
