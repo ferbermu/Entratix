@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import {
   MusicNotes,
@@ -8,16 +10,33 @@ import {
 } from '@phosphor-icons/react';
 import { InputPassword } from './InputPassword';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
+import { useRegister } from './hooks/useRegister';
 
-interface RegisterFormProps {
-  birthDate: Date | undefined;
-  setBirthDate: (date: Date | undefined) => void;
-}
+export const RegisterForm: React.FC = () => {
+  const {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    email,
+    setEmail,
+    phone,
+    setPhone,
+    birthDate,
+    setBirthDate,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    agreeTerms,
+    setAgreeTerms,
+    receiveUpdates,
+    setReceiveUpdates,
+    error,
+    isSubmitting,
+    handleSubmit,
+  } = useRegister();
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({
-  birthDate,
-  setBirthDate,
-}) => {
   return (
     <div className="flex items-center justify-center min-h-screen p-4 my-30">
       <div className="rounded-xl shadow-lg w-full max-w-2xl p-8 bg-[#3BAFBB1A]/40 border border-[#3BAFBB]">
@@ -31,7 +50,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           </p>
         </div>
 
-        <form className="space-y-6">
+        {/* Mostrar error si existe */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+            <p className="text-red-400 text-sm text-center">{error}</p>
+          </div>
+        )}
+
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <label
@@ -49,7 +75,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   type="text"
                   id="firstName"
                   placeholder="First name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix disabled:opacity-50"
                 />
               </div>
             </div>
@@ -69,7 +98,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   type="text"
                   id="lastName"
                   placeholder="Last name"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix disabled:opacity-50"
                 />
               </div>
             </div>
@@ -91,7 +123,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix disabled:opacity-50"
               />
             </div>
           </div>
@@ -113,7 +148,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   type="tel"
                   id="phoneNumber"
                   placeholder="+1 (555) 123-4567"
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-transparent border border-[#3BAFBB] text-white placeholder-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] autofill-fix disabled:opacity-50"
                 />
               </div>
             </div>
@@ -140,6 +178,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               placeholder="Create password"
               placeholderClassName="placeholder-[#3BAFBB]"
               iconColor="text-[#3BAFBB]"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isSubmitting}
             />
             <InputPassword
               id="confirmPassword"
@@ -147,6 +188,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               placeholder="Confirm password"
               placeholderClassName="placeholder-[#3BAFBB]"
               iconColor="text-[#3BAFBB]"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -154,7 +198,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             <input
               type="checkbox"
               id="agreeTerms"
-              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB] custom-checkbox"
+              checked={agreeTerms}
+              onChange={(e) => setAgreeTerms(e.target.checked)}
+              disabled={isSubmitting}
+              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB] custom-checkbox disabled:opacity-50"
             />
             <label htmlFor="agreeTerms" className="text-gray-300 text-sm">
               I agree to the{' '}
@@ -172,7 +219,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             <input
               type="checkbox"
               id="receiveUpdates"
-              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB] custom-checkbox"
+              checked={receiveUpdates}
+              onChange={(e) => setReceiveUpdates(e.target.checked)}
+              disabled={isSubmitting}
+              className="cursor-pointer h-5 w-5 text-[#3BAFBB] bg-transparent border-[#3BAFBB] rounded focus:ring-[#3BAFBB] custom-checkbox disabled:opacity-50"
             />
             <label
               htmlFor="receiveUpdates"
@@ -184,13 +234,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
           <button
             type="submit"
-            className="cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out"
+            disabled={isSubmitting}
+            className="cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: '#3BAFBB',
               boxShadow: '0 4px 15px rgba(59, 175, 187, 0.4)',
             }}
           >
-            Create Account
+            {isSubmitting ? 'Creando cuenta...' : 'Create Account'}
           </button>
 
           <div className="text-center text-gray-400 ">or</div>

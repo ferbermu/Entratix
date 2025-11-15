@@ -1,49 +1,89 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Minus, User } from '@phosphor-icons/react';
+import type { ArtistForm } from '@/store/slices/eventFormSlice';
 
-export const CreateArtist = () => {
-  const [artists, setArtists] = useState([
-    { name: '', photoUrl: '', description: '', socialLinks: [''] },
-  ]);
+interface CreateArtistProps {
+  artists?: ArtistForm[];
+  onUpdate?: (artists: ArtistForm[]) => void;
+}
+
+export const CreateArtist: React.FC<CreateArtistProps> = ({
+  artists: externalArtists = [],
+  onUpdate,
+}) => {
+  const [artists, setArtists] = useState<ArtistForm[]>(
+    externalArtists.length > 0
+      ? externalArtists
+      : [{ name: '', photoUrl: '', description: '', socialLinks: [''] }]
+  );
+
+  // Sync with external artists
+  useEffect(() => {
+    if (externalArtists.length > 0) {
+      setArtists(externalArtists);
+    }
+  }, [externalArtists]);
 
   const handleAddArtist = () => {
-    setArtists([
+    const newArtists = [
       ...artists,
       { name: '', photoUrl: '', description: '', socialLinks: [''] },
-    ]);
+    ];
+    setArtists(newArtists);
+    onUpdate?.(newArtists);
   };
 
   const handleRemoveArtist = (indexToRemove: number) => {
     if (artists.length === 1) return;
-    setArtists(artists.filter((_, index) => index !== indexToRemove));
+    const newArtists = artists.filter((_, index) => index !== indexToRemove);
+    setArtists(newArtists);
+    onUpdate?.(newArtists);
+  };
+
+  const handleArtistChange = (
+    index: number,
+    field: keyof Omit<ArtistForm, 'socialLinks'>,
+    value: string
+  ) => {
+    const newArtists = artists.map((artist, i) =>
+      i === index ? { ...artist, [field]: value } : artist
+    );
+    setArtists(newArtists);
+    onUpdate?.(newArtists);
   };
 
   const handleAddSocialLink = (artistIndex: number) => {
-    setArtists(prevArtists =>
-      prevArtists.map((artist, idx) => {
-        if (idx === artistIndex && artist.socialLinks.length < 3) {
-          return {
-            ...artist,
-            socialLinks: [...artist.socialLinks, ''],
-          };
-        }
-        return artist;
-      })
-    );
+    const newArtists = artists.map((artist, idx) => {
+      if (
+        idx === artistIndex &&
+        artist.socialLinks &&
+        artist.socialLinks.length < 3
+      ) {
+        return {
+          ...artist,
+          socialLinks: [...(artist.socialLinks || []), ''],
+        };
+      }
+      return artist;
+    });
+    setArtists(newArtists);
+    onUpdate?.(newArtists);
   };
 
   const handleRemoveSocialLink = (artistIndex: number, linkIndex: number) => {
-    setArtists(prevArtists =>
-      prevArtists.map((artist, idx) => {
-        if (idx === artistIndex) {
-          return {
-            ...artist,
-            socialLinks: artist.socialLinks.filter((_, i) => i !== linkIndex),
-          };
-        }
-        return artist;
-      })
-    );
+    const newArtists = artists.map((artist, idx) => {
+      if (idx === artistIndex) {
+        return {
+          ...artist,
+          socialLinks: (artist.socialLinks || []).filter(
+            (_, i) => i !== linkIndex
+          ),
+        };
+      }
+      return artist;
+    });
+    setArtists(newArtists);
+    onUpdate?.(newArtists);
   };
 
   const handleSocialLinkChange = (
@@ -51,16 +91,16 @@ export const CreateArtist = () => {
     linkIndex: number,
     value: string
   ) => {
-    setArtists(prevArtists =>
-      prevArtists.map((artist, idx) => {
-        if (idx === artistIndex) {
-          const updatedLinks = [...artist.socialLinks];
-          updatedLinks[linkIndex] = value;
-          return { ...artist, socialLinks: updatedLinks };
-        }
-        return artist;
-      })
-    );
+    const newArtists = artists.map((artist, idx) => {
+      if (idx === artistIndex) {
+        const updatedLinks = [...(artist.socialLinks || [])];
+        updatedLinks[linkIndex] = value;
+        return { ...artist, socialLinks: updatedLinks };
+      }
+      return artist;
+    });
+    setArtists(newArtists);
+    onUpdate?.(newArtists);
   };
 
   return (
@@ -106,6 +146,10 @@ export const CreateArtist = () => {
                 </label>
                 <input
                   type="text"
+                  value={artist.name}
+                  onChange={e =>
+                    handleArtistChange(index, 'name', e.target.value)
+                  }
                   placeholder="Enter artist name"
                   className="text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                 />
@@ -115,6 +159,10 @@ export const CreateArtist = () => {
                 <label className="text-gray-300 text-sm mb-1">Photo URL</label>
                 <input
                   type="text"
+                  value={artist.photoUrl || ''}
+                  onChange={e =>
+                    handleArtistChange(index, 'photoUrl', e.target.value)
+                  }
                   placeholder="Enter photo URL"
                   className="text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                 />
@@ -125,6 +173,10 @@ export const CreateArtist = () => {
                   Description
                 </label>
                 <textarea
+                  value={artist.description || ''}
+                  onChange={e =>
+                    handleArtistChange(index, 'description', e.target.value)
+                  }
                   className="border border-[#3BAFBB] rounded-lg w-full min-h-[180px] p-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] resize-none"
                   placeholder="Brief description of the artist..."
                 />
@@ -138,9 +190,9 @@ export const CreateArtist = () => {
                 </label>
                 <button
                   onClick={() => handleAddSocialLink(index)}
-                  disabled={artist.socialLinks.length >= 3}
+                  disabled={(artist.socialLinks || []).length >= 3}
                   className={`cursor-pointer flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-lg ${
-                    artist.socialLinks.length >= 3
+                    (artist.socialLinks || []).length >= 3
                       ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
                       : 'bg-[#3BAFBB] text-white hover:bg-[#2A8C99]'
                   }`}
@@ -151,7 +203,7 @@ export const CreateArtist = () => {
               </div>
 
               <div className="w-full flex flex-col gap-4">
-                {artist.socialLinks.map((link, i) => (
+                {(artist.socialLinks || []).map((link, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <input
                       type="text"

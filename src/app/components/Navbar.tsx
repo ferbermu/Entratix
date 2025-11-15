@@ -11,6 +11,11 @@ import { useScroll } from '../hooks/useScroll';
 import { MobileSearch } from './MobileSearch';
 import { useAuthRedux } from '../login/hooks/useAuthRedux';
 import {
+  hasPermission,
+  getRoleName,
+  type UserRole,
+} from '../../lib/utils/rolePermissions';
+import {
   Ticket,
   CalendarPlus,
   ChartBar,
@@ -18,6 +23,7 @@ import {
   SignIn,
   User,
   SignOut,
+  Calendar,
 } from '@phosphor-icons/react';
 import cn from 'classnames';
 
@@ -27,6 +33,18 @@ export const Navbar = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const pathname = usePathname();
   const { user, isAuthenticated, logout, isLoading } = useAuthRedux();
+
+  // Obtener el rol del usuario
+  const userRole = user?.role as UserRole | undefined;
+
+  // Debug: Log para verificar el rol
+  if (isAuthenticated && user) {
+    console.log('👤 Usuario autenticado:', {
+      name: `${user.firstName} ${user.lastName}`,
+      role: userRole,
+      email: user.email,
+    });
+  }
 
   const activeClass =
     'bg-[#3baebb32] !border-[#3BAFBB] rounded-md text-[#3BAFBB]';
@@ -39,6 +57,27 @@ export const Navbar = () => {
   const isProfile = pathname?.startsWith('/profile');
   const isRegister = pathname?.startsWith('/register');
   const isLoginPath = pathname?.startsWith('/login');
+
+  // Verificar permisos
+  const canAccessEvents = hasPermission(userRole, 'canAccessEvents');
+  const canAccessMyTickets = hasPermission(userRole, 'canAccessMyTickets');
+  const canCreateEvent = hasPermission(userRole, 'canCreateEvent');
+  const canAccessRrppDashboard = hasPermission(
+    userRole,
+    'canAccessRrppDashboard'
+  );
+  const canAccessProfile = hasPermission(userRole, 'canAccessProfile');
+
+  // Debug: Log de permisos
+  if (isAuthenticated && user) {
+    console.log('🔐 Permisos del usuario:', {
+      canAccessEvents,
+      canAccessMyTickets,
+      canCreateEvent,
+      canAccessRrppDashboard,
+      canAccessProfile,
+    });
+  }
 
   const handleLogin = () => {
     console.log('Login clicked');
@@ -93,46 +132,65 @@ export const Navbar = () => {
           </Link>
 
           <div className="text-white pl-8 flex gap-6 max-[870px]:hidden items-center text-lg ">
-            <Link href="/events">
-              <Navbutton
-                text="Events"
-                onClick={() => {}}
-                className={cn(hoverClass, { [activeClass]: isEvents })}
-                icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
-              />
-            </Link>
-            <Link href="/my-tickets">
-              <Navbutton
-                text="My Tickets"
-                onClick={() => {}}
-                className={cn(hoverClass, { [activeClass]: isMyTickets })}
-                icon={<Ticket size={20} className="text-[#3BAFBB]" />}
-              />
-            </Link>
-            <Link href="/create-event">
-              <Navbutton
-                text="Create Event"
-                onClick={() => {}}
-                className={cn(hoverClass, { [activeClass]: isCreateEvent })}
-                icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
-              />
-            </Link>
-            <Link href="/rrpp-dashbord">
-              <Navbutton
-                text="RRPP Dashbord"
-                onClick={() => {}}
-                className={cn(hoverClass, { [activeClass]: isRrpp })}
-                icon={<ChartBar size={20} className="text-[#3BAFBB] " />}
-              />
-            </Link>
-            <Link href="/profile">
-              <Navbutton
-                text="Profile"
-                onClick={() => {}}
-                className={cn(hoverClass, { [activeClass]: isProfile })}
-                icon={<User size={20} className="text-[#3BAFBB]" />}
-              />
-            </Link>
+            {/* Events - Todos los usuarios autenticados */}
+            {isAuthenticated && canAccessEvents && (
+              <Link href="/events">
+                <Navbutton
+                  text="Events"
+                  onClick={() => {}}
+                  className={cn(hoverClass, { [activeClass]: isEvents })}
+                  icon={<Calendar size={20} className="text-[#3BAFBB]" />}
+                />
+              </Link>
+            )}
+
+            {/* My Tickets - Todos los usuarios autenticados */}
+            {isAuthenticated && canAccessMyTickets && (
+              <Link href="/my-tickets">
+                <Navbutton
+                  text="My Tickets"
+                  onClick={() => {}}
+                  className={cn(hoverClass, { [activeClass]: isMyTickets })}
+                  icon={<Ticket size={20} className="text-[#3BAFBB]" />}
+                />
+              </Link>
+            )}
+
+            {/* Create Event - Solo productor y superuser */}
+            {isAuthenticated && canCreateEvent && (
+              <Link href="/create-event">
+                <Navbutton
+                  text="Create Event"
+                  onClick={() => {}}
+                  className={cn(hoverClass, { [activeClass]: isCreateEvent })}
+                  icon={<CalendarPlus size={20} className="text-[#3BAFBB]" />}
+                />
+              </Link>
+            )}
+
+            {/* RRPP Dashboard - Solo rrpp y superuser */}
+            {isAuthenticated && canAccessRrppDashboard && (
+              <Link href="/rrpp-dashbord">
+                <Navbutton
+                  text="RRPP Dashboard"
+                  onClick={() => {}}
+                  className={cn(hoverClass, { [activeClass]: isRrpp })}
+                  icon={<ChartBar size={20} className="text-[#3BAFBB] " />}
+                />
+              </Link>
+            )}
+
+            {/* Profile - Todos los usuarios autenticados */}
+            {isAuthenticated && canAccessProfile && (
+              <Link href="/profile">
+                <Navbutton
+                  text="Profile"
+                  onClick={() => {}}
+                  className={cn(hoverClass, { [activeClass]: isProfile })}
+                  icon={<User size={20} className="text-[#3BAFBB]" />}
+                />
+              </Link>
+            )}
           </div>
         </div>
 
@@ -169,9 +227,18 @@ export const Navbar = () => {
             </>
           ) : (
             <div className="flex items-center gap-4">
-              <div className="flex items-center space-x-2 text-white">
-                <User size={20} className="text-[#3BAFBB]" />
-                <span className="text-white">{user?.name}</span>
+              <div className="flex flex-col items-end">
+                <div className="flex items-center space-x-2 text-white">
+                  <User size={20} className="text-[#3BAFBB]" />
+                  <span className="text-white font-medium">
+                    {user?.firstName} {user?.lastName}
+                  </span>
+                </div>
+                {userRole && (
+                  <span className="text-xs text-[#3BAFBB]">
+                    {getRoleName(userRole)}
+                  </span>
+                )}
               </div>
               <button
                 onClick={logout}

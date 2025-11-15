@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   Ticket,
@@ -9,16 +9,84 @@ import {
   Envelope,
   Phone,
 } from '@phosphor-icons/react';
+import { useAuthRedux } from '../../login/hooks/useAuthRedux';
+import {
+  getUserProfile,
+  getUserProfileStats,
+  updateUserProfile,
+  type ProfileStats,
+} from '../../actions/profile';
 
 export const ProfileContent = () => {
+  const { user: authUser } = useAuthRedux();
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+1234567890',
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [stats, setStats] = useState<ProfileStats>({
+    totalTickets: 0,
+    totalSpent: 0,
+    rating: 0,
   });
+  const [originalData, setOriginalData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  });
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  });
+  const [memberSince, setMemberSince] = useState('');
+
+  // Cargar datos del perfil
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (!authUser?.id) {
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        // Obtener perfil
+        const profileResult = await getUserProfile(authUser.id);
+        if (profileResult.success && profileResult.user) {
+          const userData = {
+            firstName: profileResult.user.firstName,
+            lastName: profileResult.user.lastName,
+            email: profileResult.user.email,
+            phone: profileResult.user.phone || '',
+          };
+          setFormData(userData);
+          setOriginalData(userData);
+
+          // Formatear fecha de creación
+          const createdDate = new Date(profileResult.user.createdAt);
+          setMemberSince(
+            createdDate.toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'numeric',
+              year: 'numeric',
+            })
+          );
+        }
+
+        // Obtener estadísticas
+        const statsResult = await getUserProfileStats(authUser.id);
+        setStats(statsResult);
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, [authUser]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -28,21 +96,44 @@ export const ProfileContent = () => {
   const handleCancel = () => {
     setIsEditing(false);
     setHasChanges(false);
-    // Reset form data to original values
-    setFormData({
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '+1234567890',
-    });
+    setFormData(originalData);
   };
 
-  const handleSave = () => {
-    // Here you would typically save the data to your backend
-    console.log('Saving data:', formData);
-    setIsEditing(false);
-    setHasChanges(false);
+  const handleSave = async () => {
+    if (!authUser?.id) return;
+
+    setIsSaving(true);
+    try {
+      const result = await updateUserProfile({
+        userId: authUser.id,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+      });
+
+      if (result.success) {
+        setOriginalData(formData);
+        setIsEditing(false);
+        setHasChanges(false);
+        alert('Perfil actualizado exitosamente');
+      } else {
+        alert(result.message || 'Error al actualizar el perfil');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      alert('Error al actualizar el perfil');
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-white text-xl">Cargando perfil...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -51,11 +142,15 @@ export const ProfileContent = () => {
         <div className="flex flex-col items-start justify-between">
           <div className="flex items-center gap-4">
             <div className="w-20 h-20 bg-[#3BAFBB] rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">JD</span>
+              <span className="text-white font-bold text-xl">
+                {formData.firstName.charAt(0)}{formData.lastName.charAt(0)}
+              </span>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-white">John Doe</h3>
-              <p className="text-gray-400">Member since 14/1/2024</p>
+              <h3 className="text-2xl font-bold text-white">
+                {formData.firstName} {formData.lastName}
+              </h3>
+              <p className="text-gray-400">Member since {memberSince}</p>
             </div>
           </div>
 
@@ -65,21 +160,21 @@ export const ProfileContent = () => {
               <div className="flex justify-center mb-2">
                 <Ticket size={24} className="text-[#3BAFBB]" />
               </div>
-              <div className="text-2xl font-bold text-white">0</div>
+              <div className="text-2xl font-bold text-white">{stats.totalTickets}</div>
               <div className="text-sm text-gray-400">Total Tickets</div>
             </div>
             <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-lg p-4 text-center">
               <div className="flex justify-center mb-2">
                 <CreditCard size={24} className="text-[#3BAFBB]" />
               </div>
-              <div className="text-2xl font-bold text-white">$0</div>
+              <div className="text-2xl font-bold text-white">${stats.totalSpent.toFixed(2)}</div>
               <div className="text-sm text-gray-400">Total Spent</div>
             </div>
             <div className="bg-[#3BAFBB1A] border border-[#3BAFBB40] rounded-lg p-4 text-center">
               <div className="flex justify-center mb-2">
                 <Star size={24} className="text-[#3BAFBB]" />
               </div>
-              <div className="text-2xl font-bold text-white">4.8</div>
+              <div className="text-2xl font-bold text-white">{stats.rating.toFixed(1)}</div>
               <div className="text-sm text-gray-400">Rating</div>
             </div>
           </div>
@@ -96,14 +191,16 @@ export const ProfileContent = () => {
             {hasChanges && (
               <button
                 onClick={handleSave}
-                className="bg-[#19c37d] hover:bg-[#16a367] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                disabled={isSaving}
+                className="bg-[#19c37d] hover:bg-[#16a367] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Save Changes
+                {isSaving ? 'Guardando...' : 'Save Changes'}
               </button>
             )}
             <button
               onClick={isEditing ? handleCancel : () => setIsEditing(true)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              disabled={isSaving}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 isEditing
                   ? 'bg-[#3BAFBB]/30 hover:bg-[#3BAFBB]/40  text-white cursor-pointer'
                   : 'bg-[#3BAFBB] hover:bg-[#2B9FA9] text-white cursor-pointer'

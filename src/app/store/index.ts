@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
+import eventFormReducer from './slices/eventFormSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    eventForm: eventFormReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

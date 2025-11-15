@@ -4,6 +4,7 @@ import { Download, QrCode, ShareNetwork } from '@phosphor-icons/react';
 
 export interface CardTicketProps {
   status: string;
+  orderStatus?: string; // Estado de la orden: 'completed', 'pending', 'cancelled', etc.
   imageUrl: string;
   title: string;
   artists: string;

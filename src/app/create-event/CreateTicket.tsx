@@ -1,21 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CurrencyDollarSimple, Plus, Minus } from '@phosphor-icons/react';
+import type { TicketForm } from '@/store/slices/eventFormSlice';
 
-export const CreateTicket = () => {
-  const [tickets, setTickets] = useState([
-    { type: '', price: '', quantity: '', description: '' },
-  ]);
+interface CreateTicketProps {
+  tickets?: TicketForm[];
+  onUpdate?: (tickets: TicketForm[]) => void;
+}
+
+export const CreateTicket: React.FC<CreateTicketProps> = ({
+  tickets: externalTickets = [],
+  onUpdate,
+}) => {
+  const [tickets, setTickets] = useState<TicketForm[]>(
+    externalTickets.length > 0
+      ? externalTickets
+      : [{ type: '', price: '', quantity: '', description: '' }]
+  );
+
+  // Sync with external tickets
+  useEffect(() => {
+    if (externalTickets.length > 0) {
+      setTickets(externalTickets);
+    }
+  }, [externalTickets]);
 
   const handleAddTicket = () => {
-    setTickets([
+    const newTickets = [
       ...tickets,
       { type: '', price: '', quantity: '', description: '' },
-    ]);
+    ];
+    setTickets(newTickets);
+    onUpdate?.(newTickets);
   };
 
   const handleRemoveTicket = (indexToRemove: number) => {
     if (tickets.length === 1) return;
-    setTickets(tickets.filter((_, index) => index !== indexToRemove));
+    const newTickets = tickets.filter((_, index) => index !== indexToRemove);
+    setTickets(newTickets);
+    onUpdate?.(newTickets);
+  };
+
+  const handleTicketChange = (
+    index: number,
+    field: keyof TicketForm,
+    value: string
+  ) => {
+    const newTickets = tickets.map((ticket, i) =>
+      i === index ? { ...ticket, [field]: value } : ticket
+    );
+    setTickets(newTickets);
+    onUpdate?.(newTickets);
   };
 
   const preventNegativeAndE = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -65,6 +99,8 @@ export const CreateTicket = () => {
                 <label className="text-gray-300 text-sm mb-2">Type</label>
                 <input
                   type="text"
+                  value={ticket.type}
+                  onChange={e => handleTicketChange(index, 'type', e.target.value)}
                   className="  text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                   placeholder="Enter ticket type"
                 />
@@ -74,6 +110,8 @@ export const CreateTicket = () => {
                 <input
                   type="number"
                   min="1"
+                  value={ticket.price}
+                  onChange={e => handleTicketChange(index, 'price', e.target.value)}
                   onKeyDown={preventNegativeAndE}
                   className=" text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                   placeholder="0"
@@ -84,6 +122,8 @@ export const CreateTicket = () => {
                 <input
                   type="number"
                   min="1"
+                  value={ticket.quantity}
+                  onChange={e => handleTicketChange(index, 'quantity', e.target.value)}
                   onKeyDown={preventNegativeAndE}
                   className="  text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB]"
                   placeholder="0"
@@ -92,6 +132,8 @@ export const CreateTicket = () => {
             </div>
             <label className="text-gray-300 text-sm">Description</label>
             <textarea
+              value={ticket.description || ''}
+              onChange={e => handleTicketChange(index, 'description', e.target.value)}
               className=" text-gray-300 rounded-lg px-4 py-2 border border-[#3BAFBB] focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] resize-none"
               placeholder="Enter ticket description (optional)"
             />

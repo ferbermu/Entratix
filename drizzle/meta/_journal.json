@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1763184152068,
+      "tag": "0000_futuristic_sentry",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763191166802,
+      "tag": "0001_abnormal_living_tribunal",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763193122431,
+      "tag": "0002_mushy_yellowjacket",
+      "breakpoints": true
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import { JoinNow } from './components/JoinNow';
 import { SearchBar } from './components/SearchBar';
 import { CardCarousel } from './components/CardCarousel';
 import { type DateRange } from 'react-day-picker';
+import { getEventsAction, getFeaturedEventsAction, getCarouselEventsAction, getNonFeaturedEventsAction } from './actions/events';
 
 const imageURLsFromDataBase: string[] = [
   '/assets/show1.jpg',
@@ -14,88 +15,108 @@ const imageURLsFromDataBase: string[] = [
   '/assets/show3.jpg',
   '/assets/show4.jpg',
 ];
-const CardData: CardProps[] = [
-  {
-    title: 'ArtLab presents Eddy M & more',
-    address: 'Montevideo',
-    date: '15/06/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'ArtLab presents Eddy M & more',
-    address: 'Canelones',
-    date: '17/07/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'ArtLab presents Eddy M & more',
-    address: 'Maldonado',
-    date: '08/08/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'ArtLab presents Eddy M & more',
-    address: 'Rocha',
-    date: '10/09/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'ArtLab presents Eddy M & more',
-    address: 'Paysandú',
-    date: '25/10/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'Key on Tour - Plaza de Toros Colonia',
-    address: 'Colonia',
-    date: '12/11/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'Key on Tour - Plaza de Toros Colonia',
-    address: 'Salto',
-    date: '15/11/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'Key on Tour - Plaza de Toros Colonia',
-    address: 'Soriano',
-    date: '20/12/2025',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-  {
-    title: 'Key on Tour - Plaza de Toros Colonia',
-    address: 'Rivera',
-    date: '30/01/2026',
-    imageUrl: '/assets/show1.jpg',
-    dateIcon: '/assets/icons/cards/calendar_month.svg',
-    addressIcon: '/assets/icons/cards/location.svg',
-  },
-];
 
 const HomePage = () => {
-  const [filteredCards, setFilteredCards] = useState(CardData);
+  const [cardData, setCardData] = useState<CardProps[]>([]); // All events for "All Events" section
+  const [nonFeaturedCards, setNonFeaturedCards] = useState<CardProps[]>([]); // Non-featured for carousel
+  const [featuredCards, setFeaturedCards] = useState<CardProps[]>([]);
+  const [carouselImages, setCarouselImages] = useState<string[]>([]); // Inicializar vacío, se llenará con datos de la DB
+  const [filteredCards, setFilteredCards] = useState<CardProps[]>([]);
   const [filters, setFilters] = useState({
     searchTerm: '',
     dateRange: undefined as DateRange | undefined,
     location: '',
   });
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch events from database on mount
+  useEffect(() => {
+    const fetchEvents = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch all events for "All Events" section
+        const events = await getEventsAction();
+        const formattedEvents: CardProps[] = events.map(event => ({
+          id: event.id,
+          title: event.title,
+          address: event.location,
+          date: new Date(event.date).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          }),
+          imageUrl: event.cardImageUrl || '/assets/show1.jpg',
+          dateIcon: '/assets/icons/cards/calendar_month.svg',
+          addressIcon: '/assets/icons/cards/location.svg',
+        }));
+        setCardData(formattedEvents);
+        setFilteredCards(formattedEvents);
+
+        // Fetch non-featured events for carousel
+        const nonFeatured = await getNonFeaturedEventsAction();
+        const formattedNonFeatured: CardProps[] = nonFeatured.map(event => ({
+          id: event.id,
+          title: event.title,
+          address: event.location,
+          date: new Date(event.date).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          }),
+          imageUrl: event.cardImageUrl || '/assets/show1.jpg',
+          dateIcon: '/assets/icons/cards/calendar_month.svg',
+          addressIcon: '/assets/icons/cards/location.svg',
+        }));
+        setNonFeaturedCards(formattedNonFeatured);
+
+        // Fetch featured events
+        const featured = await getFeaturedEventsAction();
+        const formattedFeatured: CardProps[] = featured.map(event => ({
+          id: event.id,
+          title: event.title,
+          address: event.location,
+          date: new Date(event.date).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          }),
+          imageUrl: event.cardImageUrl || '/assets/show1.jpg',
+          dateIcon: '/assets/icons/cards/calendar_month.svg',
+          addressIcon: '/assets/icons/cards/location.svg',
+        }));
+        setFeaturedCards(formattedFeatured);
+
+        // Fetch carousel events
+        const carousel = await getCarouselEventsAction();
+        
+        if (carousel.length > 0) {
+          const carouselUrls = carousel
+            .filter(event => event.carouselImageUrl)
+            .map(event => event.carouselImageUrl!);
+          
+          if (carouselUrls.length > 0) {
+            setCarouselImages(carouselUrls);
+          } else {
+            // Fallback a imágenes estáticas si no hay URLs de carrusel
+            setCarouselImages(imageURLsFromDataBase);
+          }
+        } else {
+          // Fallback a imágenes estáticas si no hay eventos de carrusel
+          setCarouselImages(imageURLsFromDataBase);
+        }
+      } catch (error) {
+        console.error('Error loading events:', error);
+        setCardData([]);
+        setFilteredCards([]);
+        setFeaturedCards([]);
+        setNonFeaturedCards([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     const handleMobileSearch = (event: CustomEvent<string>) => {
@@ -123,7 +144,7 @@ const HomePage = () => {
     const { searchTerm, dateRange, location } = filters;
     const lowercasedSearchTerm = searchTerm.toLowerCase();
 
-    const filtered = CardData.filter(card => {
+    const filtered = cardData.filter(card => {
       const searchTermMatch =
         lowercasedSearchTerm === ''
           ? true
@@ -162,12 +183,12 @@ const HomePage = () => {
     });
 
     setFilteredCards(filtered);
-  }, [filters]);
+  }, [filters, cardData]);
 
   return (
     <div className="flex flex-col w-full bg-[#1C1A1A]">
       <div className="w-full">
-        <CarrouselImage imageURLs={imageURLsFromDataBase} />
+        <CarrouselImage imageURLs={carouselImages} />
       </div>
 
       <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
@@ -176,38 +197,50 @@ const HomePage = () => {
             <SearchBar onFilterChange={handleFilterChange} />
           </div>
 
-          <div className="w-full ">
-            <CardCarousel
-              cards={CardData}
-              autoPlayInterval={5000}
-              cardsToShow={4}
-            />
-          </div>
+          {/* Featured Events Section */}
+          {featuredCards.length > 0 && (
+            <div className="w-full">
+              <h2 className="text-3xl font-semibold text-white mb-6">Featured Events</h2>
+              <CardCarousel
+                cards={featuredCards}
+                autoPlayInterval={5000}
+                cardsToShow={4}
+              />
+            </div>
+          )}
+          
           <div className="w-full items-center justify-center flex flex-col">
             <h1 className="w-full text-3xl font-semibold text-white mb-8">
               All Events
-              {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
+              {filteredCards.length > 0 ? ` (${filteredCards.length})` : ''}
             </h1>
 
-            <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8">
-              {filteredCards.length > 0 ? (
-                filteredCards.map((item, key) => (
-                  <Card
-                    key={key}
-                    title={item.title}
-                    addressIcon={item.addressIcon}
-                    dateIcon={item.dateIcon}
-                    address={item.address}
-                    date={item.date}
-                    imageUrl={item.imageUrl}
-                  />
-                ))
-              ) : (
-                <div className="text-gray-400 col-span-4 flex items-center justify-center h-full">
-                  No se encontraron eventos que coincidan con tu búsqueda
-                </div>
-              )}
-            </div>
+            {isLoading ? (
+              <div className="min-h-[900px] flex items-center justify-center w-full">
+                <div className="text-gray-400 text-lg">Cargando eventos...</div>
+              </div>
+            ) : (
+              <div className="min-h-[900px] grid grid-cols-4 max-[1400px]:grid-cols-3 max-[1075px]:grid-cols-2 max-[700px]:grid-cols-1 w-fit items-start justify-center gap-8">
+                {filteredCards.length > 0 ? (
+                     filteredCards.map((item, key) => (
+                       <Card
+                         key={key}
+                         id={item.id}
+                         title={item.title}
+                         addressIcon={item.addressIcon}
+                         dateIcon={item.dateIcon}
+                         address={item.address}
+                         date={item.date}
+                         imageUrl={item.imageUrl}
+                       />
+                     ))
+                ) : (
+                  <div className="text-gray-400 col-span-4 flex items-center justify-center h-full">
+                    No se encontraron eventos que coincidan con tu búsqueda
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Minus, User } from '@phosphor-icons/react';
 
-export const AddRrpp = () => {
+interface AddRrppProps {
+  rrppEmails?: string[];
+  onUpdate?: (emails: string[]) => void;
+}
+
+export const AddRrpp: React.FC<AddRrppProps> = ({
+  rrppEmails: externalEmails = [],
+  onUpdate,
+}) => {
   const [rrppEmail, setRrppEmail] = useState('');
-  const [rrppList, setRrppList] = useState<string[]>([]);
+  const [rrppList, setRrppList] = useState<string[]>(externalEmails);
+
+  // Sync with external emails
+  useEffect(() => {
+    setRrppList(externalEmails);
+  }, [externalEmails]);
 
   const isValidEmail = (email: string) => {
     return email.includes('@') && email.includes('.com');
@@ -11,13 +24,17 @@ export const AddRrpp = () => {
 
   const handleAddEmail = () => {
     if (isValidEmail(rrppEmail)) {
-      setRrppList([...rrppList, rrppEmail]);
+      const newList = [...rrppList, rrppEmail];
+      setRrppList(newList);
       setRrppEmail('');
+      onUpdate?.(newList);
     }
   };
 
   const handleRemoveEmail = (indexToRemove: number) => {
-    setRrppList(rrppList.filter((_, i) => i !== indexToRemove));
+    const newList = rrppList.filter((_, i) => i !== indexToRemove);
+    setRrppList(newList);
+    onUpdate?.(newList);
   };
 
   return (

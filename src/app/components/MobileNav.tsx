@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthRedux } from '../login/hooks/useAuthRedux';
+import { hasPermission, getRoleName, type UserRole } from '../../lib/utils/rolePermissions';
 import { User, SignOut } from '@phosphor-icons/react';
 
 export const MobileNav = ({
@@ -13,6 +14,15 @@ export const MobileNav = ({
   onClose: () => void;
 }) => {
   const { user, isAuthenticated, logout } = useAuthRedux();
+  
+  // Obtener el rol del usuario
+  const userRole = user?.role as UserRole | undefined;
+
+  // Verificar permisos
+  const canAccessEvents = hasPermission(userRole, 'canAccessEvents');
+  const canAccessMyTickets = hasPermission(userRole, 'canAccessMyTickets');
+  const canCreateEvent = hasPermission(userRole, 'canCreateEvent');
+  const canAccessRrppDashboard = hasPermission(userRole, 'canAccessRrppDashboard');
 
   useEffect(() => {
     if (isOpen) {
@@ -53,34 +63,49 @@ export const MobileNav = ({
         <div className="max-w-[1400px]  mx-auto  pb-6 ">
           <div className="flex flex-col gap-8 divide-y divide-[#FFFFFF]/40">
             <nav className="flex flex-col w-full divide-y divide-[#FFFFFF]/40 [&>*]:py-4 text-center">
-              <Link
-                href="/events"
-                className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
-                onClick={onClose}
-              >
-                Events
-              </Link>
-              <Link
-                href="/my-tickets"
-                className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
-                onClick={onClose}
-              >
-                My Tickets
-              </Link>
-              <Link
-                href="/create-event"
-                className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
-                onClick={onClose}
-              >
-                Create Event
-              </Link>
-              <Link
-                href="/rrpp-dashbord"
-                className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
-                onClick={onClose}
-              >
-                RRPP Dashbord
-              </Link>
+              {/* Events - Todos los usuarios autenticados */}
+              {isAuthenticated && canAccessEvents && (
+                <Link
+                  href="/events"
+                  className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
+                  onClick={onClose}
+                >
+                  Events
+                </Link>
+              )}
+
+              {/* My Tickets - Todos los usuarios autenticados */}
+              {isAuthenticated && canAccessMyTickets && (
+                <Link
+                  href="/my-tickets"
+                  className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
+                  onClick={onClose}
+                >
+                  My Tickets
+                </Link>
+              )}
+
+              {/* Create Event - Solo productor y superuser */}
+              {isAuthenticated && canCreateEvent && (
+                <Link
+                  href="/create-event"
+                  className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
+                  onClick={onClose}
+                >
+                  Create Event
+                </Link>
+              )}
+
+              {/* RRPP Dashboard - Solo rrpp y superuser */}
+              {isAuthenticated && canAccessRrppDashboard && (
+                <Link
+                  href="/rrpp-dashbord"
+                  className="text-white text-lg hover:text-[#3BAFBB] transition-colors"
+                  onClick={onClose}
+                >
+                  RRPP Dashboard
+                </Link>
+              )}
             </nav>
 
             <div className="flex flex-col gap-4 w-full px-12">
@@ -103,9 +128,18 @@ export const MobileNav = ({
                 </>
               ) : (
                 <>
-                  <div className="flex items-center justify-center gap-2 py-3 text-white">
-                    <User size={20} className="text-[#3BAFBB]" />
-                    <span>{user?.name}</span>
+                  <div className="flex flex-col items-center justify-center gap-1 py-3 text-white">
+                    <div className="flex items-center gap-2">
+                      <User size={20} className="text-[#3BAFBB]" />
+                      <span className="font-medium">
+                        {user?.firstName} {user?.lastName}
+                      </span>
+                    </div>
+                    {userRole && (
+                      <span className="text-xs text-[#3BAFBB]">
+                        {getRoleName(userRole)}
+                      </span>
+                    )}
                   </div>
                   <button
                     onClick={() => {

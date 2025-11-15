@@ -1,30 +1,137 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bell, Shield, CaretDown } from '@phosphor-icons/react';
+import { useAuthRedux } from '../../login/hooks/useAuthRedux';
+import { getUserProfile, updateUserSettings } from '../../actions/profile';
 
 export const SettingsContent = () => {
+  const { user: authUser } = useAuthRedux();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [settings, setSettings] = useState({
     emailNotifications: true,
     smsNotifications: false,
     pushNotifications: true,
-    profileVisibility: 'Public',
+    profileVisibility: 'Public' as 'Public' | 'Private' | 'Friends Only',
     dataSharing: true,
   });
 
-  const handleToggle = (setting: string) => {
+  // Cargar configuración del usuario
+  useEffect(() => {
+    const fetchSettings = async () => {
+      if (!authUser?.id) {
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const result = await getUserProfile(authUser.id);
+        if (result.success && result.user) {
+          setSettings({
+            emailNotifications: result.user.emailNotifications,
+            smsNotifications: result.user.smsNotifications,
+            pushNotifications: result.user.pushNotifications,
+            profileVisibility: result.user.profileVisibility as 'Public' | 'Private' | 'Friends Only',
+            dataSharing: result.user.dataSharing,
+          });
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSettings();
+  }, [authUser]);
+
+  const handleToggle = async (setting: string) => {
+    if (!authUser?.id || isSaving) return;
+
+    const newValue = !settings[setting as keyof typeof settings];
+    
+    // Actualizar UI optimistamente
     setSettings(prev => ({
       ...prev,
-      [setting]: !prev[setting as keyof typeof prev],
+      [setting]: newValue,
     }));
+
+    setIsSaving(true);
+    try {
+      const result = await updateUserSettings({
+        userId: authUser.id,
+        [setting]: newValue,
+      });
+
+      if (!result.success) {
+        // Revertir si falla
+        setSettings(prev => ({
+          ...prev,
+          [setting]: !newValue,
+        }));
+        alert(result.message || 'Error al actualizar la configuración');
+      }
+    } catch (error) {
+      console.error('Error updating setting:', error);
+      // Revertir si falla
+      setSettings(prev => ({
+        ...prev,
+        [setting]: !newValue,
+      }));
+      alert('Error al actualizar la configuración');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleVisibilityChange = (value: string) => {
+  const handleVisibilityChange = async (value: string) => {
+    if (!authUser?.id || isSaving) return;
+
+    const oldValue = settings.profileVisibility;
+    
+    // Actualizar UI optimistamente
     setSettings(prev => ({
       ...prev,
-      profileVisibility: value,
+      profileVisibility: value as 'Public' | 'Private' | 'Friends Only',
     }));
+
+    setIsSaving(true);
+    try {
+      const result = await updateUserSettings({
+        userId: authUser.id,
+        profileVisibility: value as 'Public' | 'Private' | 'Friends Only',
+      });
+
+      if (!result.success) {
+        // Revertir si falla
+        setSettings(prev => ({
+          ...prev,
+          profileVisibility: oldValue,
+        }));
+        alert(result.message || 'Error al actualizar la configuración');
+      }
+    } catch (error) {
+      console.error('Error updating visibility:', error);
+      // Revertir si falla
+      setSettings(prev => ({
+        ...prev,
+        profileVisibility: oldValue,
+      }));
+      alert('Error al actualizar la configuración');
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-white text-xl">Cargando configuración...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -10,6 +10,17 @@ interface EventDetailsProps {
   setEventDate: (date: Date | undefined) => void;
   location: string;
   setLocation: (location: string) => void;
+  title?: string;
+  category?: string;
+  description?: string;
+  address?: string;
+  startTime?: string;
+  endTime?: string;
+  onChangeTitle?: (v: string) => void;
+  onChangeCategory?: (v: string) => void;
+  onChangeDescription?: (v: string) => void;
+  onChangeAddress?: (v: string) => void;
+  onChangeTimes?: (start: string, end: string) => void;
 }
 
 export const EventDetails: React.FC<EventDetailsProps> = ({
@@ -17,16 +28,58 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
   setEventDate,
   location,
   setLocation,
+  title = '',
+  category = '',
+  description = '',
+  address = '',
+  startTime = '',
+  endTime = '',
+  onChangeTitle,
+  onChangeCategory,
+  onChangeDescription,
+  onChangeAddress,
+  onChangeTimes,
 }) => {
-  const [startHour, setStartHour] = useState<string>('');
-  const [startMinute, setStartMinute] = useState<string>('');
-  const [endHour, setEndHour] = useState<string>('');
-  const [endMinute, setEndMinute] = useState<string>('');
+  // Parse startTime and endTime from props
+  const [sh = '', sm = ''] = startTime.split(':');
+  const [eh = '', em = ''] = endTime.split(':');
+
+  const [startHour, setStartHour] = useState<string>(sh);
+  const [startMinute, setStartMinute] = useState<string>(sm);
+  const [endHour, setEndHour] = useState<string>(eh);
+  const [endMinute, setEndMinute] = useState<string>(em);
+
+  // Sync local state when props change
+  React.useEffect(() => {
+    const [newSh = '', newSm = ''] = startTime.split(':');
+    const [newEh = '', newEm = ''] = endTime.split(':');
+    setStartHour(newSh);
+    setStartMinute(newSm);
+    setEndHour(newEh);
+    setEndMinute(newEm);
+  }, [startTime, endTime]);
 
   const getAmPm = (h: string) => {
     if (h === '') return '';
     const hour = Number(h);
     return hour >= 12 ? 'PM' : 'AM';
+  };
+
+  const pad2 = (v: string) => (v && v.length === 1 ? `0${v}` : v);
+  const notifyTimes = (
+    nextStartHour?: string,
+    nextStartMinute?: string,
+    nextEndHour?: string,
+    nextEndMinute?: string
+  ) => {
+    if (!onChangeTimes) return;
+    const sh = pad2(nextStartHour ?? startHour);
+    const sm = pad2(nextStartMinute ?? startMinute);
+    const eh = pad2(nextEndHour ?? endHour);
+    const em = pad2(nextEndMinute ?? endMinute);
+    const start = sh && sm ? `${sh}:${sm}` : '';
+    const end = eh && em ? `${eh}:${em}` : '';
+    onChangeTimes(start, end);
   };
 
   return (
@@ -42,16 +95,20 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
             <label className="text-gray-300 text-md mb-2">Event Title *</label>
             <input
               type="text"
+              value={title}
               className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
               placeholder="Enter event title"
+              onChange={e => onChangeTitle?.(e.target.value)}
             />
           </div>
           <div className="flex flex-col w-full">
             <label className="text-gray-300 text-md mb-2">Category *</label>
             <input
               type="text"
+              value={category}
               className="border border-[#3BAFBB] rounded-lg w-full py-2 px-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB]"
               placeholder="Enter event category"
+              onChange={e => onChangeCategory?.(e.target.value)}
             />
           </div>
         </div>
@@ -59,8 +116,10 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
         <div className="flex flex-col w-full mt-6">
           <label className="text-gray-300 text-md mb-2">Description *</label>
           <textarea
+            value={description}
             className="border border-[#3BAFBB] rounded-lg w-full min-h-[180px] p-4 text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3BAFBB] focus:border-[#3BAFBB] resize-none"
             placeholder="Describe your event..."
+            onChange={e => onChangeDescription?.(e.target.value)}
           />
         </div>
 
@@ -84,10 +143,22 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               startMinute={startMinute}
               endHour={endHour}
               endMinute={endMinute}
-              setStartHour={setStartHour}
-              setStartMinute={setStartMinute}
-              setEndHour={setEndHour}
-              setEndMinute={setEndMinute}
+              setStartHour={(v: string) => {
+                setStartHour(v);
+                notifyTimes(v, undefined, undefined, undefined);
+              }}
+              setStartMinute={(v: string) => {
+                setStartMinute(v);
+                notifyTimes(undefined, v, undefined, undefined);
+              }}
+              setEndHour={(v: string) => {
+                setEndHour(v);
+                notifyTimes(undefined, undefined, v, undefined);
+              }}
+              setEndMinute={(v: string) => {
+                setEndMinute(v);
+                notifyTimes(undefined, undefined, undefined, v);
+              }}
               getAmPm={getAmPm}
             />
           </div>
@@ -101,8 +172,10 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 <MapPin className="h-full text-[#3BAFBB] w-4" />
                 <input
                   type="text"
+                  value={address}
                   className="border-none placeholder:text-sm outline-none w-full text-gray-300"
                   placeholder="Enter address"
+                  onChange={e => onChangeAddress?.(e.target.value)}
                 />
               </div>
             </div>

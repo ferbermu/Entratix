@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tag, X } from '@phosphor-icons/react';
 
-export const EventTags = () => {
-  const [tags, setTags] = useState<string[]>([]);
+interface EventTagsProps {
+  tags?: string[];
+  onUpdate?: (tags: string[]) => void;
+}
+
+export const EventTags: React.FC<EventTagsProps> = ({
+  tags: externalTags = [],
+  onUpdate,
+}) => {
+  const [tags, setTags] = useState<string[]>(externalTags);
   const [inputValue, setInputValue] = useState('');
+
+  // Sync with external tags
+  useEffect(() => {
+    setTags(externalTags);
+  }, [externalTags]);
 
   const addTag = () => {
     const trimmed = inputValue.trim();
     if (!trimmed || tags.includes(trimmed)) return;
-    setTags([...tags, trimmed]);
+    const newTags = [...tags, trimmed];
+    setTags(newTags);
     setInputValue('');
+    onUpdate?.(newTags);
   };
 
   const removeTag = (index: number) => {
-    setTags(tags.filter((_, i) => i !== index));
+    const newTags = tags.filter((_, i) => i !== index);
+    setTags(newTags);
+    onUpdate?.(newTags);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
