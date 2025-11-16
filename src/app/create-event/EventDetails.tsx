@@ -46,9 +46,9 @@ export const EventDetails: React.FC = () => {
 
   return (
     <div className="flex justify-center">
-      <form className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-xl w-full max-w-[1400px] p-8 space-y-10 relative overflow-hidden backdrop-blur-sm">
+      <form className="bg-gradient-to-br from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-xl w-full max-w-[1400px] p-8 space-y-10 relative z-30 overflow-visible backdrop-blur-sm">
         {/* Background gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-transparent to-cyan-400/5 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-transparent to-cyan-400/5 pointer-events-none z-0"></div>
         <div className="relative z-10">
           {/* Header */}
           <div className="flex items-center gap-4 pb-2 border-b border-pink-500/30">
