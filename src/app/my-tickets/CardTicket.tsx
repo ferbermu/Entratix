@@ -8,7 +8,7 @@ import { Modal } from './ModalQr'; // 👈 importa el nuevo modal
 import jsPDF from 'jspdf';
 
 export interface CardTicketProps {
-  status: string;
+  status: 'Active' | 'Completed' | 'Expired';
   imageUrl: string;
   title: string;
   artists: string;

@@ -5,12 +5,59 @@ import { EventDetails } from './EventDetails';
 import { CreateTicket } from './CreateTicket';
 import { CreateArtist } from './CreateArtist';
 import { EventTags } from './EventTags';
+import { EventImages } from './EventImages';
+import { EventOrganizer } from './EventOrganizer';
 import { FloppyDisk } from '@phosphor-icons/react';
 import { AddRrpp } from './AddRrpp';
+import { useEventForm } from './hooks/useEventForm';
+import { useRouter } from 'next/navigation';
+import { generateRandomEventData } from './utils/randomEventData';
 
 export default function CreateEventPage() {
   const [eventDate, setEventDate] = useState<Date | undefined>();
   const [location, setLocation] = useState('');
+  const { createEvent, resetForm, eventForm, updateField, addTicket, addArtist, addBannerImage } = useEventForm();
+  const [isCreating, setIsCreating] = useState(false);
+  const router = useRouter();
+
+  const handleFillRandomData = () => {
+    const randomData = generateRandomEventData();
+    
+    // Llenar todos los campos con datos aleatorios
+    updateField('title', randomData.title);
+    updateField('category', randomData.category);
+    updateField('description', randomData.description);
+    updateField('date', randomData.date);
+    updateField('startTime', randomData.startTime);
+    updateField('endTime', randomData.endTime);
+    updateField('address', randomData.address);
+    updateField('location', randomData.location);
+    updateField('cardImageUrl', randomData.cardImageUrl);
+    updateField('carouselImageUrl', randomData.carouselImageUrl || '');
+    updateField('isFeatured', randomData.isFeatured);
+    updateField('isCarousel', randomData.isCarousel);
+    updateField('organizerName', randomData.organizerName);
+    updateField('organizerEmail', randomData.organizerEmail);
+    updateField('organizerPhone', randomData.organizerPhone);
+    updateField('organizerLogo', randomData.organizerLogo);
+
+    // Agregar banner images
+    randomData.bannerImageUrls.forEach((url) => {
+      addBannerImage(url);
+    });
+
+    // Agregar tickets
+    randomData.tickets.forEach((ticket) => {
+      addTicket(ticket);
+    });
+
+    // Agregar artistas
+    randomData.artists.forEach((artist) => {
+      addArtist(artist);
+    });
+
+    alert('Random event data generated! Review and click "Create Event"');
+  };
 
   // Variants para stagger
   const container: Variants = {
@@ -28,6 +75,53 @@ export default function CreateEventPage() {
       y: 0,
       transition: { duration: 0.6, ease: 'easeOut' as const },
     },
+  };
+
+  const handleCreateEvent = async () => {
+    // Validaciones básicas
+    if (!eventForm.title || !eventForm.category || !eventForm.description) {
+      alert('Please fill in all required fields: Title, Category, and Description');
+      return;
+    }
+
+    if (!eventForm.date) {
+      alert('Please select an event date');
+      return;
+    }
+
+    if (!eventForm.startTime || !eventForm.endTime) {
+      alert('Please set start and end times');
+      return;
+    }
+
+    if (!eventForm.address || !eventForm.location) {
+      alert('Please provide event address and location');
+      return;
+    }
+
+    if (eventForm.tickets.length === 0) {
+      alert('Please add at least one ticket type');
+      return;
+    }
+
+    setIsCreating(true);
+
+    try {
+      const result = await createEvent();
+
+      if (result.success) {
+        alert(`Event created successfully! Event ID: ${result.eventId}`);
+        resetForm();
+        router.push('/');
+      } else {
+        alert(`Failed to create event: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+      alert('An error occurred while creating the event');
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -117,15 +211,37 @@ export default function CreateEventPage() {
         </motion.div>
 
         <motion.div variants={item}>
+          <EventImages />
+        </motion.div>
+
+        <motion.div variants={item}>
+          <EventOrganizer />
+        </motion.div>
+
+        <motion.div variants={item}>
           <AddRrpp />
+        </motion.div>
+
+        {/* Botón para generar datos aleatorios (testing) */}
+        <motion.div
+          variants={item}
+          className="flex items-center justify-center w-full py-4 relative z-10"
+        >
+          <button
+            onClick={handleFillRandomData}
+            type="button"
+            className="cursor-pointer flex gap-2 items-center text-sm bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-purple-500/30 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border border-cyan-500/20 hover:from-cyan-500/50 hover:via-blue-500/50 hover:to-purple-500/50 hover:border-blue-400 relative overflow-hidden"
+          >
+            <span className="relative z-10">🎲 Generate Random Event Data (Testing)</span>
+          </button>
         </motion.div>
 
         <motion.div
           variants={item}
           className="flex items-center justify-center w-full py-10 relative z-10"
           whileHover={{
-            scale: 1.02,
-            y: -4,
+            scale: isCreating ? 1 : 1.02,
+            y: isCreating ? 0 : -4,
             transition: {
               duration: 0.3,
               type: 'spring',
@@ -133,13 +249,19 @@ export default function CreateEventPage() {
             },
           }}
         >
-          <button className="cursor-pointer flex gap-2 items-center text-xl bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 text-white font-bold px-16 py-5 rounded-2xl transition-all duration-300 backdrop-blur-sm border border-pink-500/20 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 hover:border-cyan-400 relative overflow-hidden">
+          <button
+            onClick={handleCreateEvent}
+            disabled={isCreating}
+            className={`cursor-pointer flex gap-2 items-center text-xl bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 text-white font-bold px-16 py-5 rounded-2xl transition-all duration-300 backdrop-blur-sm border border-pink-500/20 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 hover:border-cyan-400 relative overflow-hidden ${
+              isCreating ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
             <FloppyDisk
               size={32}
               className="relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]"
             />
             <span className="relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]">
-              Create Event
+              {isCreating ? 'Creating Event...' : 'Create Event'}
             </span>
             {/* Button glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl opacity-30"></div>
