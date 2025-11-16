@@ -12,74 +12,16 @@ import {
   EventOrganizer,
   EventOrganizerProps,
 } from './components/EventOrganizer';
+import { useEffect, useState } from 'react';
+import { getAllEventsAction, getEventByIdAction } from '../actions/events';
 
 // === DATA ===
-const EventArtistData: EventArtistProps[] = [
-  {
-    photo: '/assets/show3.jpg',
-    name: 'YsY A',
-    description: 'Artista de Trap',
-    artistSocialLinks: [
-      {
-        url: 'https://soundcloud.com/ysyashakur',
-        icon: '/assets/icons/social-media/SoundcloudIcon.svg',
-      },
-      {
-        url: 'https://open.spotify.com/intl-es/artist/2qWK8K2Jfh67UqtwY8tCW6',
-        icon: '/assets/icons/social-media/SpotifyIcon.svg',
-      },
-      {
-        url: 'https://www.youtube.com/channel/UC6ZqzTu-T77_yp1TCIIy93g',
-        icon: '/assets/icons/social-media/YoutubeIcon.svg',
-      },
-    ],
-  },
-  {
-    photo: '/assets/show5.jpg',
-    name: 'TussiWarriors',
-    description: 'Artistas de Trap',
-    artistSocialLinks: [
-      {
-        url: 'https://soundcloud.com/tussiwarriors-music',
-        icon: '/assets/icons/social-media/SoundcloudIcon.svg',
-      },
-      {
-        url: 'https://open.spotify.com/intl-es/artist/4iVXdkoTNazv6MQh1wojj0',
-        icon: '/assets/icons/social-media/SpotifyIcon.svg',
-      },
-      {
-        url: 'https://www.youtube.com/@tussiwarriors',
-        icon: '/assets/icons/social-media/YoutubeIcon.svg',
-      },
-    ],
-  },
-];
-
-const EventCheckoutData: IEventTicketOptions[] = [
-  { id: 1, ticketType: 'Early Bird', price: 700 },
-  { id: 2, ticketType: 'Normal', price: 900 },
-  { id: 3, ticketType: 'VIP', price: 1200 },
-  { id: 4, ticketType: 'Table', price: 2400 },
-  { id: 5, ticketType: 'Table VIP', price: 3200 },
-];
-
-const tagList = [
-  'MUSIC PARTY',
-  'PARTY NIGHT',
-  'FUN NIGHT',
-  'FUN MUSIC',
-  'BUY TICKETS',
-  'URUGUAY PARTY',
-  'ELECTRONIC MUSIC',
-  'ARTIST NAME XYZ',
-];
-
-const EventOrganizerData: EventOrganizerProps = {
-  name: 'Name',
-  description:
-    'Lorem ipsum dolor sit amet consectetur. Convallis ullamcorper tortor nulla amet purus. Mi viverra viverra sed nisl sodales suscipit. Elit mauris malesuada tempor in at non laoreet interdum. Egestas semper aliquam facilisi.',
-  avatarUrl: '/assets/show5.jpg',
-};
+const formatDateLong = (date: Date) =>
+  date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
 
 // === ANIMATION VARIANTS ===
 const container: Variants = {
@@ -101,6 +43,90 @@ const item: Variants = {
 };
 
 export default function Page() {
+  const [eventTitle, setEventTitle] = useState<string>('');
+  const [eventDescription, setEventDescription] = useState<string>('');
+  const [eventDateText, setEventDateText] = useState<string>('');
+  const [eventTimeText, setEventTimeText] = useState<string>('');
+  const [eventAddress, setEventAddress] = useState<string>('');
+  const [eventLocationText, setEventLocationText] = useState<string>('');
+  const [artistData, setArtistData] = useState<EventArtistProps[]>([]);
+  const [ticketOptions, setTicketOptions] = useState<IEventTicketOptions[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [organizer, setOrganizer] = useState<EventOrganizerProps>({
+    name: '',
+    description: '',
+    avatarUrl: '/assets/party.png',
+  });
+  const [bannerUrls, setBannerUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      const all = await getAllEventsAction();
+      if (!all || all.length === 0) return;
+      const first = all[0];
+      const full = await getEventByIdAction(first.id);
+      if (!full) return;
+
+      setEventTitle(full.title);
+      setEventDescription(full.description);
+      setEventDateText(formatDateLong(new Date(full.date)));
+      setEventTimeText(`${full.startTime} - ${full.endTime}`);
+      setEventAddress(full.address);
+      setEventLocationText(full.location);
+
+      const mappedArtists: EventArtistProps[] = (full.artists || []).map(a => ({
+        photo: a.photoUrl || '/assets/party.png',
+        name: a.name,
+        description: 'Artist',
+        artistSocialLinks: [],
+      }));
+      setArtistData(mappedArtists);
+
+      const mappedTickets: IEventTicketOptions[] = (full.tickets || []).map(
+        (t, idx) => ({
+          id: idx + 1,
+          ticketType: t.type,
+          price: parseFloat(t.price as unknown as string),
+        })
+      );
+      setTicketOptions(mappedTickets);
+
+      const images: string[] = [];
+      if (full.carouselImageUrl) images.push(full.carouselImageUrl);
+      if (
+        Array.isArray(full.bannerImageUrls) &&
+        full.bannerImageUrls.length > 0
+      ) {
+        images.push(...full.bannerImageUrls);
+      }
+      if (images.length === 0 && full.cardImageUrl) {
+        images.push(full.cardImageUrl);
+      }
+      setBannerUrls(images);
+
+      const derivedTags = Array.from(
+        new Set(
+          [
+            full.category,
+            full.location,
+            'MUSIC',
+            'PARTY NIGHT',
+            'BUY TICKETS',
+          ].filter(Boolean) as string[]
+        )
+      );
+      setTags(derivedTags);
+
+      setOrganizer({
+        name: full.organizerName || 'Organizer',
+        description: full.description,
+        avatarUrl: full.organizerLogo || '/assets/party.png',
+      });
+    };
+
+    fetchEvent();
+  }, []);
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-pink-500/15 via-purple-900/30 to-black relative overflow-hidden">
       {/* Enhanced retrowave background effects - Fixed opacity */}
@@ -137,11 +163,19 @@ export default function Page() {
           variants={item}
           className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-1"
         >
-          <EventBanner />
+          <EventBanner urls={bannerUrls} />
         </motion.div>
 
         <motion.div variants={item} className="max-[1280px]:order-3">
-          <EventData />
+          <EventData
+            date={eventDateText}
+            time={eventTimeText}
+            startingPrice={
+              ticketOptions.length
+                ? ticketOptions.map(t => t.price).sort((a, b) => a - b)[0]
+                : undefined
+            }
+          />
         </motion.div>
 
         <motion.div
@@ -149,10 +183,8 @@ export default function Page() {
           className="col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-2"
         >
           <EventDescription
-            title={'Phonothèque presenta apertura 2024'}
-            description={
-              'Lorem ipsum dolor sit amet consectetur. Convallis ullamcorper tortor nulla amet purus. Mi viverra viverra sed nisl sodales suscipit. Elit mauris malesuada tempor in at non laoreet interdum. Egestas semper aliquam facilisi laoreet. Feugiat habitant ut enim mollis viverra justo...'
-            }
+            title={eventTitle || 'Event'}
+            description={eventDescription || '...'}
           />
         </motion.div>
 
@@ -160,7 +192,7 @@ export default function Page() {
           variants={item}
           className="flex flex-col bg-gradient-to-br from-gray-900/60 via-black/50 to-gray-800/60 backdrop-blur-md border border-gray-600/40 rounded-lg col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4 divide-y divide-gray-600/40  shadow-2xl hover:shadow-[0_0_20px_rgba(255,20,147,0.15)] transition-all duration-300"
         >
-          {EventArtistData.map((artist, key) => (
+          {artistData.map((artist, key) => (
             <motion.div key={key} variants={item}>
               <EventArtist {...artist} />
             </motion.div>
@@ -171,16 +203,16 @@ export default function Page() {
           variants={item}
           className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-5"
         >
-          <EventCheckout ticketOptions={EventCheckoutData} />
+          <EventCheckout ticketOptions={ticketOptions} />
         </motion.div>
 
         <motion.div
           variants={item}
           className="flex flex-col col-span-1 max-[1280px]:order-6 gap-6"
         >
-          <EventLocation />
-          <Tags tags={tagList} />
-          <EventOrganizer {...EventOrganizerData} />
+          <EventLocation address={eventAddress} location={eventLocationText} />
+          <Tags tags={tags} />
+          <EventOrganizer {...organizer} />
         </motion.div>
       </motion.div>
     </div>

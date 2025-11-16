@@ -100,6 +100,21 @@ export default function CreateEventPage() {
       return;
     }
 
+    if (!eventForm.cardImageUrl || eventForm.cardImageUrl.trim() === '') {
+      alert('Please provide a Card Image URL');
+      return;
+    }
+
+    if (!eventForm.bannerImageUrls || eventForm.bannerImageUrls.length === 0) {
+      alert('Please add at least one Banner Image URL');
+      return;
+    }
+
+    if (eventForm.isCarousel && (!eventForm.carouselImageUrl || eventForm.carouselImageUrl.trim() === '')) {
+      alert('Please provide a Carousel Image URL (or disable Show in Carousel)');
+      return;
+    }
+
     if (eventForm.tickets.length === 0) {
       alert('Please add at least one ticket type');
       return;

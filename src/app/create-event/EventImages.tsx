@@ -58,6 +58,7 @@ export const EventImages = () => {
             value={eventForm.cardImageUrl}
             onChange={handleCardImageChange}
             placeholder="https://example.com/image.jpg"
+            required
             className="w-full bg-black/20 text-cyan-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300"
           />
         </div>
@@ -117,6 +118,7 @@ export const EventImages = () => {
               value={eventForm.carouselImageUrl}
               onChange={handleCarouselImageChange}
               placeholder="https://example.com/carousel.jpg"
+              required
               className="w-full bg-black/20 text-cyan-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300"
             />
           )}

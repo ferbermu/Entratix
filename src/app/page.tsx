@@ -8,7 +8,6 @@ import { CardCarousel } from './components/CardCarousel';
 import { type DateRange } from 'react-day-picker';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LoadingSpinner } from './components/LoadingSpinner';
-import { getNonFeaturedEventsAction, getCarouselEventsAction } from './actions/events';
 
 const formatDateDDMMYYYY = (d: Date | string | null | undefined): string => {
   if (!d) return '';
@@ -59,12 +58,17 @@ const HomePage = () => {
     const fetchEvents = async () => {
       setIsLoading(true);
       try {
-        const [nonFeatured, carousel] = await Promise.all([
-          getNonFeaturedEventsAction(),
-          getCarouselEventsAction(),
+        const [nonFeaturedRes, carouselRes] = await Promise.all([
+          fetch('/api/events?type=nonfeatured', { cache: 'no-store' }),
+          fetch('/api/events?type=carousel', { cache: 'no-store' }),
         ]);
+        const nonFeaturedJson = await nonFeaturedRes.json();
+        const carouselJson = await carouselRes.json();
+        let nonFeatured = nonFeaturedJson?.events || [];
+        const carousel = carouselJson?.events || [];
 
         const mapToBaseCard = (e: any): CardProps => ({
+          id: e.id,
           title: e.title,
           address: e.location || e.address || '',
           date: formatDateDDMMYYYY(e.date),
@@ -80,6 +84,7 @@ const HomePage = () => {
           const imageUrl =
             e.carouselImageUrl || bannerFirst || e.cardImageUrl || '/assets/party.png';
           return {
+            id: e.id,
             title: e.title,
             address: e.location || e.address || '',
             date: formatDateDDMMYYYY(e.date),
@@ -87,6 +92,13 @@ const HomePage = () => {
             imageUrl,
           };
         };
+
+        // Fallback: si no hay non-featured, traer todos los activos
+        if (!Array.isArray(nonFeatured) || nonFeatured.length === 0) {
+          const allRes = await fetch('/api/events', { cache: 'no-store' });
+          const allJson = await allRes.json();
+          nonFeatured = allJson?.events || [];
+        }
 
         const base = Array.isArray(nonFeatured) ? nonFeatured.map(mapToBaseCard) : [];
         const carouselMapped = Array.isArray(carousel) ? carousel.map(mapToCarouselCard) : [];

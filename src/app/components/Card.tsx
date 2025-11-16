@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Calendar, MapPin, Clock } from '@phosphor-icons/react';
 
 export interface CardProps {
+  id?: string;
   title: string;
   address?: string;
   date?: string;
@@ -20,6 +21,7 @@ export interface CardProps {
 }
 
 export const Card = ({
+  id,
   title,
   address = 'Unknown',
   date = 'Unknown',
@@ -27,6 +29,7 @@ export const Card = ({
   imageUrl,
   isCarousel = false,
 }: CardProps) => {
+  const href = id ? `/events/${id}` : '/events';
   return (
     <div
       className={`
@@ -87,7 +90,7 @@ export const Card = ({
 
         <div className="mt-auto">
           <Link
-            href="/events"
+            href={href}
             className="w-full px-4 py-3 bg-[#3BAFBB] hover:bg-[#3BAFBB] text-white rounded-lg transition-all duration-300 cursor-pointer font-semibold text-center block border-2 border-[#3BAFBB] hover:border-[#3BAFBB] shadow-[0_0_15px_rgba(59,175,187,0.4)] hover:shadow-[0_0_25px_rgba(59,175,187,0.6)] hover:drop-shadow-[0_0_10px_rgba(59,175,187,0.4)] relative overflow-hidden"
           >
             <span className="relative z-10">Buy Tickets</span>
