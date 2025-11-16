@@ -122,6 +122,8 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
             alt={currentEvent.title}
             fill
             className="object-cover"
+            sizes="100vw"
+            quality={90}
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent flex items-center">

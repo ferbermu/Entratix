@@ -8,129 +8,45 @@ import { CardCarousel } from './components/CardCarousel';
 import { type DateRange } from 'react-day-picker';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LoadingSpinner } from './components/LoadingSpinner';
+import { getNonFeaturedEventsAction, getCarouselEventsAction } from './actions/events';
 
-const CardData: CardProps[] = [
+const formatDateDDMMYYYY = (d: Date | string | null | undefined): string => {
+  if (!d) return '';
+  const date = typeof d === 'string' ? new Date(d) : d;
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+};
+
+const defaultCarouselSlides: CardProps[] = [
   {
-    title: 'ArtLab presents Eddy M & more',
+    title: 'Discover Underground Nights',
     address: 'Montevideo',
-    date: '15/06/2025',
-    time: '21:00',
+    date: '',
+    time: '',
     imageUrl: '/assets/show1.jpg',
-    category: 'Music',
-    location: 'Montevideo',
-    description: 'Un show imperdible con Eddy M',
-    price: '$50',
-    artists: ['Eddy M'],
-    attendees: 200,
   },
   {
-    title: 'ArtLab presents DJ Luna',
+    title: 'Live Electronic Experience',
     address: 'Canelones',
-    date: '20/07/2025',
-    time: '22:00',
+    date: '',
+    time: '',
     imageUrl: '/assets/show2.jpg',
-    category: 'Electronic',
-    location: 'Canelones',
-    description: 'Una noche llena de beats y energía',
-    price: '$45',
-    artists: ['DJ Luna'],
-    attendees: 150,
   },
   {
-    title: 'Rock & Roll Night',
+    title: 'Warehouse Vibes',
     address: 'Maldonado',
-    date: '05/08/2025',
-    time: '20:30',
+    date: '',
+    time: '',
     imageUrl: '/assets/show3.jpg',
-    category: 'Rock',
-    location: 'Maldonado',
-    description: 'Los clásicos del rock en vivo',
-    price: '$60',
-    artists: ['The Rockers'],
-    attendees: 300,
-  },
-  {
-    title: 'Jazz Evening',
-    address: 'Rocha',
-    date: '12/09/2025',
-    time: '19:00',
-    imageUrl: '/assets/show4.jpg',
-    category: 'Jazz',
-    location: 'Rocha',
-    description: 'Un ambiente relajado con jazz en vivo',
-    price: '$40',
-    artists: ['Smooth Jazz Band'],
-    attendees: 120,
-  },
-  {
-    title: 'Pop Festival',
-    address: 'Paysandú',
-    date: '25/10/2025',
-    time: '18:00',
-    imageUrl: '/assets/show5.jpg',
-    category: 'Pop',
-    location: 'Paysandú',
-    description: 'Los hits del pop internacional',
-    price: '$55',
-    artists: ['Pop Stars'],
-    attendees: 400,
-  },
-  {
-    title: 'Key on Tour - Plaza de Toros Colonia ',
-    address: 'Colonia',
-    date: '12/11/2025',
-    time: '21:00',
-    imageUrl: '/assets/show1.jpg',
-    category: 'Music',
-    location: 'Colonia',
-    description: 'Una gira inolvidable con Key',
-    price: '$70',
-    artists: ['Key'],
-    attendees: 500,
-  },
-  {
-    title: 'Latin Night',
-    address: 'Salto',
-    date: '15/11/2025',
-    time: '22:00',
-    imageUrl: '/assets/show2.jpg',
-    category: 'Latin',
-    location: 'Salto',
-    description: 'Salsa, bachata y más',
-    price: '$50',
-    artists: ['Latin Band'],
-    attendees: 250,
-  },
-  {
-    title: 'Electronic Sunrise',
-    address: 'Soriano',
-    date: '20/12/2025',
-    time: '23:00',
-    imageUrl: '/assets/show3.jpg',
-    category: 'Electronic',
-    location: 'Soriano',
-    description: 'Música electrónica hasta el amanecer',
-    price: '$60',
-    artists: ['DJ Aurora'],
-    attendees: 350,
-  },
-  {
-    title: 'Winter Beats',
-    address: 'Rivera',
-    date: '30/01/2026',
-    time: '21:30',
-    imageUrl: '/assets/show4.jpg',
-    category: 'Electronic',
-    location: 'Rivera',
-    description: 'Electrónica y buen ambiente',
-    price: '$55',
-    artists: ['DJ Winter'],
-    attendees: 300,
   },
 ];
 
 const HomePage = () => {
-  const [filteredCards, setFilteredCards] = useState(CardData);
+  const [cardsBase, setCardsBase] = useState<CardProps[]>([]);
+  const [carouselCards, setCarouselCards] = useState<CardProps[]>([]);
+  const [filteredCards, setFilteredCards] = useState<CardProps[]>([]);
   const [filters, setFilters] = useState({
     searchTerm: '',
     dateRange: undefined as DateRange | undefined,
@@ -138,6 +54,57 @@ const HomePage = () => {
   });
   const [hasActiveFilters, setHasActiveFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      setIsLoading(true);
+      try {
+        const [nonFeatured, carousel] = await Promise.all([
+          getNonFeaturedEventsAction(),
+          getCarouselEventsAction(),
+        ]);
+
+        const mapToBaseCard = (e: any): CardProps => ({
+          title: e.title,
+          address: e.location || e.address || '',
+          date: formatDateDDMMYYYY(e.date),
+          time: e.startTime || '',
+          imageUrl: e.cardImageUrl || '/assets/party.png',
+        });
+
+        const mapToCarouselCard = (e: any): CardProps => {
+          const bannerFirst =
+            Array.isArray(e.bannerImageUrls) && e.bannerImageUrls.length > 0
+              ? e.bannerImageUrls[0]
+              : undefined;
+          const imageUrl =
+            e.carouselImageUrl || bannerFirst || e.cardImageUrl || '/assets/party.png';
+          return {
+            title: e.title,
+            address: e.location || e.address || '',
+            date: formatDateDDMMYYYY(e.date),
+            time: e.startTime || '',
+            imageUrl,
+          };
+        };
+
+        const base = Array.isArray(nonFeatured) ? nonFeatured.map(mapToBaseCard) : [];
+        const carouselMapped = Array.isArray(carousel) ? carousel.map(mapToCarouselCard) : [];
+
+        setCardsBase(base);
+        setFilteredCards(base);
+        setCarouselCards(carouselMapped.length > 0 ? carouselMapped : defaultCarouselSlides);
+      } catch (err) {
+        console.error('Error fetching events for homepage:', err);
+        setCardsBase([]);
+        setFilteredCards([]);
+        setCarouselCards(defaultCarouselSlides);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const handleFilterChange = useCallback(
     (newFilters: {
@@ -178,7 +145,7 @@ const HomePage = () => {
     // Simular delay de búsqueda para mostrar el loading
     const searchDelay = setTimeout(() => {
       setFilteredCards(
-        CardData.filter(card => {
+        cardsBase.filter(card => {
           const searchMatch =
             lowerSearch === '' ||
             card.title?.toLowerCase().includes(lowerSearch) ||
@@ -208,7 +175,7 @@ const HomePage = () => {
     }, 2000); // 2 segundos de delay para mostrar el loading
 
     return () => clearTimeout(searchDelay);
-  }, [filters]);
+  }, [filters, cardsBase]);
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-pink-500/15 via-purple-900/30 to-black relative overflow-hidden">
@@ -250,7 +217,9 @@ const HomePage = () => {
       ></div>
 
       <div className="relative z-10">
-        <CarrouselImage events={CardData} interval={5000} />
+        {carouselCards.length > 0 && (
+          <CarrouselImage events={carouselCards} interval={5000} />
+        )}
 
         <div className="flex flex-col items-center px-4 md:px-6 lg:px-8 my-10 relative">
           <div className="flex flex-col w-full max-w-[1400px] gap-12">
@@ -276,7 +245,7 @@ const HomePage = () => {
                   style={{ isolation: 'isolate' }}
                 >
                   <CardCarousel
-                    cards={CardData}
+                    cards={cardsBase}
                     autoPlayInterval={5000}
                     cardsToShow={4}
                   />
