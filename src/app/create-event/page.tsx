@@ -14,16 +14,13 @@ import { useRouter } from 'next/navigation';
 import { generateRandomEventData } from './utils/randomEventData';
 
 export default function CreateEventPage() {
-  const [eventDate, setEventDate] = useState<Date | undefined>();
-  const [location, setLocation] = useState('');
-  const { createEvent, resetForm, eventForm, updateField, addTicket, addArtist, addBannerImage } = useEventForm();
+  const { createEvent, resetForm, eventForm, updateField, addTicket, addArtist, addBannerImage, addTag, addRrppEmail } = useEventForm();
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
   const handleFillRandomData = () => {
     const randomData = generateRandomEventData();
-    
-    // Llenar todos los campos con datos aleatorios
+
     updateField('title', randomData.title);
     updateField('category', randomData.category);
     updateField('description', randomData.description);
@@ -41,20 +38,25 @@ export default function CreateEventPage() {
     updateField('organizerPhone', randomData.organizerPhone);
     updateField('organizerLogo', randomData.organizerLogo);
 
-    // Agregar banner images
     randomData.bannerImageUrls.forEach((url) => {
       addBannerImage(url);
     });
 
-    // Agregar tickets
     randomData.tickets.forEach((ticket) => {
       addTicket(ticket);
     });
 
-    // Agregar artistas
     randomData.artists.forEach((artist) => {
       addArtist(artist);
     });
+
+    if (randomData.tags) {
+      randomData.tags.forEach((tag) => addTag(tag));
+    }
+
+    if (randomData.rrppEmails) {
+      randomData.rrppEmails.forEach((email) => addRrppEmail(email));
+    }
 
     alert('Random event data generated! Review and click "Create Event"');
   };
@@ -78,7 +80,6 @@ export default function CreateEventPage() {
   };
 
   const handleCreateEvent = async () => {
-    // Validaciones básicas
     if (!eventForm.title || !eventForm.category || !eventForm.description) {
       alert('Please fill in all required fields: Title, Category, and Description');
       return;
@@ -189,14 +190,9 @@ export default function CreateEventPage() {
           </div>
         </motion.div>
 
-        <motion.div variants={item}>
-          <EventDetails
-            eventDate={eventDate}
-            setEventDate={setEventDate}
-            location={location}
-            setLocation={setLocation}
-          />
-        </motion.div>
+            <motion.div variants={item}>
+              <EventDetails />
+            </motion.div>
 
         <motion.div variants={item}>
           <CreateArtist />

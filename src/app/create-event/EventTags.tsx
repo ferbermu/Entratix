@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { Tag, X } from '@phosphor-icons/react';
+import { useEventForm } from './hooks/useEventForm';
 
 export const EventTags = () => {
-  const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const { eventForm, addTag, removeTag } = useEventForm();
 
-  const addTag = () => {
+  const handleAddTag = () => {
     const trimmed = inputValue.trim();
-    if (!trimmed || tags.includes(trimmed)) return;
-    setTags([...tags, trimmed]);
+    if (!trimmed || eventForm.tags.includes(trimmed)) return;
+    addTag(trimmed);
     setInputValue('');
-  };
-
-  const removeTag = (index: number) => {
-    setTags(tags.filter((_, i) => i !== index));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      addTag();
+      handleAddTag();
     }
   };
 
@@ -44,7 +41,7 @@ export const EventTags = () => {
 
       {/* Tags visualizadas */}
       <div className="flex flex-wrap gap-2 mb-6 relative z-10">
-        {tags.map((tag, index) => (
+        {eventForm.tags.map((tag, index) => (
           <div
             key={index}
             className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 hover:from-pink-500/30 hover:via-purple-500/30 hover:to-cyan-400/30 text-cyan-300 px-3 py-1 rounded-full flex items-center gap-2 max-w-[260px] md:max-w-[360px] lg:max-w-[420px] backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400/40 transition-all duration-300 relative"
@@ -75,7 +72,7 @@ export const EventTags = () => {
           className="flex-1 bg-black/20 text-cyan-300 placeholder-gray-400 rounded-l-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300"
         />
         <button
-          onClick={addTag}
+          onClick={handleAddTag}
           className="cursor-pointer bg-gradient-to-r from-pink-500/40 via-purple-500/40 to-cyan-400/40 hover:from-pink-500/60 hover:via-purple-500/60 hover:to-cyan-400/60 px-5 py-2 text-white rounded-r-lg transition-all duration-300 font-semibold backdrop-blur-sm border border-pink-500/20 hover:border-cyan-400 border-l-0 relative overflow-hidden"
         >
           <span className="relative z-10">Add</span>

@@ -41,6 +41,27 @@ export function generateRandomEventData() {
     'Av. del Puerto 90',
   ];
 
+  const allTags = [
+    'melodic techno',
+    'underground',
+    'warehouse',
+    'open air',
+    'afterparty',
+    'live set',
+    'retro wave',
+  ];
+
+  const sampleTags = (): string[] => {
+    const shuffled = [...allTags].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.floor(Math.random() * 3) + 2); // 2-4 tags
+  };
+
+  const sampleRrpp = (): string[] => {
+    const candidates = ['rita@club.com', 'juan@promo.com', 'maria@rrpp.io', 'leo@scene.net'];
+    const shuffled = [...candidates].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.floor(Math.random() * 2) + 1); // 1-2 emails
+  };
+
   return {
     title: getRandomElement(titles),
     category: getRandomElement(categories),
@@ -62,6 +83,8 @@ export function generateRandomEventData() {
     organizerEmail: 'contact@eventprod.com',
     organizerPhone: '+34 600 123 456',
     organizerLogo: `https://picsum.photos/200?${Math.floor(Math.random() * 1000)}`,
+    tags: sampleTags(),
+    rrppEmails: sampleRrpp(),
     tickets: [
       {
         type: 'General',

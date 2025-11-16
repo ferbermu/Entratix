@@ -2,12 +2,18 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   setEventField,
   addTicket,
+  updateTicket,
   removeTicket,
   addArtist,
+  updateArtist,
   removeArtist,
   addBannerImage,
   removeBannerImage,
   resetEventForm,
+  addTag,
+  removeTag,
+  addRrppEmail,
+  removeRrppEmail,
 } from '../../store/slices/eventFormSlice';
 import { createEventAction } from '../actions';
 import { useTransition } from 'react';
@@ -32,12 +38,20 @@ export const useEventForm = () => {
     dispatch(addTicket(ticket));
   };
 
+  const handleUpdateTicket = (index: number, ticket: typeof eventForm.tickets[0]) => {
+    dispatch(updateTicket({ index, ticket }));
+  };
+
   const handleRemoveTicket = (index: number) => {
     dispatch(removeTicket(index));
   };
 
   const handleAddArtist = (artist: { name: string; photoUrl: string }) => {
     dispatch(addArtist(artist));
+  };
+
+  const handleUpdateArtist = (index: number, artist: typeof eventForm.artists[0]) => {
+    dispatch(updateArtist({ index, artist }));
   };
 
   const handleRemoveArtist = (index: number) => {
@@ -50,6 +64,22 @@ export const useEventForm = () => {
 
   const handleRemoveBannerImage = (index: number) => {
     dispatch(removeBannerImage(index));
+  };
+
+  const handleAddTag = (tag: string) => {
+    dispatch(addTag(tag));
+  };
+
+  const handleRemoveTag = (index: number) => {
+    dispatch(removeTag(index));
+  };
+
+  const handleAddRrppEmail = (email: string) => {
+    dispatch(addRrppEmail(email));
+  };
+
+  const handleRemoveRrppEmail = (index: number) => {
+    dispatch(removeRrppEmail(index));
   };
 
   const handleCreateEvent = async () => {
@@ -77,11 +107,17 @@ export const useEventForm = () => {
     eventForm,
     updateField,
     addTicket: handleAddTicket,
+    updateTicket: handleUpdateTicket,
     removeTicket: handleRemoveTicket,
     addArtist: handleAddArtist,
+    updateArtist: handleUpdateArtist,
     removeArtist: handleRemoveArtist,
     addBannerImage: handleAddBannerImage,
     removeBannerImage: handleRemoveBannerImage,
+    addTag: handleAddTag,
+    removeTag: handleRemoveTag,
+    addRrppEmail: handleAddRrppEmail,
+    removeRrppEmail: handleRemoveRrppEmail,
     createEvent: handleCreateEvent,
     resetForm: handleResetForm,
     isPending,

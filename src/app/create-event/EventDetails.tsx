@@ -1,47 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   MusicNotesPlus,
-  Trash,
-  FolderSimple,
   MapPin,
-  Plus,
-  ImageSquare,
-  Check,
 } from '@phosphor-icons/react';
 import { TimeInput } from '@/components/TimeInput';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
 import { Dropdown } from '@/components/Dropdown';
 import { InputField } from '@/components/InputField';
-import { InputFieldIcon } from '@/components/InputFieldIcon';
+import { useEventForm } from './hooks/useEventForm';
 
-interface EventDetailsProps {
-  eventDate: Date | undefined;
-  setEventDate: (date: Date | undefined) => void;
-  location: string;
-  setLocation: (location: string) => void;
-}
+export const EventDetails: React.FC = () => {
+  const { eventForm, updateField } = useEventForm();
 
-export const EventDetails: React.FC<EventDetailsProps> = ({
-  eventDate,
-  setEventDate,
-  location,
-  setLocation,
-}) => {
-  const [startHour, setStartHour] = useState<string>('');
-  const [startMinute, setStartMinute] = useState<string>('');
-  const [endHour, setEndHour] = useState<string>('');
-  const [endMinute, setEndMinute] = useState<string>('');
-
-  const [eventImages, setEventImages] = useState<string[]>([
-    'https://example.com/event-image.jpg',
-  ]);
-  const [mainEventImage, setMainEventImage] = useState<string>(
-    'https://example.com/main-event-image.jpg'
-  );
-  const [isMainEvent, setIsMainEvent] = useState<boolean>(true);
-  const [isFeatured, setIsFeatured] = useState<boolean>(true);
+  // Extraer horas y minutos de startTime y endTime
+  const [startHour, startMinute] = eventForm.startTime ? eventForm.startTime.split(':') : ['', ''];
+  const [endHour, endMinute] = eventForm.endTime ? eventForm.endTime.split(':') : ['', ''];
 
   const getAmPm = (h: string) => {
     if (h === '') return '';
@@ -49,25 +24,25 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
     return hour >= 12 ? 'PM' : 'AM';
   };
 
-  const handleAddImage = () => setEventImages(prev => [...prev, '']);
-  const handleRemoveImage = (index: number) =>
-    setEventImages(prev => prev.filter((_, i) => i !== index));
-  const handleImageChange = (index: number, value: string) => {
-    setEventImages(prev => {
-      const next = [...prev];
-      next[index] = value;
-      return next;
-    });
+  const handleTimeChange = (field: 'start' | 'end', hour: string, minute: string) => {
+    const timeString = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
+    if (field === 'start') {
+      updateField('startTime', timeString);
+    } else {
+      updateField('endTime', timeString);
+    }
   };
-  const handleFileUpload = (index: number, file: File | null) => {
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setEventImages(prev => {
-      const next = [...prev];
-      next[index] = url;
-      return next;
-    });
+
+  const handleDateChange = (date: Date | undefined) => {
+    if (date) {
+      updateField('date', date.toISOString());
+    } else {
+      updateField('date', '');
+    }
   };
+
+  // Convertir la fecha del store (string ISO) a objeto Date para el calendario
+  const selectedDate = eventForm.date ? new Date(eventForm.date) : undefined;
 
   return (
     <div className="flex justify-center">
@@ -96,6 +71,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 label="Event Title"
                 required
                 placeholder="Enter event title"
+                value={eventForm.title}
+                onChange={(value) => updateField('title', value)}
               />
             </div>
             <div className="flex-1 flex flex-col gap-1">
@@ -103,6 +80,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 label="Category"
                 required
                 placeholder="Enter event category"
+                value={eventForm.category}
+                onChange={(value) => updateField('category', value)}
               />
             </div>
           </div>
@@ -114,6 +93,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               required
               placeholder="Describe your event..."
               textarea
+              value={eventForm.description}
+              onChange={(value) => updateField('description', value)}
             />
           </div>
 
@@ -127,8 +108,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 <CalendarDropdownSimple
                   width="w-full"
                   location="right"
-                  date={eventDate}
-                  onDateChange={setEventDate}
+                  date={selectedDate}
+                  onDateChange={handleDateChange}
                   placeholder="Select a date"
                 />
               </div>
@@ -144,10 +125,10 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                   startMinute={startMinute}
                   endHour={endHour}
                   endMinute={endMinute}
-                  setStartHour={setStartHour}
-                  setStartMinute={setStartMinute}
-                  setEndHour={setEndHour}
-                  setEndMinute={setEndMinute}
+                  setStartHour={(h) => handleTimeChange('start', h, startMinute)}
+                  setStartMinute={(m) => handleTimeChange('start', startHour, m)}
+                  setEndHour={(h) => handleTimeChange('end', h, endMinute)}
+                  setEndMinute={(m) => handleTimeChange('end', endHour, m)}
                   getAmPm={getAmPm}
                 />
               </div>
@@ -169,6 +150,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 <input
                   type="text"
                   placeholder="Enter address"
+                  value={eventForm.address}
+                  onChange={(e) => updateField('address', e.target.value)}
                   className="flex-1 bg-transparent text-cyan-300 placeholder-gray-400 focus:outline-none"
                 />
               </div>
@@ -180,8 +163,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
               </label>
               <div className="border border-pink-500/30 px-4 rounded-lg w-full flex items-center focus-within:border-cyan-400/60 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.3)] bg-black/20 backdrop-blur-sm transition-all duration-300 relative z-50 h-12">
                 <Dropdown
-                  selectedValue={location}
-                  onValueChange={setLocation}
+                  selectedValue={eventForm.location}
+                  onValueChange={(value) => updateField('location', value)}
                   className="w-full"
                   options={[
                     'Artigas',
@@ -209,146 +192,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
             </div>
           </div>
 
-          {/* Event Images */}
-          <div className="pt-8 space-y-4">
-            <div className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-xl font-semibold mb-4 relative">
-              Event Images
-              <div className="absolute inset-0 text-pink-500 blur-sm opacity-30">
-                Event Images
-              </div>
-            </div>
-            {eventImages.map((img, index) => (
-              <div
-                key={index}
-                className="flex flex-col md:flex-row md:items-end  gap-2"
-              >
-                <div className="flex-1">
-                  <InputFieldIcon
-                    label={`Image ${index + 1} URL`}
-                    placeholder="https://example.com/event-image.jpg"
-                    value={img}
-                    onChange={val => handleImageChange(index, val)}
-                    icon={<ImageSquare size={18} weight="bold" />}
-                  />
-                </div>
-                <div className="max-[700px]:px-20 max-[700px]:w-full max-[700px]:flex-col gap-2 px-3 py-2 rounded-lg cursor-pointer flex">
-                  <label className="bg-gradient-to-r from-cyan-400/60 to-cyan-500/60 hover:from-cyan-400/80 hover:to-cyan-500/80 text-white px-3 py-2 rounded-lg cursor-pointer flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:scale-105 border border-pink-500/30 backdrop-blur-sm">
-                    <FolderSimple
-                      size={18}
-                      weight="bold"
-                      className="drop-shadow-[0_0_4px_rgba(255,255,255,0.3)]"
-                    />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={e =>
-                        handleFileUpload(index, e.target.files?.[0] || null)
-                      }
-                    />
-                  </label>
-
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 text-cyan-300 px-3 py-2 cursor-pointer rounded-lg flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)] border border-pink-500/30 backdrop-blur-sm"
-                    aria-label={`Remove image ${index + 1}`}
-                  >
-                    <Trash
-                      size={18}
-                      weight="bold"
-                      className="drop-shadow-[0_0_4px_rgba(6,182,212,0.2)]"
-                    />
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            <button
-              type="button"
-              onClick={handleAddImage}
-              className="flex items-center cursor-pointer gap-2 text-cyan-400 mt-2 hover:text-pink-400 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.6)] font-medium"
-            >
-              <Plus
-                size={18}
-                weight="bold"
-                className="drop-shadow-[0_0_4px_rgba(6,182,212,0.3)]"
-              />{' '}
-              Add Image
-            </button>
-
-            {/* Main & Featured Event */}
-            <div className="space-y-4 mt-6 border-t border-pink-500/30 pt-6">
-              <label
-                className="flex items-center gap-3 text-cyan-300 cursor-pointer select-none hover:text-pink-400 transition-all duration-300"
-                onClick={() => setIsMainEvent(!isMainEvent)}
-              >
-                <div
-                  className={`h-5 w-5 flex items-center justify-center border rounded border-pink-500/40 bg-pink-500/10 backdrop-blur-sm transition-all duration-200 hover:shadow-[0_0_10px_rgba(236,72,153,0.4)] ${
-                    isMainEvent
-                      ? 'bg-gradient-to-r from-pink-500/60 to-cyan-400/60 shadow-[0_0_8px_rgba(236,72,153,0.6)]'
-                      : ''
-                  }`}
-                >
-                  {isMainEvent && (
-                    <Check
-                      size={14}
-                      weight="bold"
-                      color="white"
-                      className="drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]"
-                    />
-                  )}
-                </div>
-                <input
-                  type="checkbox"
-                  checked={isMainEvent}
-                  onChange={() => setIsMainEvent(!isMainEvent)}
-                  className="hidden"
-                />
-                Main Event
-              </label>
-
-              {isMainEvent && (
-                <div className="flex flex-col gap-2">
-                  <InputField
-                    label="Main Event Image"
-                    required
-                    value={mainEventImage}
-                    onChange={setMainEventImage}
-                    placeholder="https://example.com/main-event-image.jpg"
-                  />
-                  <p className="text-sm text-gray-400 mt-1 italic">
-                    This image will be displayed on the main page
-                  </p>
-                </div>
-              )}
-
-              <label className="flex items-center gap-3 text-cyan-300 cursor-pointer hover:text-pink-400 transition-all duration-300">
-                <input
-                  type="checkbox"
-                  checked={isFeatured}
-                  onChange={() => setIsFeatured(!isFeatured)}
-                  className={`appearance-none h-5 w-5 cursor-pointer border border-pink-500/40 bg-pink-500/10 backdrop-blur-sm transition-all duration-200 hover:shadow-[0_0_10px_rgba(236,72,153,0.4)] ${
-                    isFeatured
-                      ? 'bg-gradient-to-r from-pink-500/60 to-cyan-400/60 shadow-[0_0_8px_rgba(236,72,153,0.6)]'
-                      : ''
-                  }`}
-                  style={{
-                    backgroundImage: isFeatured
-                      ? "url(\"data:image/svg+xml;utf8,<svg fill='white' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8.25 8.25a1 1 0 01-1.414 0l-3.75-3.75a1 1 0 011.414-1.414l3.043 3.043 7.543-7.543a1 1 0 011.414 0z' clip-rule='evenodd'/></svg>\")"
-                      : 'none',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: '14px',
-                  }}
-                />
-                Featured Event
-              </label>
-              <p className="text-sm text-gray-400 ml-7 italic">
-                Mark this event as featured for special promotion
-              </p>
-            </div>
-          </div>
+          {/* Event Images - Ahora están en EventImages.tsx component */}
+          {/* Main & Featured Event - Ahora están en EventImages.tsx component */}
         </div>
       </form>
     </div>

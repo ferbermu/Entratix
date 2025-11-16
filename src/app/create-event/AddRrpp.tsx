@@ -3,23 +3,24 @@
 import React, { useState } from 'react';
 import { Plus, Minus, User } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useEventForm } from './hooks/useEventForm';
 
 export const AddRrpp = () => {
   const [rrppEmail, setRrppEmail] = useState('');
-  const [rrppList, setRrppList] = useState<string[]>([]);
+  const { eventForm, addRrppEmail, removeRrppEmail } = useEventForm();
 
   const isValidEmail = (email: string) =>
     email.includes('@') && email.includes('.com');
 
   const handleAddEmail = () => {
     if (isValidEmail(rrppEmail)) {
-      setRrppList([...rrppList, rrppEmail]);
+      addRrppEmail(rrppEmail);
       setRrppEmail('');
     }
   };
 
   const handleRemoveEmail = (indexToRemove: number) => {
-    setRrppList(rrppList.filter((_, i) => i !== indexToRemove));
+    removeRrppEmail(indexToRemove);
   };
 
   return (
@@ -94,14 +95,14 @@ export const AddRrpp = () => {
           </motion.div>
 
           <AnimatePresence>
-            {rrppList.length > 0 && (
+            {eventForm.rrppEmails.length > 0 && (
               <motion.div
                 className="w-full flex flex-col gap-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {rrppList.map((email, i) => (
+                {eventForm.rrppEmails.map((email, i) => (
                   <motion.div
                     key={email}
                     className="flex items-center gap-2"

@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CurrencyDollarSimple, Plus, Minus } from '@phosphor-icons/react';
+import { useEventForm } from './hooks/useEventForm';
 
 export const CreateTicket = () => {
-  const [tickets, setTickets] = useState([
-    { type: '', price: '', quantity: '', description: '' },
-  ]);
+  const { eventForm, addTicket, updateTicket, removeTicket } = useEventForm();
 
   const handleAddTicket = () => {
-    setTickets([
-      ...tickets,
-      { type: '', price: '', quantity: '', description: '' },
-    ]);
+    addTicket({
+      type: '',
+      price: 0,
+      quantity: '',
+      maxQuantity: '',
+      description: '',
+      benefits: [],
+    });
   };
 
   const handleRemoveTicket = (indexToRemove: number) => {
-    if (tickets.length === 1) return;
-    setTickets(tickets.filter((_, index) => index !== indexToRemove));
+    if (eventForm.tickets.length === 1) return;
+    removeTicket(indexToRemove);
+  };
+
+  const handleTicketChange = (
+    index: number,
+    field: keyof typeof eventForm.tickets[0],
+    value: string | number
+  ) => {
+    const ticket = eventForm.tickets[index];
+    updateTicket(index, {
+      ...ticket,
+      [field]: value,
+    });
   };
 
   const preventNegativeAndE = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -58,12 +73,12 @@ export const CreateTicket = () => {
       </div>
 
       <div className="flex flex-col gap-14 relative z-10">
-        {tickets.map((ticket, index) => (
+        {eventForm.tickets.map((ticket, index) => (
           <div
             key={index}
             className="bg-gradient-to-br from-pink-500/5 via-purple-900/10 to-cyan-400/5 relative rounded-xl p-4 flex flex-col gap-4 backdrop-blur-sm border border-pink-500/20"
           >
-            {tickets.length > 1 && (
+            {eventForm.tickets.length > 1 && (
               <div className=" right-0 -top-10 absolute">
                 <button
                   onClick={() => handleRemoveTicket(index)}
@@ -83,6 +98,8 @@ export const CreateTicket = () => {
                 <label className="text-cyan-300 text-sm mb-2">Type</label>
                 <input
                   type="text"
+                  value={ticket.type}
+                  onChange={(e) => handleTicketChange(index, 'type', e.target.value)}
                   className="bg-black/20 text-cyan-300 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300"
                   placeholder="Enter ticket type"
                 />
@@ -92,6 +109,8 @@ export const CreateTicket = () => {
                 <input
                   type="number"
                   min="1"
+                  value={ticket.price || ''}
+                  onChange={(e) => handleTicketChange(index, 'price', parseFloat(e.target.value) || 0)}
                   onKeyDown={preventNegativeAndE}
                   className="bg-black/20 text-cyan-300 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300"
                   placeholder="0"
@@ -102,6 +121,8 @@ export const CreateTicket = () => {
                 <input
                   type="number"
                   min="1"
+                  value={ticket.quantity}
+                  onChange={(e) => handleTicketChange(index, 'quantity', e.target.value)}
                   onKeyDown={preventNegativeAndE}
                   className="bg-black/20 text-cyan-300 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300"
                   placeholder="0"
@@ -110,6 +131,8 @@ export const CreateTicket = () => {
             </div>
             <label className="text-cyan-300 text-sm">Description</label>
             <textarea
+              value={ticket.description}
+              onChange={(e) => handleTicketChange(index, 'description', e.target.value)}
               className="bg-black/20 text-cyan-300 rounded-lg px-4 py-2 border border-pink-500/30 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm transition-all duration-300 resize-none"
               placeholder="Enter ticket description (optional)"
             />
