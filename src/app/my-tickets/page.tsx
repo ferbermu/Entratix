@@ -7,7 +7,7 @@ import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
 import { TotalTickets } from './TotalTickets';
 import { getUserTickets, getUserOrders } from '../actions/orders';
-import { useAuthRedux } from '../login/hooks/useAuthRedux';
+import { useAuth } from '../providers/AuthProvider';
 
 type TicketStatusFilter = 'all' | 'Active' | 'Completed' | 'Expired';
 
@@ -51,7 +51,7 @@ const item: Variants = {
 };
 
 export default function MyTicketsPage() {
-  const { user, isAuthenticated } = useAuthRedux();
+  const { user, isAuthenticated } = useAuth();
   const [allTickets, setAllTickets] = useState<CardTicketProps[]>([]);
   const [filteredTickets, setFilteredTickets] = useState<CardTicketProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);

@@ -4,22 +4,41 @@ import { db } from '../../lib/db';
 import { users } from '../../lib/db/schema/users';
 import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
+import {
+  setSessionCookie,
+  clearSessionCookie,
+  getSessionUserId,
+} from '../lib/auth/session';
+import { RegisterInput } from '../auth/interfaces/Register/RegisterInput';
+import { LoginInput } from '../auth/interfaces/Login/LoginInput';
+import { AuthActionResult } from '../auth/interfaces/ActionResult/AuthActionResult';
+import { AuthUser } from '../auth/interfaces/AuthUser/AuthUser';
 
-interface RegisterInput {
+function mapDbUserToAuthUser(user: {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  phone?: string;
-  birthDate?: string;
+  phone: string | null;
+  birthDate: string | null;
+  role: string;
+  profileImageUrl: string | null;
+  bio: string | null;
+}): AuthUser {
+  return {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    phone: user.phone,
+    birthDate: user.birthDate,
+    role: user.role,
+    profileImageUrl: user.profileImageUrl,
+    bio: user.bio,
+  };
 }
 
-interface LoginInput {
-  email: string;
-  password: string;
-}
-
-export async function registerUser(input: RegisterInput) {
+export async function registerUser(input: RegisterInput): Promise<AuthActionResult> {
   try {
     const { firstName, lastName, email, password, phone, birthDate } = input;
 
@@ -48,20 +67,12 @@ export async function registerUser(input: RegisterInput) {
       })
       .returning();
 
+    await setSessionCookie(newUser.id);
+
     return {
       success: true,
       message: 'User registered successfully',
-      user: {
-        id: newUser.id,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-        phone: newUser.phone,
-        birthDate: newUser.birthDate,
-        role: newUser.role,
-        profileImageUrl: newUser.profileImageUrl,
-        bio: newUser.bio,
-      },
+      user: mapDbUserToAuthUser(newUser),
     };
   } catch (error) {
     console.error('Error registering user:', error);
@@ -69,7 +80,7 @@ export async function registerUser(input: RegisterInput) {
   }
 }
 
-export async function loginUser(input: LoginInput) {
+export async function loginUser(input: LoginInput): Promise<AuthActionResult> {
   try {
     const { email, password } = input;
 
@@ -89,20 +100,12 @@ export async function loginUser(input: LoginInput) {
       return { success: false, message: 'Invalid email or password' };
     }
 
+    await setSessionCookie(user.id);
+
     return {
       success: true,
       message: 'Login successful',
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        birthDate: user.birthDate,
-        role: user.role,
-        profileImageUrl: user.profileImageUrl,
-        bio: user.bio,
-      },
+      user: mapDbUserToAuthUser(user),
     };
   } catch (error) {
     console.error('Error logging in:', error);
@@ -145,5 +148,34 @@ export async function getUserById(userId: string) {
     console.error('Error fetching user:', error);
     return { success: false, message: 'Failed to fetch user' };
   }
+}
+
+export async function logoutUser(): Promise<{ success: true }> {
+  await clearSessionCookie();
+  return { success: true };
+}
+
+export async function getCurrentUser(): Promise<AuthUser | null> {
+  const userId = await getSessionUserId();
+  if (!userId) return null;
+
+  const [user] = await db
+    .select({
+      id: users.id,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      email: users.email,
+      phone: users.phone,
+      birthDate: users.birthDate,
+      role: users.role,
+      profileImageUrl: users.profileImageUrl,
+      bio: users.bio,
+    })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  if (!user) return null;
+  return mapDbUserToAuthUser(user);
 }
 

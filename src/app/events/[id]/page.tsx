@@ -9,7 +9,7 @@ import { EventArtist } from './components/EventArtist';
 import { EventCheckout } from './components/EventCheckout';
 import { EventOrganizer } from './components/EventOrganizer';
 import { getEventByIdAction } from '../../actions/events';
-import { useAuthRedux } from '../../login/hooks/useAuthRedux';
+import { useAuth } from '../../providers/AuthProvider';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -52,7 +52,7 @@ interface EventData {
 export default function EventPage({ params }: PageProps) {
   const resolvedParams = use(params);
   const eventId = resolvedParams.id;
-  const { user } = useAuthRedux();
+  const { user } = useAuth();
   const [event, setEvent] = useState<EventData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 

@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
-import { useAuthRedux } from './useAuthRedux';
+import { useAuth } from '../../providers/AuthProvider';
 
 export const useLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, error, clearError } = useAuthRedux();
+  const { login, error, clearError } = useAuth();
 
   const handleEmailChange = useCallback(
     (value: string) => {
@@ -33,7 +33,7 @@ export const useLogin = () => {
       setIsSubmitting(true);
       try {
         await login(email, password);
-        // El hook useAuthRedux ya maneja la redirección
+        // useAuth maneja la redirección
       } catch (error: unknown) {
         console.error('Error en el login:', error);
       } finally {

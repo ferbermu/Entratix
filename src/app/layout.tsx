@@ -4,6 +4,7 @@ import './globals.css';
 import { Navbar } from './components/Navbar';
 import Footer from './components/Footer';
 import { ReduxProvider } from './providers/ReduxProvider';
+import { AuthProvider } from './providers/AuthProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -40,9 +41,11 @@ export default function RootLayout({
       >
         <div className="bg-[#1C1A1A]  ">
           <ReduxProvider>
-            <Navbar />
-            {children}
-            <Footer />
+            <AuthProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </AuthProvider>
           </ReduxProvider>
         </div>
       </body>

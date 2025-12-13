@@ -9,7 +9,7 @@ import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
 import { useMobileMenu } from '../hooks/useMobileMenu';
 import { MobileSearch } from './MobileSearch';
-import { useAuthRedux } from '../login/hooks/useAuthRedux';
+import { useAuth } from '../providers/AuthProvider';
 import {
   Ticket,
   CalendarPlus,
@@ -32,7 +32,7 @@ export const Navbar = () => {
     closeMobileSearch,
   } = useMobileMenu();
   const pathname = usePathname();
-  const { user, isAuthenticated, logout, isLoading } = useAuthRedux();
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
 
   const activeClass =
     'bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 !border-cyan-400 rounded-md text-cyan-300 shadow-[0_0_15px_rgba(0,255,255,0.4)]';
@@ -207,7 +207,9 @@ export const Navbar = () => {
                   size={20}
                   className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
                 />
-                <span className="text-white">{user?.name}</span>
+                    <span className="text-white">
+                      {user ? `${user.firstName} ${user.lastName}` : ''}
+                    </span>
               </div>
               <button
                 onClick={logout}

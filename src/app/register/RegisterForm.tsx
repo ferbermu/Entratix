@@ -3,6 +3,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { MusicNotes, User, EnvelopeSimple, Phone } from '@phosphor-icons/react';
 import { InputPassword } from './InputPassword';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
+import { useRouter } from 'next/navigation';
+import { registerUser } from '../actions/auth';
+import { useAuth } from '../providers/AuthProvider';
 
 interface RegisterFormProps {
   birthDate: Date | undefined;
@@ -13,6 +16,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   birthDate,
   setBirthDate,
 }) => {
+  const router = useRouter();
+  const { refresh } = useAuth();
+
   // Estados de campos
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -21,6 +27,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [submitError, setSubmitError] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Estados de errores
   const [errors, setErrors] = useState({
@@ -88,7 +96,28 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     e.preventDefault();
     validateFields();
     if (!isFormValid) return;
-    console.log('Formulario válido, enviando...');
+    setSubmitError('');
+    setIsSubmitting(true);
+
+    void (async () => {
+      const result = await registerUser({
+        firstName,
+        lastName,
+        email,
+        password,
+        phone: phoneNumber || undefined,
+        birthDate: birthDate ? birthDate.toISOString() : undefined,
+      });
+
+      if (!result.success) {
+        setSubmitError(result.message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      await refresh();
+      router.push('/');
+    })();
   };
 
   // 🔴 clases dinámicas de border
@@ -119,6 +148,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         </div>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
+          {submitError && (
+            <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+              <p className="text-red-400 text-sm text-center">{submitError}</p>
+            </div>
+          )}
           {/* Nombre y Apellido */}
           <div className="grid grid-cols-1 min-[971px]:grid-cols-2 gap-6">
             <div className="flex flex-col">
@@ -296,14 +330,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
           <button
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid || isSubmitting}
             className={`cursor-pointer w-full py-3 rounded-lg text-white font-semibold transition duration-300 ease-in-out ${
-              isFormValid
+              isFormValid && !isSubmitting
                 ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 shadow-lg shadow-pink-500/25'
                 : 'opacity-50 cursor-not-allowed bg-gray-600'
             }`}
           >
-            Create Account
+            {isSubmitting ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
       </div>

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { useAuthRedux } from '../login/hooks/useAuthRedux';
+import { useAuth } from '../providers/AuthProvider';
 import { User, SignOut } from '@phosphor-icons/react';
 
 export const MobileNav = ({
@@ -12,7 +12,7 @@ export const MobileNav = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const { user, isAuthenticated, logout } = useAuthRedux();
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     if (isOpen) {
@@ -125,7 +125,9 @@ export const MobileNav = ({
                       size={20}
                       className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
                     />
-                    <span className="font-medium">{user?.name}</span>
+                    <span className="font-medium">
+                      {user ? `${user.firstName} ${user.lastName}` : ''}
+                    </span>
                   </div>
                   <button
                     onClick={() => {
