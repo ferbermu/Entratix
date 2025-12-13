@@ -4,7 +4,6 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -18,6 +17,7 @@ interface AuthContextValue {
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<boolean>;
+  setUser: (user: AuthUser | null) => void;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
   clearError: () => void;
@@ -25,10 +25,16 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({
+  children,
+  initialUser,
+}: {
+  children: React.ReactNode;
+  initialUser: AuthUser | null;
+}) {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
@@ -42,10 +48,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
 
   const clearError = useCallback(() => {
     setError(null);
@@ -95,6 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isLoading,
       error,
       login,
+      setUser,
       logout,
       refresh,
       clearError,

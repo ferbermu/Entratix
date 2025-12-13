@@ -59,6 +59,47 @@ export default function Page() {
   });
   const [bannerUrls, setBannerUrls] = useState<string[]>([]);
 
+  const placeholderArtists: EventArtistProps[] = [
+    {
+      photo: '/assets/party.png',
+      name: 'Artist One',
+      description: 'Artist',
+      artistSocialLinks: [],
+    },
+    {
+      photo: '/assets/party.png',
+      name: 'Artist Two',
+      description: 'Artist',
+      artistSocialLinks: [],
+    },
+    {
+      photo: '/assets/party.png',
+      name: 'Artist Three',
+      description: 'Artist',
+      artistSocialLinks: [],
+    },
+  ];
+
+  const placeholderTickets: IEventTicketOptions[] = [
+    { id: 1, ticketType: 'General Admission', price: 35 },
+    { id: 2, ticketType: 'VIP', price: 80 },
+  ];
+
+  const placeholderTags = ['MUSIC', 'PARTY NIGHT', 'BUY TICKETS'];
+
+  const artistsToRender = artistData.length > 0 ? artistData : placeholderArtists;
+  const ticketsToRender =
+    ticketOptions.length > 0 ? ticketOptions : placeholderTickets;
+  const tagsToRender = tags.length > 0 ? tags : placeholderTags;
+  const organizerToRender: EventOrganizerProps =
+    organizer.name.trim().length > 0
+      ? organizer
+      : {
+          name: 'Organizer',
+          description: eventDescription || 'Organizer description',
+          avatarUrl: '/assets/party.png',
+        };
+
   useEffect(() => {
     const fetchEvent = async () => {
       const all = await getAllEventsAction();
@@ -163,7 +204,7 @@ export default function Page() {
           variants={item}
           className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-1"
         >
-          <EventBanner urls={bannerUrls} />
+          <EventBanner urls={bannerUrls.length > 0 ? bannerUrls : undefined} />
         </motion.div>
 
         <motion.div variants={item} className="max-[1280px]:order-3">
@@ -171,9 +212,7 @@ export default function Page() {
             date={eventDateText}
             time={eventTimeText}
             startingPrice={
-              ticketOptions.length
-                ? ticketOptions.map(t => t.price).sort((a, b) => a - b)[0]
-                : undefined
+              ticketsToRender.map(t => t.price).sort((a, b) => a - b)[0]
             }
           />
         </motion.div>
@@ -192,7 +231,7 @@ export default function Page() {
           variants={item}
           className="flex flex-col bg-gradient-to-br from-gray-900/60 via-black/50 to-gray-800/60 backdrop-blur-md border border-gray-600/40 rounded-lg col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4 divide-y divide-gray-600/40  shadow-2xl hover:shadow-[0_0_20px_rgba(255,20,147,0.15)] transition-all duration-300"
         >
-          {artistData.map((artist, key) => (
+          {artistsToRender.map((artist, key) => (
             <motion.div key={key} variants={item}>
               <EventArtist {...artist} />
             </motion.div>
@@ -203,7 +242,7 @@ export default function Page() {
           variants={item}
           className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-5"
         >
-          <EventCheckout ticketOptions={ticketOptions} />
+          <EventCheckout ticketOptions={ticketsToRender} />
         </motion.div>
 
         <motion.div
@@ -211,8 +250,8 @@ export default function Page() {
           className="flex flex-col col-span-1 max-[1280px]:order-6 gap-6"
         >
           <EventLocation address={eventAddress} location={eventLocationText} />
-          <Tags tags={tags} />
-          <EventOrganizer {...organizer} />
+          <Tags tags={tagsToRender} />
+          <EventOrganizer {...organizerToRender} />
         </motion.div>
       </motion.div>
     </div>

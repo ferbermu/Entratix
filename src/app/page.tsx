@@ -330,6 +330,7 @@ const HomePage = () => {
                             }}
                           >
                             <Card
+                              id={item.id}
                               title={item.title}
                               address={item.address}
                               date={item.date}

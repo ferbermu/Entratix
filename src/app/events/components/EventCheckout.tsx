@@ -11,8 +11,16 @@ interface TicketState {
 export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
   const [ticketCounts, setTicketCounts] = useState<TicketState>({});
 
+  const fallbackTicketOptions: IEventTicketOptions[] = [
+    { id: 1, ticketType: 'General Admission', price: 35 },
+    { id: 2, ticketType: 'VIP', price: 80 },
+  ];
+
+  const ticketOptionsToRender =
+    ticketOptions.length > 0 ? ticketOptions : fallbackTicketOptions;
+
   const total = Object.keys(ticketCounts).reduce((sum, id) => {
-    const ticket = ticketOptions.find(t => t.id === Number(id));
+    const ticket = ticketOptionsToRender.find(t => t.id === Number(id));
     return sum + (ticket?.price || 0) * ticketCounts[Number(id)];
   }, 0);
 
@@ -26,7 +34,7 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
   const selectedTickets = Object.keys(ticketCounts)
     .filter(id => ticketCounts[Number(id)] > 0)
     .map(id => {
-      const ticket = ticketOptions.find(t => t.id === Number(id));
+      const ticket = ticketOptionsToRender.find(t => t.id === Number(id));
       return {
         ...ticket,
         quantity: ticketCounts[Number(id)],
@@ -53,7 +61,7 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
         </div>
 
         <div className="flex flex-col max-[700px]:gap-2.5 max-[700px]:py-4 divide-y divide-gray-600/40">
-          {ticketOptions.map(opt => (
+          {ticketOptionsToRender.map(opt => (
             <EventTicketOptions
               key={opt.id}
               id={opt.id}

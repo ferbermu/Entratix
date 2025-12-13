@@ -17,7 +17,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   setBirthDate,
 }) => {
   const router = useRouter();
-  const { refresh } = useAuth();
+  const { setUser } = useAuth();
 
   // Estados de campos
   const [firstName, setFirstName] = useState('');
@@ -115,7 +115,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         return;
       }
 
-      await refresh();
+      if (result.user) {
+        setUser(result.user);
+      }
       router.push('/');
     })();
   };

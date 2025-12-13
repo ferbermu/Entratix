@@ -11,7 +11,7 @@ export const EventBanner: React.FC<EventBannerProps> = ({ urls }) => {
   const bannerUrls = urls && urls.length > 0 ? urls : ['/assets/party.png'];
 
   return (
-    <div className="w-full h-full max-[1280px]:h-[400px] relative">
+    <div className="w-full h-[400px] relative">
       <Carousel
         className="h-full rounded-lg border-2 border-pink-500/30 shadow-2xl shadow-pink-500/20 hover:shadow-[0_0_50px_rgba(255,20,147,0.4)] transition-all duration-300 overflow-hidden"
         interval={5000}

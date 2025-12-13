@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useTransition } from 'react';
-import { calculateOrderTotal, createOrder } from '../../../actions/orders';
+import React, { useMemo, useState, useEffect, useTransition } from 'react';
+import { createOrder } from '../../../actions/orders';
 import { useRouter } from 'next/navigation';
 
 interface IEventTicketOptions {
@@ -25,65 +25,50 @@ export const EventCheckout: React.FC<EventCheckoutProps> = ({
 }) => {
   const router = useRouter();
   const [ticketCounts, setTicketCounts] = useState<Record<string, number>>({});
-  const [orderCalculation, setOrderCalculation] = useState<{
-    success: boolean;
-    items?: {
-      ticketId: string;
-      ticketType: string;
-      quantity: number;
-      unitPrice: number;
-      subtotal: number;
-    }[];
-    subtotal?: string;
-    taxes?: string;
-    serviceFee?: string;
-    total?: string;
-    currency?: string;
-    message?: string;
-  } | null>(null);
-  const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  const fallbackTickets = useMemo<IEventTicketOptions[]>(
+    () => [
+      {
+        id: 'placeholder-1',
+        name: 'General Admission',
+        price: 35,
+        benefits: [],
+        maxQuantity: 10,
+      },
+      { id: 'placeholder-2', name: 'VIP', price: 80, benefits: [], maxQuantity: 10 },
+    ],
+    []
+  );
+
+  const ticketsToRender = useMemo<IEventTicketOptions[]>(
+    () => (eventTickets.length > 0 ? eventTickets : fallbackTickets),
+    [eventTickets, fallbackTickets]
+  );
+
+  const ticketIdsKey = useMemo(
+    () => ticketsToRender.map(t => t.id).join('|'),
+    [ticketsToRender]
+  );
+
   useEffect(() => {
     const initialCounts: Record<string, number> = {};
-    eventTickets.forEach(ticket => {
+    ticketsToRender.forEach(ticket => {
       initialCounts[ticket.id] = 0;
     });
-    setTicketCounts(initialCounts);
-  }, [eventTickets]);
-
-  useEffect(() => {
-    const calculateTotal = async () => {
-      const selections = Object.entries(ticketCounts)
-        .filter(([, count]) => count > 0)
-        .map(([ticketId, count]) => ({ ticketId, quantity: count }));
-
-      if (selections.length === 0) {
-        setOrderCalculation(null);
-        return;
-      }
-
-      setIsCalculating(true);
-      const result = await calculateOrderTotal(eventId, selections);
-
-      if (result.success) {
-        setOrderCalculation(result);
-        setError(null);
-      } else {
-        setError(result.message || 'Failed to calculate total');
-        setOrderCalculation(null);
-      }
-      setIsCalculating(false);
-    };
-
-    calculateTotal();
-  }, [ticketCounts, eventId]);
+    setTicketCounts(prev => {
+      const prevKeys = Object.keys(prev).join('|');
+      if (prevKeys === ticketIdsKey) return prev;
+      return initialCounts;
+    });
+  }, [ticketIdsKey, ticketsToRender]);
 
   const handleIncrement = (ticketId: string) => {
-    const ticket = eventTickets.find(t => t.id === ticketId);
-    if (ticket && ticketCounts[ticketId] < ticket.maxQuantity) {
-      setTicketCounts(prev => ({ ...prev, [ticketId]: prev[ticketId] + 1 }));
+    const ticket = ticketsToRender.find(t => t.id === ticketId);
+    const maxQty = ticket && ticket.maxQuantity > 0 ? ticket.maxQuantity : 10;
+    if ((ticketCounts[ticketId] || 0) < maxQty) {
+      setTicketCounts(prev => ({ ...prev, [ticketId]: (prev[ticketId] || 0) + 1 }));
     }
   };
 
@@ -122,129 +107,164 @@ export const EventCheckout: React.FC<EventCheckoutProps> = ({
         alert(`Order created successfully! Order #${result.orderNumber}`);
         router.push('/my-tickets');
       } else {
-        alert(result.message || 'Failed to create order');
+        const msg = result.message || 'Failed to create order';
+        setError(msg);
+        alert(msg);
       }
     });
   };
 
-  return (
-    <div className="sticky top-4 bg-gradient-to-br from-pink-500/20 via-purple-900/30 to-black/50 backdrop-blur-md p-6 rounded-lg border border-cyan-400/30">
-      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
-        Get Tickets
-      </h2>
+  const selectedTickets = Object.entries(ticketCounts)
+    .filter(([, qty]) => qty > 0)
+    .map(([ticketId, qty]) => {
+      const ticket = ticketsToRender.find(t => t.id === ticketId);
+      return {
+        id: ticketId,
+        name: ticket?.name || 'Ticket',
+        price: ticket?.price || 0,
+        quantity: qty,
+        subtotal: (ticket?.price || 0) * qty,
+      };
+    });
 
-      <div className="space-y-4 mb-6">
-        {eventTickets.map(ticket => (
-          <EventTicketOptions
-            key={ticket.id}
-            {...ticket}
-            count={ticketCounts[ticket.id] || 0}
-            onIncrement={() => handleIncrement(ticket.id)}
-            onDecrement={() => handleDecrement(ticket.id)}
-          />
-        ))}
+  const total = selectedTickets.reduce((sum, t) => sum + t.subtotal, 0);
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Tabla de Tickets Disponibles (misma estética que /events) */}
+      <div className="w-full bg-gradient-to-r from-gray-900 via-black to-gray-800 overflow-hidden divide-y divide-cyan-400/40 shadow-2xl transition-all duration-300">
+        <div className="grid grid-cols-3 max-[700px]:grid-cols-2 text-pink-500 text-lg font-condensed">
+          <div className="pl-4 p-4 font-normal text-start drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]">
+            Ticket
+          </div>
+          <div className="p-4 font-normal text-center max-[700px]:text-end drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]">
+            Price
+          </div>
+          <div className="p-4 font-normal justify-self-end flex max-[700px]:hidden">
+            <div className="flex w-fit px-14 drop-shadow-[0_0_8px_rgba(255,20,147,0.6)]">
+              Buy
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col max-[700px]:gap-2.5 max-[700px]:py-4 divide-y divide-gray-600/40">
+          {ticketsToRender.map(ticket => (
+            <EventTicketOptions
+              key={ticket.id}
+              id={ticket.id}
+              name={ticket.name}
+              price={ticket.price}
+              count={ticketCounts[ticket.id] || 0}
+              maxQuantity={ticket.maxQuantity}
+              onIncrement={() => handleIncrement(ticket.id)}
+              onDecrement={() => handleDecrement(ticket.id)}
+            />
+          ))}
+        </div>
       </div>
 
-      {isCalculating && (
-        <div className="text-cyan-300 text-center py-4">
-          Calculating total...
-        </div>
-      )}
+      {/* Tickets Seleccionados */}
+      {selectedTickets.length > 0 && (
+        <div className="w-full bg-gradient-to-r from-gray-900 via-black to-gray-800 overflow-hidden divide-y divide-cyan-400/40 shadow-2xl transition-all duration-300">
+          <div className="grid grid-cols-4 text-purple-500 text-lg font-condensed">
+            <div className="pl-4 p-4 font-normal text-start drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
+              Ticket
+            </div>
+            <div className="p-4 font-normal text-center drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
+              Price($)
+            </div>
+            <div className="p-4 font-normal text-center drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
+              Qty
+            </div>
+            <div className="p-4 font-normal text-end drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
+              Sub-total($)
+            </div>
+          </div>
 
-      {error && <div className="text-red-400 text-center py-4">{error}</div>}
-
-      {orderCalculation && orderCalculation.items && (
-        <div className="space-y-2 mb-6 p-4 bg-black/30 rounded-lg">
-          <h3 className="font-semibold text-cyan-300 mb-2">Order Summary:</h3>
-          {orderCalculation.items.map((item, index) => (
-            <div key={index} className="flex justify-between text-sm">
-              <span>
-                {item.ticketType} x {item.quantity}
-              </span>
-              <span>${item.subtotal.toFixed(2)}</span>
+          {selectedTickets.map(ticket => (
+            <div key={ticket.id} className="grid grid-cols-4 text-xl text-white">
+              <div className="pl-4 p-4 text-start">{ticket.name}</div>
+              <div className="p-4 text-center">{ticket.price}</div>
+              <div className="p-4 text-center">{ticket.quantity}</div>
+              <div className="p-4 text-end">${ticket.subtotal}</div>
             </div>
           ))}
-          <hr className="border-cyan-400/30 my-2" />
-          <div className="flex justify-between text-sm">
-            <span>Subtotal:</span>
-            <span>${orderCalculation.subtotal}</span>
+
+          <div className="p-4 items-center flex">
+            <div className="w-full flex justify-between items-center">
+              <div className="flex justify-center">
+                <button
+                  onClick={handleCheckout}
+                  disabled={isPending}
+                  className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-white px-14 py-3 rounded-lg font-condensed font-semibold hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 transition-all duration-300 shadow-[0_0_20px_rgba(255,20,147,0.5)] hover:shadow-[0_0_30px_rgba(255,20,147,0.8)] transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isPending ? 'Processing...' : 'Checkout'}
+                </button>
+              </div>
+
+              <div className="flex flex-col items-end">
+                <span className="text-sm text-cyan-300/80 font-condensed drop-shadow-[0_0_5px_rgba(0,255,255,0.4)]">
+                  Total
+                </span>
+                <span className="text-[32px] font-condensed font-bold text-transparent bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 bg-clip-text drop-shadow-[0_0_15px_rgba(0,255,255,0.6)]">
+                  ${total}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between text-sm">
-            <span>Taxes (10%):</span>
-            <span>${orderCalculation.taxes}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span>Service Fee (5%):</span>
-            <span>${orderCalculation.serviceFee}</span>
-          </div>
-          <hr className="border-cyan-400/30 my-2" />
-          <div className="flex justify-between font-bold text-lg text-pink-500">
-            <span>Total:</span>
-            <span>${orderCalculation.total}</span>
-          </div>
+
+          {error && (
+            <div className="p-4 text-center text-red-400">{error}</div>
+          )}
         </div>
       )}
-
-      <button
-        onClick={handleCheckout}
-        disabled={isPending || !orderCalculation || isCalculating}
-        className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isPending ? 'Processing...' : 'Checkout'}
-      </button>
     </div>
   );
 };
 
 const EventTicketOptions: React.FC<
-  IEventTicketOptions & {
+  {
+    id: string;
+    name: string;
+    price: number;
     count: number;
+    maxQuantity: number;
     onIncrement: () => void;
     onDecrement: () => void;
   }
 > = ({
-  name,
-  price,
-  benefits,
   count,
-  maxQuantity,
   onIncrement,
   onDecrement,
+  name,
+  price,
+  maxQuantity,
 }) => {
+  const maxQty = maxQuantity > 0 ? maxQuantity : 10;
   return (
-    <div className="p-4 bg-black/30 rounded-lg border border-cyan-400/20">
-      <div className="flex justify-between items-start mb-2">
-        <div>
-          <h3 className="font-semibold text-cyan-300">{name}</h3>
-          <p className="text-2xl font-bold text-pink-500">${price}</p>
-        </div>
-        <div className="flex items-center gap-2">
+    <div className="grid grid-cols-3 max-[700px]:grid-cols-2 text-2xl text-white bg-gradient-to-r from-gray-900 via-black to-gray-800 max-[700px]:shadow-lg transition-all duration-300">
+      <div className="p-4 text-start">{name}</div>
+      <div className="p-4 text-center max-[700px]:text-end max-[700px]:w-full">
+        ${price}
+      </div>
+      <div className="p-4 flex justify-end items-center max-[700px]:col-span-2">
+        <div className="flex gap-6 w-fit max-[700px]:w-full items-center max-[700px]:text-start">
           <button
             onClick={onDecrement}
             disabled={count === 0}
-            className="w-8 h-8 bg-purple-600/50 rounded hover:bg-purple-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="bg-pink-500/20 h-10 w-10 rounded-lg text-2xl cursor-pointer hover:bg-pink-500/40 text-white border border-pink-500/30 hover:border-pink-500/60 transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,20,147,0.4)] disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            -
+            {'-'}
           </button>
-          <span className="w-8 text-center font-semibold">{count}</span>
+          <span>{count}</span>
           <button
             onClick={onIncrement}
-            disabled={count >= maxQuantity}
-            className="w-8 h-8 bg-purple-600/50 rounded hover:bg-purple-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            disabled={count >= maxQty}
+            className="bg-gradient-to-r from-pink-500 to-purple-500 h-10 w-10 rounded-lg text-2xl cursor-pointer hover:from-pink-600 hover:to-purple-600 text-white transition-all duration-300 shadow-[0_0_15px_rgba(255,20,147,0.4)] hover:shadow-[0_0_25px_rgba(255,20,147,0.6)] transform hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            +
+            {'+'}
           </button>
         </div>
-      </div>
-      {benefits.length > 0 && (
-        <ul className="text-sm text-gray-300 space-y-1">
-          {benefits.map((benefit, index) => (
-            <li key={index}>• {benefit}</li>
-          ))}
-        </ul>
-      )}
-      <div className="text-xs text-gray-400 mt-2">
-        Max {maxQuantity} per order
       </div>
     </div>
   );
