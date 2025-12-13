@@ -186,7 +186,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
                 </p>
               )}
               <div className="flex items-center gap-6 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-4">
-                <button className="cursor-pointer bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,20,147,0.6)] border border-pink-500/50 hover:border-cyan-400 max-[700px]:w-full max-[700px]:text-center">
+                <button className="cursor-pointer px-6 py-3 rounded-xl font-semibold transition-all duration-300 bg-white text-black hover:bg-gray-200 border border-white/60 hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] max-[700px]:w-full max-[700px]:text-center">
                   Get Tickets from {currentEvent.price || '$35'}
                 </button>
                 <div className="flex items-center gap-4 text-sm text-cyan-200 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-3 max-[700px]:w-full">
@@ -213,7 +213,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
 
       <button
         onClick={prevSlide}
-        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-black/60 hover:from-pink-500/50 hover:via-purple-500/50 hover:to-cyan-400/50 p-3 rounded-full text-white transition-all duration-300 border border-pink-500/50 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(255,20,147,0.6)] backdrop-blur-sm z-20 max-[700px]:hidden"
+        className="cursor-pointer absolute top-1/2 left-6 -translate-y-1/2 p-3 rounded-full text-white transition-all duration-300 hover:opacity-80 z-20 max-[700px]:hidden bg-transparent"
         type="button"
       >
         <CaretLeft
@@ -223,7 +223,7 @@ export const CarrouselImage: React.FC<CarrouselImageProps> = ({
       </button>
       <button
         onClick={nextSlide}
-        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-black/60 via-purple-500/30 to-cyan-400/30 hover:from-cyan-400/50 hover:via-purple-500/50 hover:to-pink-500/50 p-3 rounded-full text-white transition-all duration-300 border border-cyan-400/50 hover:border-pink-500 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] backdrop-blur-sm z-20 max-[700px]:hidden"
+        className="cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 p-3 rounded-full text-white transition-all duration-300 hover:opacity-80 z-20 max-[700px]:hidden bg-transparent"
         type="button"
       >
         <CaretRight

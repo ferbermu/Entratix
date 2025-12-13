@@ -272,7 +272,7 @@ const HomePage = () => {
               transition={{ duration: 0.3, delay: hasActiveFilters ? 0.2 : 0 }}
               style={{ isolation: 'isolate' }}
             >
-              <h1 className="w-full text-3xl font-condensed font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text mb-8 relative">
+              <h1 className="w-full text-3xl font-condensed font-bold text-white mb-8 relative">
                 All Events{' '}
                 {filteredCards.length > 0 ? `(${filteredCards.length})` : ''}
                 {/* Neon glow effect */}

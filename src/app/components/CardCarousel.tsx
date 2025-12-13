@@ -67,7 +67,7 @@ export const CardCarousel: React.FC<CardCarouselProps> = ({
   return (
     <div className="relative w-full flex flex-col items-center">
       <div className="flex justify-between items-center mb-6 w-full max-w-[1400px]">
-        <h2 className="text-2xl font-condensed font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text relative">
+        <h2 className="text-2xl font-condensed font-bold text-white relative">
           Featured Events
           {/* Neon glow effect */}
           <div className="absolute inset-0 text-pink-500 blur-sm opacity-40">

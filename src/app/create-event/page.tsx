@@ -14,7 +14,17 @@ import { useRouter } from 'next/navigation';
 import { generateRandomEventData } from './utils/randomEventData';
 
 export default function CreateEventPage() {
-  const { createEvent, resetForm, eventForm, updateField, addTicket, addArtist, addBannerImage, addTag, addRrppEmail } = useEventForm();
+  const {
+    createEvent,
+    resetForm,
+    eventForm,
+    updateField,
+    addTicket,
+    addArtist,
+    addBannerImage,
+    addTag,
+    addRrppEmail,
+  } = useEventForm();
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
@@ -38,24 +48,24 @@ export default function CreateEventPage() {
     updateField('organizerPhone', randomData.organizerPhone);
     updateField('organizerLogo', randomData.organizerLogo);
 
-    randomData.bannerImageUrls.forEach((url) => {
+    randomData.bannerImageUrls.forEach(url => {
       addBannerImage(url);
     });
 
-    randomData.tickets.forEach((ticket) => {
+    randomData.tickets.forEach(ticket => {
       addTicket(ticket);
     });
 
-    randomData.artists.forEach((artist) => {
+    randomData.artists.forEach(artist => {
       addArtist(artist);
     });
 
     if (randomData.tags) {
-      randomData.tags.forEach((tag) => addTag(tag));
+      randomData.tags.forEach(tag => addTag(tag));
     }
 
     if (randomData.rrppEmails) {
-      randomData.rrppEmails.forEach((email) => addRrppEmail(email));
+      randomData.rrppEmails.forEach(email => addRrppEmail(email));
     }
 
     alert('Random event data generated! Review and click "Create Event"');
@@ -81,7 +91,9 @@ export default function CreateEventPage() {
 
   const handleCreateEvent = async () => {
     if (!eventForm.title || !eventForm.category || !eventForm.description) {
-      alert('Please fill in all required fields: Title, Category, and Description');
+      alert(
+        'Please fill in all required fields: Title, Category, and Description'
+      );
       return;
     }
 
@@ -110,8 +122,13 @@ export default function CreateEventPage() {
       return;
     }
 
-    if (eventForm.isCarousel && (!eventForm.carouselImageUrl || eventForm.carouselImageUrl.trim() === '')) {
-      alert('Please provide a Carousel Image URL (or disable Show in Carousel)');
+    if (
+      eventForm.isCarousel &&
+      (!eventForm.carouselImageUrl || eventForm.carouselImageUrl.trim() === '')
+    ) {
+      alert(
+        'Please provide a Carousel Image URL (or disable Show in Carousel)'
+      );
       return;
     }
 
@@ -189,7 +206,7 @@ export default function CreateEventPage() {
           variants={item}
           className="flex flex-col items-center justify-center py-30 gap-4 relative z-10"
         >
-          <h1 className="text-5xl font-bold text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text relative">
+          <h1 className="text-5xl font-bold  text-white relative">
             Create New Event
             {/* Neon glow effect */}
             <div className="absolute inset-0 text-pink-500 blur-sm opacity-40">
@@ -205,9 +222,9 @@ export default function CreateEventPage() {
           </div>
         </motion.div>
 
-            <motion.div variants={item}>
-              <EventDetails />
-            </motion.div>
+        <motion.div variants={item}>
+          <EventDetails />
+        </motion.div>
 
         <motion.div variants={item}>
           <CreateArtist />
@@ -243,7 +260,9 @@ export default function CreateEventPage() {
             type="button"
             className="cursor-pointer flex gap-2 items-center text-sm bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-purple-500/30 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border border-cyan-500/20 hover:from-cyan-500/50 hover:via-blue-500/50 hover:to-purple-500/50 hover:border-blue-400 relative overflow-hidden"
           >
-            <span className="relative z-10">🎲 Generate Random Event Data (Testing)</span>
+            <span className="relative z-10">
+              🎲 Generate Random Event Data (Testing)
+            </span>
           </button>
         </motion.div>
 
