@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardProps } from './components/Card';
 import { CarrouselImage } from './components/CarrouselImage';
 import { JoinNow } from './components/JoinNow';
@@ -8,6 +8,12 @@ import { CardCarousel } from './components/CardCarousel';
 import { type DateRange } from 'react-day-picker';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LoadingSpinner } from './components/LoadingSpinner';
+import {
+  getAllEventsAction,
+  getCarouselEventsAction,
+  getNonFeaturedEventsAction,
+} from './actions/events';
+import { GetEvent } from './interfaces/GetEvent/Event';
 
 const formatDateDDMMYYYY = (d: Date | string | null | undefined): string => {
   if (!d) return '';
@@ -58,16 +64,12 @@ const HomePage = () => {
     const fetchEvents = async () => {
       setIsLoading(true);
       try {
-        const [nonFeaturedRes, carouselRes] = await Promise.all([
-          fetch('/api/events?type=nonfeatured', { cache: 'no-store' }),
-          fetch('/api/events?type=carousel', { cache: 'no-store' }),
+        let [nonFeatured, carousel] = await Promise.all([
+          getNonFeaturedEventsAction(),
+          getCarouselEventsAction(),
         ]);
-        const nonFeaturedJson = await nonFeaturedRes.json();
-        const carouselJson = await carouselRes.json();
-        let nonFeatured = nonFeaturedJson?.events || [];
-        const carousel = carouselJson?.events || [];
 
-        const mapToBaseCard = (e: any): CardProps => ({
+        const mapToBaseCard = (e: GetEvent): CardProps => ({
           id: e.id,
           title: e.title,
           address: e.location || e.address || '',
@@ -76,7 +78,7 @@ const HomePage = () => {
           imageUrl: e.cardImageUrl || '/assets/party.png',
         });
 
-        const mapToCarouselCard = (e: any): CardProps => {
+        const mapToCarouselCard = (e: GetEvent): CardProps => {
           const bannerFirst =
             Array.isArray(e.bannerImageUrls) && e.bannerImageUrls.length > 0
               ? e.bannerImageUrls[0]
@@ -94,14 +96,12 @@ const HomePage = () => {
         };
 
         // Fallback: si no hay non-featured, traer todos los activos
-        if (!Array.isArray(nonFeatured) || nonFeatured.length === 0) {
-          const allRes = await fetch('/api/events', { cache: 'no-store' });
-          const allJson = await allRes.json();
-          nonFeatured = allJson?.events || [];
+        if (nonFeatured.length === 0) {
+          nonFeatured = await getAllEventsAction();
         }
 
-        const base = Array.isArray(nonFeatured) ? nonFeatured.map(mapToBaseCard) : [];
-        const carouselMapped = Array.isArray(carousel) ? carousel.map(mapToCarouselCard) : [];
+        const base = nonFeatured.map(mapToBaseCard);
+        const carouselMapped = carousel.map(mapToCarouselCard);
 
         setCardsBase(base);
         setFilteredCards(base);
