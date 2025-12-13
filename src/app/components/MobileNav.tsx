@@ -92,6 +92,13 @@ export const MobileNav = ({
                 RRPP Dashbord
               </Link>
               <Link
+                href="/scan"
+                className="text-white text-lg hover:text-transparent hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 hover:bg-clip-text transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(0,255,255,0.6)] font-medium"
+                onClick={onClose}
+              >
+                Scan
+              </Link>
+              <Link
                 href="/profile"
                 className="text-white text-lg hover:text-transparent hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-cyan-400 hover:bg-clip-text transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,20,147,0.6)] font-medium"
                 onClick={onClose}

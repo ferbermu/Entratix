@@ -18,6 +18,7 @@ import {
   SignIn,
   User,
   SignOut,
+  QrCode,
 } from '@phosphor-icons/react';
 import cn from 'classnames';
 
@@ -43,6 +44,7 @@ export const Navbar = () => {
   const isCreateEvent = pathname?.startsWith('/create-event');
   const isRrpp = pathname?.startsWith('/rrpp-dashbord');
   const isProfile = pathname?.startsWith('/profile');
+  const isScan = pathname?.startsWith('/scan');
   const isRegister = pathname?.startsWith('/register');
   const isLoginPath = pathname?.startsWith('/login');
 
@@ -137,6 +139,19 @@ export const Navbar = () => {
                 className={cn(hoverClass, { [activeClass]: isRrpp })}
                 icon={
                   <ChartBar
+                    size={20}
+                    className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                  />
+                }
+              />
+            </Link>
+            <Link href="/scan">
+              <Navbutton
+                text="Scan"
+                onClick={() => {}}
+                className={cn(hoverClass, { [activeClass]: isScan })}
+                icon={
+                  <QrCode
                     size={20}
                     className="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
                   />
