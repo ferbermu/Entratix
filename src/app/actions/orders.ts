@@ -3,7 +3,10 @@
 import { db } from '../../lib/db';
 import { orders, orderItems, userTickets, paymentTransactions } from '../../lib/db/schema/orders';
 import { tickets, events } from '../../lib/db/schema/events';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, isNull } from 'drizzle-orm';
+import { users } from '../../lib/db/schema/users';
+import { getCurrentUserFromSession } from '../lib/auth/getCurrentUser';
+import { ValidateTicketResult } from '../scan/interfaces/ValidateTicket/ValidateTicketResult';
 
 interface TicketSelection {
   ticketId: string;
@@ -15,6 +18,11 @@ interface CreateOrderInput {
   eventId: string;
   selections: TicketSelection[];
   paymentMethod: string;
+}
+
+function formatDateISO(value: Date | null): string | null {
+  if (!value) return null;
+  return value.toISOString();
 }
 
 export async function calculateOrderTotal(eventId: string, selections: TicketSelection[]) {
@@ -157,6 +165,119 @@ export async function createOrder(input: CreateOrderInput) {
     console.error('Error creating order:', error);
     return { success: false, message: 'Failed to create order' };
   }
+}
+
+export async function validateTicketCode(ticketCodeRaw: string): Promise<ValidateTicketResult> {
+  const ticketCode = ticketCodeRaw.trim();
+  if (!ticketCode) {
+    return { success: false, message: 'Invalid ticket code' };
+  }
+
+  const scanner = await getCurrentUserFromSession();
+  if (!scanner) {
+    return { success: false, message: 'Unauthorized' };
+  }
+
+  const role = scanner.role;
+  const isScannerRole =
+    role === 'rrpp' || role === 'productor' || role === 'superuser';
+  const allowNonScannerInDev = process.env.NODE_ENV !== 'production';
+  const allowAll = process.env.SCAN_ALLOW_ALL === 'true';
+  const allowUserRole = process.env.SCAN_ALLOW_USER === 'true' && role === 'user';
+
+  if (!isScannerRole && !allowNonScannerInDev && !allowAll && !allowUserRole) {
+    return {
+      success: false,
+      message: 'Forbidden (requires rrpp/productor/superuser)',
+    };
+  }
+
+  const [row] = await db
+    .select({
+      ticketCode: userTickets.ticketCode,
+      status: userTickets.status,
+      usedAt: userTickets.usedAt,
+      eventTitle: events.title,
+      eventDate: events.date,
+      ticketType: tickets.type,
+      ownerFirstName: users.firstName,
+      ownerLastName: users.lastName,
+      ownerEmail: users.email,
+    })
+    .from(userTickets)
+    .leftJoin(events, eq(userTickets.eventId, events.id))
+    .leftJoin(tickets, eq(userTickets.ticketId, tickets.id))
+    .leftJoin(users, eq(userTickets.userId, users.id))
+    .where(eq(userTickets.ticketCode, ticketCode))
+    .limit(1);
+
+  if (!row || !row.eventTitle || !row.eventDate || !row.ticketType || !row.ownerEmail) {
+    return { success: false, message: 'Ticket not found' };
+  }
+
+  const ownerName = `${row.ownerFirstName || ''} ${row.ownerLastName || ''}`.trim() || 'User';
+
+  if (row.status !== 'active' || row.usedAt) {
+    return {
+      success: false,
+      message: row.status === 'used' || row.usedAt ? 'Ticket already used' : 'Ticket not active',
+      ticket: {
+        ticketCode: row.ticketCode,
+        status: row.status,
+        usedAt: formatDateISO(row.usedAt),
+        eventTitle: row.eventTitle,
+        eventDate: row.eventDate.toISOString(),
+        ticketType: row.ticketType,
+        ownerName,
+        ownerEmail: row.ownerEmail,
+      },
+    };
+  }
+
+  const now = new Date();
+  const updated = await db
+    .update(userTickets)
+    .set({ status: 'used', usedAt: now })
+    .where(
+      and(
+        eq(userTickets.ticketCode, ticketCode),
+        eq(userTickets.status, 'active'),
+        isNull(userTickets.usedAt)
+      )
+    )
+    .returning({ usedAt: userTickets.usedAt, status: userTickets.status });
+
+  if (updated.length === 0) {
+    return {
+      success: false,
+      message: 'Ticket already used',
+      ticket: {
+        ticketCode: row.ticketCode,
+        status: 'used',
+        usedAt: now.toISOString(),
+        eventTitle: row.eventTitle,
+        eventDate: row.eventDate.toISOString(),
+        ticketType: row.ticketType,
+        ownerName,
+        ownerEmail: row.ownerEmail,
+      },
+    };
+  }
+
+  return {
+    success: true,
+    message: 'Ticket validated',
+    ticket: {
+      ticketCode: row.ticketCode,
+      status: 'used',
+      usedAt: now.toISOString(),
+      eventTitle: row.eventTitle,
+      eventDate: row.eventDate.toISOString(),
+      ticketType: row.ticketType,
+      ownerName,
+      ownerEmail: row.ownerEmail,
+    },
+  };
 }
 
 export async function getUserTickets(userId: string) {

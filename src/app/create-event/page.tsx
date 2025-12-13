@@ -204,7 +204,7 @@ export default function CreateEventPage() {
       >
         <motion.div
           variants={item}
-          className="flex flex-col items-center justify-center py-30 gap-4 relative z-10"
+          className="flex flex-col items-center justify-center pt-32 pb-10 gap-4 relative z-10"
         >
           <h1 className="text-5xl font-bold  text-white relative">
             Create New Event

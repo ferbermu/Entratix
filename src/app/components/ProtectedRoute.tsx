@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 
 interface ProtectedRouteProps {
   children: ReactNode;

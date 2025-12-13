@@ -9,7 +9,7 @@ import { MobileNav } from './MobileNav';
 import { useScroll } from '../hooks/useScroll';
 import { useMobileMenu } from '../hooks/useMobileMenu';
 import { MobileSearch } from './MobileSearch';
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 import {
   Ticket,
   CalendarPlus,

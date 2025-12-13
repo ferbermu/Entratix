@@ -2,7 +2,9 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
+import { validateTicketCode } from '../actions/orders';
+import { ValidateTicketResult } from './interfaces/ValidateTicket/ValidateTicketResult';
 
 interface BarcodeDetectorDetection {
   rawValue?: string;
@@ -59,8 +61,45 @@ export default function ScanPage() {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string>('');
   const [result, setResult] = useState<ScanResult | null>(null);
+  const [validation, setValidation] = useState<ValidateTicketResult | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
   // Important: keep initial value deterministic for SSR to avoid hydration mismatch.
   const [isSecureContextValue, setIsSecureContextValue] = useState(false);
+
+  const extractTicketCode = useCallback((raw: string): string | null => {
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+    const prefix = 'ENTRATIX:TICKET:';
+    if (trimmed.startsWith(prefix)) {
+      const code = trimmed.slice(prefix.length).trim();
+      return code || null;
+    }
+
+    const match = trimmed.match(/TCK-[A-Z0-9-]+/);
+    return match ? match[0] : null;
+  }, []);
+
+  const runValidation = useCallback(
+    async (rawValue: string) => {
+      setValidation(null);
+      setIsValidating(true);
+      setError('');
+      try {
+        const code = extractTicketCode(rawValue);
+        if (!code) {
+          setValidation({ success: false, message: 'QR inválido (no contiene ticketCode)' });
+          return;
+        }
+        const res = await validateTicketCode(code);
+        setValidation(res);
+      } catch {
+        setValidation({ success: false, message: 'Failed to validate ticket' });
+      } finally {
+        setIsValidating(false);
+      }
+    },
+    [extractTicketCode]
+  );
 
   const stopScan = useCallback(() => {
     if (rafRef.current !== null) {
@@ -85,6 +124,7 @@ export default function ScanPage() {
   const startScan = useCallback(async () => {
     setError('');
     setResult(null);
+    setValidation(null);
 
     if (!navigator.mediaDevices?.getUserMedia) {
       setError('No se pudo acceder a la cámara (getUserMedia no disponible).');
@@ -145,6 +185,7 @@ export default function ScanPage() {
             if (first?.rawValue) {
               setResult({ value: first.rawValue, scannedAtMs: Date.now() });
               stopScan();
+              await runValidation(first.rawValue);
               return;
             }
           } else if (jsQrRef.current) {
@@ -155,6 +196,7 @@ export default function ScanPage() {
             if (decoded?.data) {
               setResult({ value: decoded.data, scannedAtMs: Date.now() });
               stopScan();
+              await runValidation(decoded.data);
               return;
             }
           }
@@ -174,7 +216,7 @@ export default function ScanPage() {
         e instanceof Error ? e.message : 'No se pudo acceder a la cámara.';
       setError(message);
     }
-  }, [stopScan]);
+  }, [runValidation, stopScan]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -229,6 +271,46 @@ export default function ScanPage() {
               <div className="mt-2 text-sm text-gray-400">
                 {new Date(result.scannedAtMs).toLocaleString()}
               </div>
+            </div>
+          )}
+
+          {isValidating && (
+            <div className="mt-4 p-3 bg-black/30 rounded-lg border border-cyan-400/20 text-cyan-300">
+              Validando ticket…
+            </div>
+          )}
+
+          {validation && (
+            <div
+              className={`mt-4 p-4 rounded-lg border ${
+                validation.success
+                  ? 'bg-green-500/10 border-green-500/30 text-green-200'
+                  : 'bg-red-500/10 border-red-500/30 text-red-200'
+              }`}
+            >
+              <div className="font-semibold">
+                {validation.success ? 'VALID' : 'INVALID'} — {validation.message}
+              </div>
+              {validation.ticket && (
+                <div className="mt-3 text-sm text-gray-200 space-y-1">
+                  <div>
+                    <span className="text-gray-400">Event:</span>{' '}
+                    {validation.ticket.eventTitle}
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Ticket:</span>{' '}
+                    {validation.ticket.ticketType}
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Owner:</span>{' '}
+                    {validation.ticket.ownerName} ({validation.ticket.ownerEmail})
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Code:</span>{' '}
+                    {validation.ticket.ticketCode}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

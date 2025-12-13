@@ -5,9 +5,8 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Header } from './Header';
 import { TicketAdquired } from './TicketAdquired';
 import { CardTicket, CardTicketProps } from './CardTicket';
-import { TotalTickets } from './TotalTickets';
 import { getUserTickets, getUserOrders } from '../actions/orders';
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 
 type TicketStatusFilter = 'all' | 'Active' | 'Completed' | 'Expired';
 
@@ -122,6 +121,7 @@ export default function MyTicketsPage() {
               ticketType: `${ticketCount}× ${ticket.type}`,
               ticketPrice: `$${parseFloat(ticket.price).toFixed(2)}`,
               totalPaid: `$${totalPrice.toFixed(2)}`,
+              ticketCodes: orderTickets.map(t => t.ticketCode),
             };
           })
           .filter((ticket): ticket is CardTicketProps => ticket !== null);
@@ -210,12 +210,7 @@ export default function MyTicketsPage() {
   return (
     <div className="w-full h-full min-h-screen px-4 sm:px-8 md:px-16 lg:px-60 text-white">
       <Header />
-      <div className="py-8">
-        <TotalTickets
-          totalSpent={totalSpent}
-          totalEvents={totalEvents}
-          totalTickets={totalTickets}
-        />
+      <div className="py-2">
         <div className="py-6">
           <TicketAdquired
             selected={statusFilter}

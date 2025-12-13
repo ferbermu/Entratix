@@ -58,14 +58,14 @@ export const EventDetails: React.FC = () => {
             />
             <div className="text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-2xl font-semibold relative">
               Event Details
-              <div className="absolute inset-0 text-pink-500 blur-sm opacity-30">
+              <div className="absolute inset-y-0 text-pink-500 blur-sm opacity-30">
                 Event Details
               </div>
             </div>
           </div>
 
           {/* Event Title */}
-          <div className="flex flex-col gap-6 md:flex-row md:gap-8">
+          <div className="flex flex-col gap-6 py-5 md:flex-row md:gap-8">
             <div className="flex-1 flex flex-col gap-1">
               <InputField
                 label="Event Title"

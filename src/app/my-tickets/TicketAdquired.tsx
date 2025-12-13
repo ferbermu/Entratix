@@ -14,10 +14,11 @@ export const TicketAdquired: React.FC<TicketAdquiredProps> = ({
     { label: 'Active', value: 'Active' },
     { label: 'Completed', value: 'Completed' },
     { label: 'Expired', value: 'Expired' },
-    { label: 'All', value: 'All' },
+    { label: 'All', value: 'all' },
   ];
 
-  const selectedIndex = options.findIndex(opt => opt.value === selected);
+  const selectedIndexRaw = options.findIndex(opt => opt.value === selected);
+  const selectedIndex = selectedIndexRaw === -1 ? 0 : selectedIndexRaw;
 
   return (
     <div className="flex items-center w-full h-full justify-between bg-gradient-to-r from-pink-500/10 via-purple-900/20 to-cyan-400/10 border border-pink-500/30 rounded-lg text-lg max-[1075px]:text-md max-[700px]:text-xs overflow-hidden backdrop-blur-sm relative">

@@ -9,7 +9,7 @@ import { EventArtist, EventArtistProps } from '../components/EventArtist';
 import { EventCheckout } from './components/EventCheckout';
 import { EventOrganizer } from '../components/EventOrganizer';
 import { getEventByIdAction } from '../../actions/events';
-import { useAuth } from '../../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 import { Tags } from '../components/Tags';
 
 interface PageProps {

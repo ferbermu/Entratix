@@ -14,7 +14,7 @@ import {
 } from './components/EventOrganizer';
 import { useEffect, useState } from 'react';
 import { getAllEventsAction, getEventByIdAction } from '../actions/events';
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 
 // === DATA ===
 const formatDateLong = (date: Date) =>

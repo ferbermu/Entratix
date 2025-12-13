@@ -5,7 +5,7 @@ import { InputPassword } from './InputPassword';
 import { CalendarDropdownSimple } from '@/components/CalendarDropdownSimple';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '../actions/auth';
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 
 interface RegisterFormProps {
   birthDate: Date | undefined;

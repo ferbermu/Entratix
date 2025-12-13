@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import QRCode from 'react-qr-code';
 import { Download, QrCode, ShareNetwork } from '@phosphor-icons/react';
@@ -18,6 +18,7 @@ export interface CardTicketProps {
   ticketType: string;
   ticketPrice: string;
   totalPaid: string;
+  ticketCodes: string[];
 }
 
 export const CardTicket: React.FC<CardTicketProps> = ({
@@ -31,9 +32,21 @@ export const CardTicket: React.FC<CardTicketProps> = ({
   ticketType,
   ticketPrice,
   totalPaid,
+  ticketCodes,
 }) => {
   const [showQR, setShowQR] = useState(false);
+  const [qrIndex, setQrIndex] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const codes = ticketCodes.length > 0 ? ticketCodes : [''];
+  const currentCode = codes[qrIndex] || '';
+  const qrValue = currentCode ? `ENTRATIX:TICKET:${currentCode}` : `Ticket - ${title} - ${date} - ${time}`;
+
+  useEffect(() => {
+    if (showQR) {
+      setQrIndex(0);
+    }
+  }, [showQR]);
 
   const downloadTicketPDF = async () => {
     try {
@@ -469,12 +482,34 @@ export const CardTicket: React.FC<CardTicketProps> = ({
           {/* QR Code with neon border effect */}
           <div className="relative p-4 rounded-xl bg-white/95 backdrop-blur-sm border-2 border-pink-500/30 shadow-xl">
             <QRCode
-              value={`Ticket - ${title} - ${date} - ${time}`}
+              value={qrValue}
               size={180}
             />
             {/* Glow effect around QR */}
             <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-400/10 blur-xl rounded-xl opacity-30 -z-10"></div>
           </div>
+
+          {ticketCodes.length > 1 && (
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setQrIndex((i) => (i === 0 ? codes.length - 1 : i - 1))}
+                className="px-3 py-2 rounded-lg border border-cyan-400/30 bg-black/30 text-cyan-200 hover:border-cyan-400/60 transition-all"
+              >
+                Prev
+              </button>
+              <div className="text-sm text-gray-300">
+                Ticket {qrIndex + 1} / {codes.length}
+              </div>
+              <button
+                type="button"
+                onClick={() => setQrIndex((i) => (i + 1) % codes.length)}
+                className="px-3 py-2 rounded-lg border border-cyan-400/30 bg-black/30 text-cyan-200 hover:border-cyan-400/60 transition-all"
+              >
+                Next
+              </button>
+            </div>
+          )}
 
           <p className="mt-6 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold text-sm text-center relative">
             {title} • {date} {time}

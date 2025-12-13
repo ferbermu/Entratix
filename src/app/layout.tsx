@@ -4,7 +4,7 @@ import './globals.css';
 import { Navbar } from './components/Navbar';
 import Footer from './components/Footer';
 import { ReduxProvider } from './providers/ReduxProvider';
-import { AuthProvider } from './providers/AuthProvider';
+import { AuthProvider } from '@/providers/AuthProvider';
 import { getCurrentUserFromSession } from './lib/auth/getCurrentUser';
 
 const geistSans = Geist({
