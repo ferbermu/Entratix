@@ -14,6 +14,7 @@ import {
 } from './components/EventOrganizer';
 import { useEffect, useState } from 'react';
 import { getAllEventsAction, getEventByIdAction } from '../actions/events';
+import { useAuth } from '../providers/AuthProvider';
 
 // === DATA ===
 const formatDateLong = (date: Date) =>
@@ -43,6 +44,7 @@ const item: Variants = {
 };
 
 export default function Page() {
+  const { user } = useAuth();
   const [eventTitle, setEventTitle] = useState<string>('');
   const [eventDescription, setEventDescription] = useState<string>('');
   const [eventDateText, setEventDateText] = useState<string>('');
@@ -52,6 +54,7 @@ export default function Page() {
   const [artistData, setArtistData] = useState<EventArtistProps[]>([]);
   const [ticketOptions, setTicketOptions] = useState<IEventTicketOptions[]>([]);
   const [tags, setTags] = useState<string[]>([]);
+  const [eventId, setEventId] = useState<string>('');
   const [organizer, setOrganizer] = useState<EventOrganizerProps>({
     name: '',
     description: '',
@@ -81,8 +84,8 @@ export default function Page() {
   ];
 
   const placeholderTickets: IEventTicketOptions[] = [
-    { id: 1, ticketType: 'General Admission', price: 35 },
-    { id: 2, ticketType: 'VIP', price: 80 },
+    { id: 'placeholder-1', ticketType: 'General Admission', price: 35 },
+    { id: 'placeholder-2', ticketType: 'VIP', price: 80 },
   ];
 
   const placeholderTags = ['MUSIC', 'PARTY NIGHT', 'BUY TICKETS'];
@@ -108,6 +111,7 @@ export default function Page() {
       const full = await getEventByIdAction(first.id);
       if (!full) return;
 
+      setEventId(full.id);
       setEventTitle(full.title);
       setEventDescription(full.description);
       setEventDateText(formatDateLong(new Date(full.date)));
@@ -124,8 +128,8 @@ export default function Page() {
       setArtistData(mappedArtists);
 
       const mappedTickets: IEventTicketOptions[] = (full.tickets || []).map(
-        (t, idx) => ({
-          id: idx + 1,
+        (t) => ({
+          id: t.id,
           ticketType: t.type,
           price: parseFloat(t.price as unknown as string),
         })
@@ -242,7 +246,11 @@ export default function Page() {
           variants={item}
           className="col-span-2 max-[1280px]:col-span-1 max-[1280px]:order-5"
         >
-          <EventCheckout ticketOptions={ticketsToRender} />
+          <EventCheckout
+            eventId={eventId}
+            userId={user?.id}
+            ticketOptions={ticketsToRender}
+          />
         </motion.div>
 
         <motion.div

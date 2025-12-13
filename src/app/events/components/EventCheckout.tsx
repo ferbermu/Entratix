@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { createOrder } from '../../actions/orders';
 
 interface IEventCheckout {
+  eventId: string;
+  userId?: string;
   ticketOptions: IEventTicketOptions[];
 }
 
 interface TicketState {
-  [key: number]: number;
+  [key: string]: number;
 }
 
-export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
+export const EventCheckout = ({ eventId, userId, ticketOptions }: IEventCheckout) => {
+  const router = useRouter();
   const [ticketCounts, setTicketCounts] = useState<TicketState>({});
+  const [isPending, startTransition] = useTransition();
 
   const fallbackTicketOptions: IEventTicketOptions[] = [
-    { id: 1, ticketType: 'General Admission', price: 35 },
-    { id: 2, ticketType: 'VIP', price: 80 },
+    { id: 'placeholder-1', ticketType: 'General Admission', price: 35 },
+    { id: 'placeholder-2', ticketType: 'VIP', price: 80 },
   ];
 
   const ticketOptionsToRender =
     ticketOptions.length > 0 ? ticketOptions : fallbackTicketOptions;
 
   const total = Object.keys(ticketCounts).reduce((sum, id) => {
-    const ticket = ticketOptionsToRender.find(t => t.id === Number(id));
-    return sum + (ticket?.price || 0) * ticketCounts[Number(id)];
+    const ticket = ticketOptionsToRender.find(t => t.id === id);
+    return sum + (ticket?.price || 0) * ticketCounts[id];
   }, 0);
 
-  const handleQuantityChange = (id: number, quantity: number) => {
+  const handleQuantityChange = (id: string, quantity: number) => {
     setTicketCounts(prev => ({
       ...prev,
       [id]: quantity,
@@ -32,15 +38,53 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
   };
 
   const selectedTickets = Object.keys(ticketCounts)
-    .filter(id => ticketCounts[Number(id)] > 0)
+    .filter(id => ticketCounts[id] > 0)
     .map(id => {
-      const ticket = ticketOptionsToRender.find(t => t.id === Number(id));
+      const ticket = ticketOptionsToRender.find(t => t.id === id);
       return {
         ...ticket,
-        quantity: ticketCounts[Number(id)],
-        subtotal: (ticket?.price || 0) * ticketCounts[Number(id)],
+        quantity: ticketCounts[id],
+        subtotal: (ticket?.price || 0) * ticketCounts[id],
       };
     });
+
+  const handleCheckout = () => {
+    if (!userId) {
+      alert('Please login to purchase tickets');
+      router.push('/login');
+      return;
+    }
+
+    if (ticketOptions.length === 0) {
+      alert('This event has no tickets available yet');
+      return;
+    }
+
+    const selections = Object.entries(ticketCounts)
+      .filter(([, quantity]) => quantity > 0)
+      .map(([ticketId, quantity]) => ({ ticketId, quantity }));
+
+    if (selections.length === 0) {
+      alert('Please select at least one ticket');
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await createOrder({
+        userId,
+        eventId,
+        selections,
+        paymentMethod: 'cash',
+      });
+
+      if (result.success) {
+        alert(`Order created successfully! Order #${result.orderNumber}`);
+        router.push('/my-tickets');
+      } else {
+        alert(result.message || 'Failed to create order');
+      }
+    });
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -107,9 +151,14 @@ export const EventCheckout = ({ ticketOptions }: IEventCheckout) => {
 
           <div className="p-4 items-center flex">
             <div className="w-full flex justify-between items-center">
-              <div className="flex justify-center  ">
-                <button className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-white px-14 py-3 rounded-lg font-condensed font-semibold hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 transition-all duration-300 shadow-[0_0_20px_rgba(255,20,147,0.5)] hover:shadow-[0_0_30px_rgba(255,20,147,0.8)] transform hover:scale-105">
-                  Checkout
+              <div className="flex justify-center">
+                <button
+                  onClick={handleCheckout}
+                  disabled={isPending}
+                  className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-white px-14 py-3 rounded-lg font-condensed font-semibold hover:from-pink-600 hover:via-purple-600 hover:to-cyan-500 transition-all duration-300 shadow-[0_0_20px_rgba(255,20,147,0.5)] hover:shadow-[0_0_30px_rgba(255,20,147,0.8)] transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button"
+                >
+                  {isPending ? 'Processing...' : 'Checkout'}
                 </button>
               </div>
 
@@ -182,7 +231,7 @@ export const EventTicketOptions = ({
 };
 
 export interface IEventTicketOptions {
-  id: number;
+  id: string;
   ticketType: string;
   price: number;
   quantity?: number;

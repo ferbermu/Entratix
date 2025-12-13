@@ -479,9 +479,9 @@ export const CardTicket: React.FC<CardTicketProps> = ({
           <p className="mt-6 text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text font-semibold text-sm text-center relative">
             {title} • {date} {time}
             {/* Text glow effect */}
-            <div className="absolute inset-0 text-pink-500 blur-sm opacity-15 flex items-center justify-center">
+            <span className="absolute inset-0 text-pink-500 blur-sm opacity-15 flex items-center justify-center">
               {title} • {date} {time}
-            </div>
+            </span>
           </p>
         </div>
       </Modal>
