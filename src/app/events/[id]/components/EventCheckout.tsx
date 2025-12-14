@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect, useTransition } from 'react';
-import { createOrder } from '../../../actions/orders';
+import { startTicketCheckout } from '../../../actions/orders';
 import { useRouter } from 'next/navigation';
 
 interface IEventTicketOptions {
@@ -96,21 +96,14 @@ export const EventCheckout: React.FC<EventCheckoutProps> = ({
     }
 
     startTransition(async () => {
-      const result = await createOrder({
-        userId,
-        eventId,
-        selections,
-        paymentMethod: 'cash',
-      });
-
-      if (result.success) {
-        alert(`Order created successfully! Order #${result.orderNumber}`);
-        router.push('/my-tickets');
-      } else {
-        const msg = result.message || 'Failed to create order';
+      const result = await startTicketCheckout({ eventId, selections });
+      if (!result.success || !result.initPoint) {
+        const msg = result.message || 'Failed to start checkout';
         setError(msg);
         alert(msg);
+        return;
       }
+      window.location.assign(result.initPoint);
     });
   };
 

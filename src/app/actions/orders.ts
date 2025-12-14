@@ -7,6 +7,10 @@ import { eq, and, isNull } from 'drizzle-orm';
 import { users } from '../../lib/db/schema/users';
 import { getCurrentUserFromSession } from '../lib/auth/getCurrentUser';
 import { ValidateTicketResult } from '../scan/interfaces/ValidateTicket/ValidateTicketResult';
+import { Preference } from 'mercadopago';
+import { mercadopago } from '../lib/mercadopago/mercadopago';
+import { StartTicketCheckoutInput } from '../mercadopago/interfaces/Checkout/StartTicketCheckout/StartTicketCheckoutInput';
+import { StartTicketCheckoutResult } from '../mercadopago/interfaces/Checkout/StartTicketCheckout/StartTicketCheckoutResult';
 
 interface TicketSelection {
   ticketId: string;
@@ -164,6 +168,134 @@ export async function createOrder(input: CreateOrderInput) {
   } catch (error) {
     console.error('Error creating order:', error);
     return { success: false, message: 'Failed to create order' };
+  }
+}
+
+function getAppUrl(): string {
+  const url = process.env.NEXT_PUBLIC_APP_URL;
+  if (url && url.trim() !== '') return url.replace(/\/+$/, '');
+  return 'http://localhost:3000';
+}
+
+export async function startTicketCheckout(
+  input: StartTicketCheckoutInput
+): Promise<StartTicketCheckoutResult> {
+  try {
+    const currentUser = await getCurrentUserFromSession();
+    if (!currentUser) return { success: false, message: 'Unauthorized' };
+
+    const eventId = input.eventId.trim();
+    const selections: TicketSelection[] = input.selections
+      .filter(s => typeof s.ticketId === 'string' && s.ticketId.trim() !== '' && s.quantity > 0)
+      .map(s => ({ ticketId: s.ticketId.trim(), quantity: s.quantity }));
+
+    if (!eventId || selections.length === 0) {
+      return { success: false, message: 'Invalid checkout request' };
+    }
+
+    const calculation = await calculateOrderTotal(eventId, selections);
+    if (!calculation.success || !calculation.items) {
+      return { success: false, message: calculation.message || 'Failed to calculate order' };
+    }
+
+    const [eventRow] = await db
+      .select({ title: events.title })
+      .from(events)
+      .where(eq(events.id, eventId))
+      .limit(1);
+
+    if (!eventRow) return { success: false, message: 'Event not found' };
+
+    const orderNumber = `ORD-${Date.now()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+
+    const [order] = await db
+      .insert(orders)
+      .values({
+        userId: currentUser.id,
+        eventId,
+        orderNumber,
+        status: 'pending',
+        subtotal: calculation.subtotal || '0',
+        taxes: calculation.taxes || '0',
+        serviceFee: calculation.serviceFee || '0',
+        total: calculation.total || '0',
+        currency: calculation.currency || 'USD',
+        paymentStatus: 'pending',
+        paymentMethod: 'mercadopago',
+      })
+      .returning();
+
+    for (const item of calculation.items) {
+      await db.insert(orderItems).values({
+        orderId: order.id,
+        ticketId: item.ticketId,
+        ticketType: item.ticketType,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice.toString(),
+        subtotal: item.subtotal.toString(),
+      });
+    }
+
+    const [transaction] = await db
+      .insert(paymentTransactions)
+      .values({
+        orderId: order.id,
+        amount: calculation.total || '0',
+        currency: calculation.currency || 'USD',
+        paymentMethod: 'mercadopago',
+        status: 'pending',
+        transactionId: null,
+        metadata: null,
+        errorMessage: null,
+        completedAt: null,
+      })
+      .returning();
+
+    await db
+      .update(orders)
+      .set({ paymentTransactionId: transaction.id })
+      .where(eq(orders.id, order.id));
+
+    const appUrl = getAppUrl();
+    const preference = await new Preference(mercadopago).create({
+      body: {
+        items: calculation.items.map(i => ({
+          id: i.ticketId,
+          title: `${eventRow.title} - ${i.ticketType}`,
+          quantity: i.quantity,
+          unit_price: i.unitPrice,
+        })),
+        metadata: {
+          orderId: order.id,
+        },
+        external_reference: order.id,
+        back_urls: {
+          success: `${appUrl}/my-tickets`,
+          pending: `${appUrl}/my-tickets`,
+          failure: `${appUrl}/my-tickets`,
+        },
+        auto_return: 'approved',
+      },
+    });
+
+    const initPoint = preference.init_point;
+    if (!initPoint) {
+      return { success: false, message: 'Failed to create Mercado Pago preference' };
+    }
+
+    await db
+      .update(paymentTransactions)
+      .set({
+        metadata: JSON.stringify({
+          preferenceId: preference.id || null,
+        }),
+      })
+      .where(eq(paymentTransactions.id, transaction.id));
+
+    return { success: true, message: 'Checkout created', initPoint, orderId: order.id };
+  } catch (error: unknown) {
+    console.error('Error starting Mercado Pago checkout:', error);
+    return { success: false, message: 'Failed to start checkout' };
   }
 }
 

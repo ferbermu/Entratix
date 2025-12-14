@@ -1,6 +1,6 @@
 import React, { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { createOrder } from '../../actions/orders';
+import { startTicketCheckout } from '../../actions/orders';
 
 interface IEventCheckout {
   eventId: string;
@@ -70,19 +70,12 @@ export const EventCheckout = ({ eventId, userId, ticketOptions }: IEventCheckout
     }
 
     startTransition(async () => {
-      const result = await createOrder({
-        userId,
-        eventId,
-        selections,
-        paymentMethod: 'cash',
-      });
-
-      if (result.success) {
-        alert(`Order created successfully! Order #${result.orderNumber}`);
-        router.push('/my-tickets');
-      } else {
-        alert(result.message || 'Failed to create order');
+      const result = await startTicketCheckout({ eventId, selections });
+      if (!result.success || !result.initPoint) {
+        alert(result.message || 'Failed to start checkout');
+        return;
       }
+      window.location.assign(result.initPoint);
     });
   };
 
