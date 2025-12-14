@@ -64,8 +64,8 @@ export default function EventPage({ params }: PageProps) {
       setIsLoading(true);
       setLoadError('');
       try {
-        const eventData = await getEventByIdAction(eventId);
-        setEvent(eventData);
+      const eventData = await getEventByIdAction(eventId);
+      setEvent(eventData);
         if (!eventData) {
           setLoadError('Event not found');
         }
@@ -73,7 +73,7 @@ export default function EventPage({ params }: PageProps) {
         setEvent(null);
         setLoadError('Failed to load event');
       } finally {
-        setIsLoading(false);
+      setIsLoading(false);
       }
     };
 
@@ -194,11 +194,11 @@ export default function EventPage({ params }: PageProps) {
   const eventTicketsData =
     normalizedEvent.tickets.length > 0
       ? normalizedEvent.tickets.map(ticket => ({
-          id: ticket.id,
-          name: ticket.type,
-          price: parseFloat(ticket.price),
-          benefits: ticket.benefits || [],
-          maxQuantity: parseInt(ticket.maxQuantity || '10'),
+    id: ticket.id,
+    name: ticket.type,
+    price: parseFloat(ticket.price),
+    benefits: ticket.benefits || [],
+    maxQuantity: parseInt(ticket.maxQuantity || '10'),
         }))
       : [];
 
@@ -254,7 +254,7 @@ export default function EventPage({ params }: PageProps) {
             title={normalizedEvent.title}
             description={normalizedEvent.description}
           />
-        </div>
+          </div>
 
         {/* 4) Artists */}
         <div className="flex flex-col bg-gradient-to-br from-gray-900/60 via-black/50 to-gray-800/60 backdrop-blur-md border border-gray-600/40 rounded-lg col-span-3 max-[1280px]:col-span-1 text-center max-[1280px]:order-4 divide-y divide-gray-600/40 shadow-2xl">

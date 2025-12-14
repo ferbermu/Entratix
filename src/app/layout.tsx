@@ -44,9 +44,9 @@ export default async function RootLayout({
         <div className="bg-[#1C1A1A]  ">
           <ReduxProvider>
             <AuthProvider initialUser={currentUser}>
-              <Navbar />
-              {children}
-              <Footer />
+            <Navbar />
+            {children}
+            <Footer />
             </AuthProvider>
           </ReduxProvider>
         </div>
